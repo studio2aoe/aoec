@@ -2,9 +2,7 @@
  * @desc NES style volume mixing table.
  */
 class VolumeTable {
-  /** */
   constructor () {
-    /** @ignore */
     const length = 16
     this.__table = new Array(length)
     for (let i = 0; i < length; i++) {
@@ -36,7 +34,7 @@ class VolumeTable {
   }
 }
 
-export const VOLUME_TABLE = new VolumeTable()
+const VOLUME_TABLE = new VolumeTable()
 
 /**
  * @public

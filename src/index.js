@@ -10,30 +10,26 @@ export class Aoec {
    * @param {Number} [buffsize=4096] Buffer size of script processor. It must be a power of 2 between 256 and 16384, that is 256, 512, 1024, 2048, 4096, 8192, 16384.
    */
   constructor (buffsize = 4096) {
-    /** @ignore */
     this.createNodes(buffsize)
     this.connect()
   }
-  /** @ignore */
+
   foo () {
     return 0
   }
-  /** @ignore */
+
   createNodes (buffsize) {
-    /** @ignore */
     this.master = AUDIO_CTX.createGain()
     this.master.gain.setValueAtTime(0.2, AUDIO_CTX.currentTime)
     this.master.connect(AUDIO_CTX.destination)
 
-    /** @ignore */
     this.processor = AUDIO_CTX.createScriptProcessor(buffsize, 2, 2)
     this.processor.connect(this.master)
 
-    /** @ignore */
     this.generatorB1 = new BuiltInWaveform()
     this.generatorN1 = new Noise()
   }
-  /** @ignore */
+
   connect () {
     let clock = 0
     var self = this
