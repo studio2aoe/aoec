@@ -1,6 +1,5 @@
 import AUDIO_CTX from './audioctx'
 
-/** @ignore */
 const SAMPLE_RATE = AUDIO_CTX.sampleRate
 
 class WaveGenerator {
@@ -9,7 +8,6 @@ class WaveGenerator {
    * @param {Number} type Type of waveform. it works different each generator type
    */
   setType (type) {
-    /** @ignore */
     this.__type = type
   }
 
@@ -18,7 +16,6 @@ class WaveGenerator {
    * @param {boolean} inv true: phase-inversed waveform, false: normal waveform
    */
   setInv (inv) {
-    /** @ignore */
     this.__isInv = inv
   }
 
@@ -27,7 +24,6 @@ class WaveGenerator {
    * @param {Number} vol 1-digit hexadecimal. (0 to 15)
    */
   setVol (vol) {
-    /** @ignore */
     if (vol > 15) vol = 15
     if (vol < 0) vol = 0
     this.__vol = vol
@@ -40,9 +36,7 @@ class WaveGenerator {
   setFreq (freq) {
     if (freq > 22050) freq = 22050
     if (freq < 1) freq = 1
-    /** @ignore */
     this.__freq = freq
-    /** @ignore */
     this.__period = SAMPLE_RATE / freq
   }
 
