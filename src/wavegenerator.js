@@ -1,3 +1,4 @@
+import VOLUME_TABLE from './volumetable'
 import AUDIO_CTX from './audioctx'
 
 const SAMPLE_RATE = AUDIO_CTX.sampleRate
@@ -41,6 +42,15 @@ class WaveGenerator {
   }
 
   /**
+   * @desc Calculate phase value (waveform data) of generator. Need implemented on child class.
+   * @param {Number} phase Phase of sampler (0 to 44099)
+   * @return {Number} 1-digit hexadecimal
+   */
+  calcPhaseValue (phase) {
+    return 0
+  }
+
+  /**
    * Get phase angle from sampler phase and generator period
    * @param {Number} phase Phase of sampler (0 to 44099)
    * @return {Number} 0.0 to 1.0
@@ -55,7 +65,9 @@ class WaveGenerator {
    * @return {Number} 1-digit hexadecimal
    */
   getPhaseValue (phase) {
-    return 0 // need implement on child class
+    if (this.__vol === 0 || this.__type === 0) return 0
+    let phaseValue = VOLUME_TABLE.mix(this.calcPhaseValue(phase), this.__vol)
+    return (this.__isInv) ? 15 - phaseValue : phaseValue
   }
 }
 

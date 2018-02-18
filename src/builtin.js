@@ -1,4 +1,3 @@
-import VOLUME_TABLE from './volumetable'
 import WaveGenerator from './wavegenerator'
 
 /**
@@ -16,11 +15,9 @@ class BuiltInWaveform extends WaveGenerator {
     this.setInv(0)
   }
 
-  getPhaseValue (phase) {
-    if (this.__vol === 0) return 0
-    if (this.__type === 0) return 0
-    let phaseAngle = this.getPhaseAngle(phase)
+  calcPhaseValue (phase) {
     let phaseValue
+    let phaseAngle = this.getPhaseAngle(phase)
     switch (this.__type) {
       case 1: case 2: case 3: case 4:
         phaseValue =
@@ -38,8 +35,6 @@ class BuiltInWaveform extends WaveGenerator {
         return 0
     }
     phaseValue = Math.floor(phaseValue)
-    if (this.__isInv) phaseValue = 15 - phaseValue
-    phaseValue = VOLUME_TABLE.mix(phaseValue, this.__vol)
     return phaseValue
   }
 }

@@ -2,6 +2,8 @@ import BuiltInWaveform from './builtin'
 import Noise from './noise'
 import AUDIO_CTX from './audioctx'
 
+const SAMPLE_RATE = AUDIO_CTX.sampleRate
+
 /**
  * @desc Main class of AOEC
  */
@@ -12,10 +14,6 @@ export class Aoec {
   constructor (buffsize = 4096) {
     this.createNodes(buffsize)
     this.connect()
-  }
-
-  foo () {
-    return 0
   }
 
   createNodes (buffsize) {
@@ -49,7 +47,7 @@ export class Aoec {
         output[1][i] = value
         // Update clock
         clock++
-        if (clock >= 44100) clock %= 44100
+        if (clock >= SAMPLE_RATE) clock %= SAMPLE_RATE
       }
     }
   }

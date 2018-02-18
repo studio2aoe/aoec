@@ -10,12 +10,11 @@ class Lfsr {
 
   /**
    * @desc Set mode flag of LFSR tap. True: Use 6 / False: Use 1
-   * @param {Boolean} mode 
+   * @param {Boolean} mode
    */
   setMode (mode) {
     this.__mode = mode
-    if (mode) this.__tapB = 6
-    else this.__tapB = 1
+    this.__tapB = mode ? 6 : 1
   }
 
   /**
