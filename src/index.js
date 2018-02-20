@@ -20,18 +20,17 @@ export class Aoec {
     this.master = AUDIO_CTX.createGain()
     this.master.gain.setValueAtTime(0.2, AUDIO_CTX.currentTime)
     this.master.connect(AUDIO_CTX.destination)
-
     this.processor = AUDIO_CTX.createScriptProcessor(buffsize, 2, 2)
-    this.processor.connect(this.master)
-
     this.generatorB1 = new BuiltInWaveform()
     this.generatorN1 = new Noise()
   }
 
   connect () {
     let clock = 0
-    var self = this
-    var buffsize = this.processor.bufferSize
+    let self = this
+    let buffsize = this.processor.bufferSize
+
+    this.processor.connect(this.master)
     this.processor.onaudioprocess = function (e) {
       let output = [
         e.outputBuffer.getChannelData(0),
@@ -49,6 +48,12 @@ export class Aoec {
         clock++
         if (clock >= SAMPLE_RATE) clock %= SAMPLE_RATE
       }
+    }
+  }
+
+  disconnect () {
+    this.processor.disconnect()
+    this.processor.onaudioprocess = function (e) {
     }
   }
 }
