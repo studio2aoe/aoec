@@ -9,8 +9,8 @@ class BuiltInWaveform extends WaveGenerator {
    */
   constructor () {
     super()
-    this.setType(1)
-    this.setVol(0xF, 0xF)
+    this.setType(0)
+    this.setVol(0x0, 0x0)
     this.setFreq(440)
     this.setInv(0)
   }

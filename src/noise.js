@@ -15,12 +15,12 @@ const GCD = function (n, m) {
   }
 }
 
-class Noise extends WaveGenerator {
+class NoiseWaveform extends WaveGenerator {
   constructor () {
     super()
     this.lfsr = new Lfsr()
-    this.setType(1) // 0: off, 1: long, 2: short
-    this.setVol(0xF, 0xF)
+    this.setType(0) // 0: off, 1: long, 2: short
+    this.setVol(0x0, 0x0)
     this.setFreq(44100)
     this.setInv(0)
   }
@@ -55,4 +55,4 @@ class Noise extends WaveGenerator {
   }
 }
 
-export default Noise
+export default NoiseWaveform
