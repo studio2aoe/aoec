@@ -20,7 +20,7 @@ class Noise extends WaveGenerator {
     super()
     this.lfsr = new Lfsr()
     this.setType(1) // 0: off, 1: long, 2: short
-    this.setVol(0xF)
+    this.setVol(0xF, 0xF)
     this.setFreq(44100)
     this.setInv(0)
   }

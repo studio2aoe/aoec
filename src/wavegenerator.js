@@ -22,12 +22,16 @@ class WaveGenerator {
 
   /**
    * @desc Set volume (amplitude) of generator.
-   * @param {Number} vol 1-digit hexadecimal. (0 to 15)
+   * @param {Number} volL Left volume. 1-digit hexadecimal. (0 to 15)
+   * @param {Number} volR Right volume. 1-digit hexadecimal. (0 to 15)
    */
-  setVol (vol) {
-    if (vol > 15) vol = 15
-    if (vol < 0) vol = 0
-    this.__vol = vol
+  setVol (volL, volR) {
+    if (volL > 15) volL = 15
+    if (volL < 0) volL = 0
+    if (volR > 15) volR = 15
+    if (volR < 0) volR = 0
+    this.__volL = volL
+    this.__volR = volR
   }
 
   /**
@@ -65,9 +69,14 @@ class WaveGenerator {
    * @return {Number} 1-digit hexadecimal
    */
   getPhaseValue (phase) {
-    if (this.__vol === 0 || this.__type === 0) return 0
-    let phaseValue = VOLUME_TABLE.mix(this.calcPhaseValue(phase), this.__vol)
-    return (this.__isInv) ? 15 - phaseValue : phaseValue
+    if ((this.__volL === 0 && this.__volR === 0) || this.__type === 0) return [0, 0]
+    let phaseValue = this.calcPhaseValue(phase)
+    let MixedL = VOLUME_TABLE.mix(phaseValue, this.__volL)
+    let MixedR = VOLUME_TABLE.mix(phaseValue, this.__volR)
+    return [
+      (this.__isInv) ? 15 - MixedL : MixedL,
+      (this.__isInv) ? 15 - MixedR : MixedR
+    ]
   }
 }
 

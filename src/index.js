@@ -18,7 +18,7 @@ export class Aoec {
 
   createNodes (buffsize) {
     this.master = AUDIO_CTX.createGain()
-    this.master.gain.setValueAtTime(0.2, AUDIO_CTX.currentTime)
+    this.master.gain.setValueAtTime(0.5, AUDIO_CTX.currentTime)
     this.master.connect(AUDIO_CTX.destination)
     this.processor = AUDIO_CTX.createScriptProcessor(buffsize, 2, 2)
     this.generatorB1 = new BuiltInWaveform()
@@ -37,13 +37,28 @@ export class Aoec {
         e.outputBuffer.getChannelData(1)
       ]
       for (let i = 0; i < buffsize; i++) {
-        let value = 0
-        value += self.generatorB1.getPhaseValue(clock)
-        value += self.generatorN1.getPhaseValue(clock)
-        value /= 8
-        value -= 0.5
-        output[0][i] = value
-        output[1][i] = value
+        let valueL = 0
+        let valueR = 0
+
+        // Get left value
+        valueL += self.generatorB1.getPhaseValue(clock)[0]
+        valueL += self.generatorN1.getPhaseValue(clock)[0]
+
+        // Get right value
+        valueR += self.generatorB1.getPhaseValue(clock)[1]
+        valueR += self.generatorN1.getPhaseValue(clock)[1]
+
+        // Convert hexadecimal to value
+        valueL /= 16
+        valueL -= 0.5
+
+        valueR /= 16
+        valueR -= 0.5
+
+        // Write value on output buffer
+        output[0][i] = valueL
+        output[1][i] = valueR
+
         // Update clock
         clock++
         if (clock >= SAMPLE_RATE) clock %= SAMPLE_RATE
