@@ -36,11 +36,11 @@ class WaveGenerator {
 
   /**
    * @desc Set frequency of generator.
-   * @param {Number} freq Frequency (1 to 22050)
+   * @param {Number} freq Frequency (1 to 22050, 0: off generator)
    */
   setFreq (freq) {
     if (freq > 22050) freq = 22050
-    if (freq < 1) freq = 1
+    if (freq < 0) freq = 0
     this.__freq = freq
     this.__period = SAMPLE_RATE / freq
   }
@@ -69,7 +69,11 @@ class WaveGenerator {
    * @return {Number} 1-digit hexadecimal
    */
   getPhaseValue (phase) {
-    if ((this.__volL === 0 && this.__volR === 0) || this.__type === 0) return [0, 0]
+    if (
+      this.__freq === 0 || this.__type === 0 ||
+      (this.__volL === 0 && this.__volR === 0)
+    ) return [0, 0]
+
     let phaseValue = this.calcPhaseValue(phase)
     let MixedL = VOLUME_TABLE.mix(phaseValue, this.__volL)
     let MixedR = VOLUME_TABLE.mix(phaseValue, this.__volR)

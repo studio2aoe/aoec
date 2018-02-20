@@ -26,6 +26,7 @@ class NoiseWaveform extends WaveGenerator {
   }
 
   setFreq (freq) {
+    if (freq < 0) freq = 0
     const gcd = GCD(freq, SAMPLE_RATE)
     this.freq = freq
     this.divisedFreq = freq / gcd

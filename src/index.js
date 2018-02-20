@@ -23,7 +23,7 @@ export class Aoec {
     this.processor = AUDIO_CTX.createScriptProcessor(buffsize, 2, 2)
   }
 
-  createGenerator (pBuilt, pCustom, pNoise) {
+  setupGenerator (pBuilt, pCustom, pNoise) {
     this.generator = []
     for (let i = 0; i < pBuilt; i++) {
       this.generator.push(new BuiltInWaveform())
@@ -36,13 +36,12 @@ export class Aoec {
     }
   }
 
-  setGeneratorProperties (id, freq, type, inv, volL, volR) {
+  sendGenerator (id, freq, type, inv, volL, volR) {
     const checkID = Number.isInteger(id)
     const checkFreq = Number.isInteger(freq)
     const checkType = Number.isInteger(type)
     const checkInv = Number.isInteger(inv)
     const checkVol = Number.isInteger(volL) && Number.isInteger(volR)
-    console.log([checkID, checkFreq, checkType, checkInv, checkVol].join())
 
     if (checkID) {
       if (checkFreq) this.generator[id].setFreq(freq)
