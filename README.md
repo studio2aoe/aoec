@@ -50,16 +50,17 @@ aoec.setupGenerator(2, 1, 1)
   - Defaultly, 440 is standard A4 and 1 to 22050 (half of sample rate) are allowed.
   - On Noise generator, 44100 is default white noise and 1 to 88200 (4x) are allowed.
 - `type`: Type of generator.
-  - When type number is 0, generator will stop
   - On Built-in generator
+    - `0` / Others: Flatline (generator will be stop)
     - `1`, `2`, `3`, `4`: Pulse wave of n/8 duty cycle. (12.5%, 25%, 37.5%, 50%)
     - `5`: Triangle wave
     - `6`: Sawtooth wave
   - On Noise generator
-    - `1`: Long period (32767-bit) noise. it has smooth and non-tonal sound.
-    - `2`: Short period (93-bit) noise. it has metalic and tonal sound.
+    - `0` / Others: Long period (32767-bit) noise. it has smooth and non-tonal sound.
+    - `1`: Short period (93-bit) noise. it has metalic and tonal sound.
   - On Custom generator (Not implemented)
-    - `1` to `255`: address of waveform. each custom generator has 255 address for memorize waveforms.
+    - `0` to `255`: address of waveform. each custom generator has 255 address for memorize waveforms.
+    - Empty address / Others: Flatline (generator will be stop)
 - `inv`: Waveform will be inversed
 - `volL`: Left volume of generator. aoec use 2 channels.
 - `volR`: Right volume.

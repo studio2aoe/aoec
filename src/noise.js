@@ -19,7 +19,7 @@ class NoiseWaveform extends WaveGenerator {
   constructor () {
     super()
     this.lfsr = new Lfsr()
-    this.setType(0) // 0: off, 1: long, 2: short
+    this.setType(0) // 0: long, 1: short
     this.setVol(0x0, 0x0)
     this.setFreq(44100)
     this.setInv(0)
@@ -45,8 +45,8 @@ class NoiseWaveform extends WaveGenerator {
 
   setType (type) {
     super.setType(type)
-    if (type === 1) this.lfsr.setMode(false)
-    else if (type === 2) this.lfsr.setMode(true)
+    if (type === 1) this.lfsr.setMode(true)
+    else this.lfsr.setMode(false)
   }
 
   calcPhaseValue (phase) {

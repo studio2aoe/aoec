@@ -70,8 +70,7 @@ class WaveGenerator {
    */
   getPhaseValue (phase) {
     if (
-      this.__freq === 0 || this.__type === 0 ||
-      (this.__volL === 0 && this.__volR === 0)
+      this.__freq === 0 || (this.__volL === 0 && this.__volR === 0)
     ) return [0, 0]
 
     let phaseValue = this.calcPhaseValue(phase)
