@@ -9,7 +9,7 @@ const config = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: './[name].bundle.js',
-    libraryTarget: 'window',
+    libraryTarget: 'umd',
     library: 'Aoec'
   },
   module: {
