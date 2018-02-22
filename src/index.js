@@ -12,15 +12,28 @@ export class Aoec {
   /**
    * @param {Number} [buffsize=4096] Buffer size of script processor. It must be a power of 2 between 256 and 16384, that is 256, 512, 1024, 2048, 4096, 8192, 16384.
    */
-  constructor (buffsize = 4096) {
-    this.setupMaster(buffsize)
-  }
-
-  setupMaster (buffsize) {
+  constructor (generatorSet = 'BBCNS', buffsize = 4096) {
     this.master = AUDIO_CTX.createGain()
     this.setMasterVolume(0.5)
     this.master.connect(AUDIO_CTX.destination)
     this.processor = AUDIO_CTX.createScriptProcessor(buffsize, 2, 2)
+    this.generator = []
+    generatorSet.split('').forEach(elem => {
+      switch (elem) {
+        case 'B':
+          this.generator.push(new BuiltInWaveform())
+          break
+        case 'C':
+          this.generator.push(new CustomWaveform())
+          break
+        case 'N':
+          this.generator.push(new NoiseWaveform())
+          break
+        case 'S':
+          // this.generator.push(new Sampler())
+          break
+      }
+    })
   }
 
   setupGenerator (pBuilt, pCustom, pNoise) {
@@ -37,11 +50,13 @@ export class Aoec {
   }
 
   sendGenerator (id, freq, type, inv, volL, volR) {
-    const checkID = Number.isInteger(id)
-    const checkFreq = Number.isInteger(freq)
-    const checkType = Number.isInteger(type)
-    const checkInv = Number.isInteger(inv)
-    const checkVol = Number.isInteger(volL) && Number.isInteger(volR)
+    const checkID = Number.isInteger(id) && id >= 0
+    const checkFreq = Number.isInteger(freq) && freq >= 0
+    const checkType = Number.isInteger(type) && type >= 0
+    const checkInv = (typeof inv === 'boolean')
+    const checkVolL = Number.isInteger(volL) && volL >= 0 && volL <= 15
+    const checkVolR = Number.isInteger(volR) && volR >= 0 && volR <= 15
+    const checkVol = checkVolL && checkVolR
 
     if (checkID) {
       if (checkFreq) this.generator[id].setFreq(freq)

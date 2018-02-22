@@ -24,23 +24,25 @@
 ```html
 <script src="./dist/aoec.bundle.js"></script>
 ```
-- `Aoec` is namespace of aoec, `Aoec.Aoec()` is constructor
-- Construct `Aoec` object on `aoec` (or other object name you want)
+- If aoec is loaded in browser, constructor is `Aoec.Aoec()`.
 ```js
 const aoec = new Aoec.Aoec()
 ```
 
-### Setup waveform generator
-- `Aoec.setupGenerator()` method creates waveform generator, needs 3 integer arguments, `pBuilt`, `pCustom`, `pNoise`
-- `pBuilt` is number of built-in waveform generator.
-- `pCustom` is number of custom waveform generator. (Not implemented)
-- `pNoise` is number of noise generator.
-- Generators are created in following order, Built-in -> Custom -> Noise.
+### Construct aoec and set generators
+- constructor needs two optional parameter: `generatorSet` and `buffsize`.
+- `generatorSet` is string determines type and number of generator.
+  - `B`: Built-in waveform generator
+  - `C`: Custom waveform generator
+  - `N`: Noise generator
+  - `S`: Sampler (Not implemented)
+  - Default value is `'BBCNS'`, it will be create 2 Built-in, 1 Custom, 1 Noise, 1 Sampler.
+- `buffsize` is buffer size of sound processor.
+  - It must be a power of 2 between 256 and 16384, that is 256, 512, 1024, 2048, 4096, 8192, 16384.
+  - Default value is `4096`.
 ```js
-/* Setup 2 built-in, 1 custom, 1 noise generators. */
-aoec.setupGenerator(2, 1, 1)
+const aoec = new Aoec.Aoec('BBCNS', 4096)
 ```
-- Too many generator created, the performance may be slow...
 
 ### Control generator
 - `Aoec.sendGenerator()` method sends command for control generator by 6 integer arguments.
@@ -51,16 +53,17 @@ aoec.setupGenerator(2, 1, 1)
   - On Noise generator, 44100 is default white noise and 1 to 88200 (4x) are allowed.
 - `type`: Type of generator.
   - On Built-in generator
-    - `0` / Others: Flatline (generator will be stop)
+    - `0` or Others: Flatline (generator will be stop)
     - `1`, `2`, `3`, `4`: Pulse wave of n/8 duty cycle. (12.5%, 25%, 37.5%, 50%)
     - `5`: Triangle wave
     - `6`: Sawtooth wave
   - On Noise generator
-    - `0` / Others: Long period (32767-bit) noise. it has smooth and non-tonal sound.
+    - `0` or Others: Long period (32767-bit) noise. it has smooth and non-tonal sound.
     - `1`: Short period (93-bit) noise. it has metalic and tonal sound.
   - On Custom generator (Not implemented)
-    - `0` to `255`: address of waveform. each custom generator has 255 address for memorize waveforms.
-    - Empty address / Others: Flatline (generator will be stop)
+    - `0` to `1024`: address of waveform. all generators share waveform memory.
+    - Empty address : Flatline
+    - Others : Generator type will not be changed.
 - `inv`: Waveform will be inversed
 - `volL`: Left volume of generator. aoec use 2 channels.
 - `volR`: Right volume.
