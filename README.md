@@ -19,29 +19,58 @@
 
 ## How to use
 
-### Load in browser
-- Load `./dist/aoec.bundle.js` on browser.
+### Load Library
+- Bundle scripts by `npm build run`.
+- Bundled script is placed on `./dist/aoec.bundle.js`
+
+#### In Browser
+- Load `aoec.bundle.js` by script tag.
 ```html
-<script src="./dist/aoec.bundle.js"></script>
-```
-- If aoec is loaded in browser, constructor is `Aoec.Aoec()`.
-```js
-const aoec = new Aoec.Aoec()
+<script src="./aoec.bundle.js"></script>
 ```
 
+- Set audio context.
+```js
+const AUDIO_CONTEXT = new (window.AudioContext || window.webkitAudioContext)()
+```
+
+#### In NodeJs
+- Load `aoec.bundle.js` as NodeJs module.
+```js
+const Aoec = require('./aoec.bundle')
+```
+
+- Set audio context and output. (see [web-audio-api](https://www.npmjs.com/package/web-audio-api))
+
+```js
+const WebAudioAPI = require('web-audio-api')
+const Speaker = require('speaker')
+
+const AUDIO_CONTEXT = new WebAudioAPI.AudioContext()
+
+AUDIO_CONTEXT.outStream = new Speaker({
+  channels: AUDIO_CONTEXT.format.numberOfChannels,
+  bitDepth: AUDIO_CONTEXT.format.bitDepth,
+  sampleRate: AUDIO_CONTEXT.sampleRate
+})
+```
+
+- Install from NPM is not supported yet.
+
 ### Construct aoec and set generators
-- constructor needs two optional parameter: `generatorSet` and `buffsize`.
+- Constructor Aoec() needs three arguments: `audioContext`, `buffsize`, and `generatorSet`
+- `audioContext` is audio context of target environment. (see [Load Library](#load-library) again)
+- `buffsize` is buffer size of sound processor.
+  - It must be a power of 2 between 256 and 16384, that is 256, 512, 1024, 2048, 4096, 8192, 16384.
 - `generatorSet` is string determines type and number of generator.
   - `B`: Built-in waveform generator
   - `C`: Custom waveform generator
   - `N`: Noise generator
   - `S`: Sampler (Not implemented)
-  - Default value is `'BBCNS'`, it will be create 2 Built-in, 1 Custom, 1 Noise, 1 Sampler.
-- `buffsize` is buffer size of sound processor.
-  - It must be a power of 2 between 256 and 16384, that is 256, 512, 1024, 2048, 4096, 8192, 16384.
-  - Default value is `4096`.
+  - For example, `'BBCNS'`, it will be create 2 Built-in, 1 Custom, 1 Noise, 1 Sampler.
+
 ```js
-const aoec = new Aoec.Aoec('BBCNS', 4096)
+const aoec = new Aoec('BBCNS', 4096, AUDIO_CONTEXT)
 ```
 
 ### Control generator

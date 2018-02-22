@@ -1,4 +1,4 @@
-import WaveGenerator from './wavegenerator'
+const WaveGenerator = require('./wavegenerator')
 
 /**
  * @desc Built-in-waveform generator. it generates pulse, triangle, sawtooth wave.
@@ -39,4 +39,4 @@ class BuiltInWaveform extends WaveGenerator {
   }
 }
 
-export default BuiltInWaveform
+module.exports = BuiltInWaveform

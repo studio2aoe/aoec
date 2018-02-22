@@ -1,16 +1,16 @@
-const Aoec = require('../dist/aoec.bundle').Aoec
-const AudioContext = require('web-audio-api').AudioContext
+const Aoec = require('../dist/aoec.bundle')
+const WebAudioAPI = require('web-audio-api')
 const Speaker = require('speaker')
 
-const AUDIO_CTX = new AudioContext
+const AUDIO_CONTEXT = new WebAudioAPI.AudioContext()
 
-AUDIO_CTX.outStream = new Speaker({
-  channels: AUDIO_CTX.format.numberOfChannels,
-  bitDepth: AUDIO_CTX.format.bitDepth,
-  sampleRate: AUDIO_CTX.sampleRate
+AUDIO_CONTEXT.outStream = new Speaker({
+  channels: AUDIO_CONTEXT.format.numberOfChannels,
+  bitDepth: AUDIO_CONTEXT.format.bitDepth,
+  sampleRate: AUDIO_CONTEXT.sampleRate
 })
 
-const aoec = new Aoec('BBCNS', 4096, AUDIO_CTX)
+const aoec = new Aoec(AUDIO_CONTEXT, 4096, 'BBCNS')
 
 aoec.sendGenerator(0, 440, 5, 0, 0xF, 0xF)
 aoec.sendGenerator(1, 660, 5, 0, 0xF, 0xF)

@@ -1,21 +1,20 @@
-import BuiltInWaveform from './builtin'
-import NoiseWaveform from './noise'
-import CustomWaveform from './custom'
+const BuiltInWaveform = require('./builtin')
+const NoiseWaveform = require('./noise')
+const CustomWaveform = require('./custom')
 
 const SAMPLE_RATE = 44100
 
 /**
  * @desc Main class of AOEC
  */
-export class Aoec {
+class Aoec {
   /**
-   * @param {String} [generatorSet='BBCNS'] Initial generator settings. 'B' is built-in, 'C' is custom, 'N' is noise, 'S' is sampler.
-   * @param {Number} [buffsize=4096] Buffer size of script processor. It must be a power of 2 between 256 and 16384, that is 256, 512, 1024, 2048, 4096, 8192, 16384.
-   * @param {Object} [audioContext=(browser)] Target audio context environment. default is browser.
+   * @param {Object} audioContext Target audio context environment. default is browser.
+   * @param {Number} buffsize Buffer size of script processor. It must be a power of 2 between 256 and 16384, that is 256, 512, 1024, 2048, 4096, 8192, 16384.
+   * @param {String} generatorSet Initial generator settings. 'B' is built-in, 'C' is custom, 'N' is noise, 'S' is sampler.
    */
   constructor (
-    generatorSet = 'BBCNS', buffsize = 4096,
-    audioContext = new (window.AudioContext || window.webkitAudioContext)()) {
+    audioContext, buffsize, generatorSet) {
     this.audioContext = audioContext
     this.master = audioContext.createGain()
     this.setMasterVolume(0.5)
@@ -119,3 +118,5 @@ export class Aoec {
     }
   }
 }
+
+module.exports = Aoec

@@ -1,5 +1,5 @@
-import WaveGenerator from './wavegenerator'
-import Lfsr from './lfsr'
+const WaveGenerator = require('./wavegenerator')
+const Lfsr = require('./lfsr')
 
 const SAMPLE_RATE = 44100
 const GCD = function (n, m) {
@@ -54,4 +54,4 @@ class NoiseWaveform extends WaveGenerator {
   }
 }
 
-export default NoiseWaveform
+module.exports = NoiseWaveform

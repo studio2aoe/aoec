@@ -1,5 +1,5 @@
-import WaveGenerator from './wavegenerator'
-import WaveMemory from './wavememory'
+const WaveGenerator = require('./wavegenerator')
+const WaveMemory = require('./wavememory')
 
 const MEM_SIZE = 1024
 const WAVE_SIZE = 32
@@ -25,4 +25,4 @@ class CustomWaveform extends WaveGenerator {
   }
 }
 
-export default CustomWaveform
+module.exports = CustomWaveform

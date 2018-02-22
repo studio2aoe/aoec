@@ -40,4 +40,4 @@ const VOLUME_TABLE = new VolumeTable()
  * @public
  * @desc Instance of class VolumeTable
  */
-export default VOLUME_TABLE
+module.exports = VOLUME_TABLE

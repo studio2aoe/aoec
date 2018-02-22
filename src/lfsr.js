@@ -37,4 +37,4 @@ class Lfsr {
   }
 }
 
-export default Lfsr
+module.exports = Lfsr

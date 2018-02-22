@@ -50,4 +50,4 @@ class WaveMemory {
   unlock (idx) { this.__memory[idx].unlock() }
 }
 
-export default WaveMemory
+module.exports = WaveMemory

@@ -1,4 +1,4 @@
-import VOLUME_TABLE from './volumetable'
+const VOLUME_TABLE = require('./volumetable')
 
 const SAMPLE_RATE = 44100
 
@@ -69,4 +69,4 @@ class WaveGenerator {
   }
 }
 
-export default WaveGenerator
+module.exports = WaveGenerator

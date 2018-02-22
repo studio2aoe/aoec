@@ -1,4 +1,5 @@
-const aoec = new Aoec.Aoec()
+const AUDIO_CONTEXT = new (window.AudioContext || window.webkitAudioContext)()
+const aoec = new Aoec(AUDIO_CONTEXT, 4096, 'BBCNS')
 aoec.sendGenerator(0, 440, 5, 0, 0xF, 0xF)
 aoec.sendGenerator(1, 660, 5, 0, 0xF, 0xF)
 aoec.sendGenerator(2, 880, 5, 0, 0xF, 0xF)
