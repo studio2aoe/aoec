@@ -1,22 +1,26 @@
+let volumeTableInstance = null
+const TABLE_SIZE = 16
+const TABLE = new Array(TABLE_SIZE)
+
 /**
  * @desc NES style volume mixing table.
  */
 class VolumeTable {
   constructor () {
-    const length = 16
-    this.__table = new Array(length)
-    for (let i = 0; i < length; i++) {
-      this.__table[i] = new Uint8Array(length)
-      for (let j = 0; j < length; j++) {
-        if (i === 0 || j === 0) this.__table[i][j] = 0
-        else if (i >= length) this.__table[i][j] = this.__table[15][j]
-        else if (j >= length) this.__table[i][j] = this.__table[i][15]
+    if (volumeTableInstance === null) volumeTableInstance = this
+    for (let i = 0; i < TABLE_SIZE; i++) {
+      TABLE[i] = new Uint8Array(TABLE_SIZE)
+      for (let j = 0; j < TABLE_SIZE; j++) {
+        if (i === 0 || j === 0) TABLE[i][j] = 0
+        else if (i >= TABLE_SIZE) TABLE[i][j] = TABLE[15][j]
+        else if (j >= TABLE_SIZE) TABLE[i][j] = TABLE[i][15]
         else {
           const __mixed = Math.floor(i * j / 15)
-          this.__table[i][j] = (__mixed > 1) ? __mixed : 1
+          TABLE[i][j] = (__mixed > 1) ? __mixed : 1
         }
       }
     }
+    return volumeTableInstance
   }
   /**
    * @public
@@ -30,14 +34,8 @@ class VolumeTable {
    * ```
    */
   mix (volumeA, volumeB) {
-    return this.__table[volumeA][volumeB]
+    return TABLE[volumeA][volumeB]
   }
 }
 
-const VOLUME_TABLE = new VolumeTable()
-
-/**
- * @public
- * @desc Instance of class VolumeTable
- */
-module.exports = VOLUME_TABLE
+module.exports = VolumeTable

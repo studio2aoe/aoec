@@ -1,6 +1,8 @@
-let waveManagerInstance = null
+let waveMemoryInstance = null
 const MEM_SIZE = 1024
 const WAVE_SIZE = 32
+
+const MEMORY = new Array(MEM_SIZE)
 
 class Waveform {
   constructor (str) {
@@ -29,25 +31,24 @@ class Waveform {
 
 class WaveMemory {
   constructor () {
-    if (waveManagerInstance === null) waveManagerInstance = this
-    this.__memory = new Array(MEM_SIZE)
+    if (waveMemoryInstance === null) waveMemoryInstance = this
     for (let i = 0; i < MEM_SIZE; i++) {
-      this.__memory[i] = new Waveform()
+      MEMORY[i] = new Waveform()
     }
-    return waveManagerInstance
+    return waveMemoryInstance
   }
   write (idx, input) {
     try {
-      this.__memory[idx].write(input)
+      MEMORY[idx].write(input)
     } catch (err) {
       if (err.name === `WaveformLocked`) {
         err.message = `Waveform ID ${idx} is locked. waveform change failed.`
       }
     }
   }
-  read (idx) { return this.__memory[idx].read() }
-  lock (idx) { this.__memory[idx].lock() }
-  unlock (idx) { this.__memory[idx].unlock() }
+  read (idx) { return MEMORY[idx].read() }
+  lock (idx) { MEMORY[idx].lock() }
+  unlock (idx) { MEMORY[idx].unlock() }
 }
 
 module.exports = WaveMemory

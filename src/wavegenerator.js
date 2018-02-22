@@ -1,5 +1,6 @@
-const VOLUME_TABLE = require('./volumetable')
+const VolumeTable = require('./volumetable')
 
+const VOLUME_TABLE = new VolumeTable()
 const SAMPLE_RATE = 44100
 
 class WaveGenerator {
