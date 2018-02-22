@@ -1,5 +1,6 @@
 const WaveGenerator = require('./wavegenerator')
 const WaveMemory = require('./wavememory')
+const WAVE_MEMORY = new WaveMemory()
 
 const MEM_SIZE = 1024
 const WAVE_SIZE = 32
@@ -7,8 +8,6 @@ const WAVE_SIZE = 32
 class CustomWaveform extends WaveGenerator {
   constructor () {
     super()
-    // TO DO: Hide WaveManager instance by assign global const
-    this.__wave = new WaveMemory()
     this.setType(0)
     this.setVol(0x0, 0x0)
     this.setFreq(440)
@@ -21,7 +20,7 @@ class CustomWaveform extends WaveGenerator {
   }
   calcPhaseValue (phase) {
     let phaseIndex = Math.floor(this.getPhaseAngle(phase) * WAVE_SIZE)
-    return this.__wave.read(this.__type)[phaseIndex]
+    return WAVE_MEMORY.read(this.__type)[phaseIndex]
   }
 }
 

@@ -1,8 +1,10 @@
 const BuiltInWaveform = require('./builtin')
 const NoiseWaveform = require('./noise')
 const CustomWaveform = require('./custom')
+const WaveMemory = require('./wavememory')
 
 const SAMPLE_RATE = 44100
+const WAVE_MEMORY = new WaveMemory()
 
 /**
  * @desc Main class of AOEC
@@ -39,18 +41,10 @@ class Aoec {
     })
   }
 
-  setupGenerator (pBuilt, pCustom, pNoise) {
-    this.generator = []
-    for (let i = 0; i < pBuilt; i++) {
-      this.generator.push(new BuiltInWaveform())
-    }
-    for (let i = 0; i < pCustom; i++) {
-      this.generator.push(new CustomWaveform())
-    }
-    for (let i = 0; i < pNoise; i++) {
-      this.generator.push(new NoiseWaveform())
-    }
-  }
+  writeWaveMemory (idx, input) { WAVE_MEMORY.write(idx, input) }
+  readWaveMemory (idx) { WAVE_MEMORY.read(idx) }
+  lockWaveMemory (idx) { WAVE_MEMORY.lock(idx) }
+  unlockWaveMemory (idx) { WAVE_MEMORY.unlock(idx) }
 
   sendGenerator (id, freq, type, inv, volL, volR) {
     const checkID = Number.isInteger(id) && id >= 0
