@@ -10,11 +10,12 @@
 ## Implemented
 - Built-in waveform generator (Pulse, Triangle, Sawtooth)
 - LFSR based white noise generator
+- Custom waveform generator
 
 ## TO DO
-- Custom waveform generator
 - Sampler
 - Demo application
+- Solve bad performance problem on nodejs
 
 
 ## How to use
@@ -22,6 +23,7 @@
 ### Load Library
 - Bundle scripts by `npm build run`.
 - Bundled script is placed on `./dist/aoec.bundle.js`
+- **Install from npm is not supported yet**
 
 #### In Browser
 - Load `aoec.bundle.js` by script tag.
@@ -34,7 +36,8 @@
 const AUDIO_CONTEXT = new (window.AudioContext || window.webkitAudioContext)()
 ```
 
-#### In NodeJs
+#### In NodeJs (Experimental)
+- **Using on nodejs has BAD BUFFER WRITTING PERFORMANCE.**
 - Load `aoec.bundle.js` as NodeJs module.
 ```js
 const Aoec = require('./aoec.bundle')
@@ -54,8 +57,6 @@ AUDIO_CONTEXT.outStream = new Speaker({
   sampleRate: AUDIO_CONTEXT.sampleRate
 })
 ```
-
-- Install from NPM is not supported yet.
 
 ### Construct aoec and set generators
 - Constructor Aoec() needs three arguments: `audioContext`, `buffsize`, and `generatorSet`

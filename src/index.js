@@ -42,7 +42,7 @@ class Aoec {
   }
 
   writeWaveMemory (idx, input) { WAVE_MEMORY.write(idx, input) }
-  readWaveMemory (idx) { WAVE_MEMORY.read(idx) }
+  readWaveMemory (idx) { return WAVE_MEMORY.read(idx) }
   lockWaveMemory (idx) { WAVE_MEMORY.lock(idx) }
   unlockWaveMemory (idx) { WAVE_MEMORY.unlock(idx) }
 
