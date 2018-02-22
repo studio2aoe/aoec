@@ -1,7 +1,6 @@
 import VOLUME_TABLE from './volumetable'
-import AUDIO_CTX from './audioctx'
 
-const SAMPLE_RATE = AUDIO_CTX.sampleRate
+const SAMPLE_RATE = 44100
 
 class WaveGenerator {
   /**

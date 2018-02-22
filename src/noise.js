@@ -1,8 +1,7 @@
 import WaveGenerator from './wavegenerator'
-import AUDIO_CTX from './audioctx'
 import Lfsr from './lfsr'
 
-const SAMPLE_RATE = AUDIO_CTX.sampleRate
+const SAMPLE_RATE = 44100
 const GCD = function (n, m) {
   n = Math.abs(n)
   m = Math.abs(m)

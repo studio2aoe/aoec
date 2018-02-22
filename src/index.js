@@ -1,22 +1,26 @@
 import BuiltInWaveform from './builtin'
 import NoiseWaveform from './noise'
 import CustomWaveform from './custom'
-import AUDIO_CTX from './audioctx'
 
-const SAMPLE_RATE = AUDIO_CTX.sampleRate
+const SAMPLE_RATE = 44100
 
 /**
  * @desc Main class of AOEC
  */
 export class Aoec {
   /**
+   * @param {String} [generatorSet='BBCNS'] Initial generator settings. 'B' is built-in, 'C' is custom, 'N' is noise, 'S' is sampler.
    * @param {Number} [buffsize=4096] Buffer size of script processor. It must be a power of 2 between 256 and 16384, that is 256, 512, 1024, 2048, 4096, 8192, 16384.
+   * @param {Object} [audioContext=(browser)] Target audio context environment. default is browser.
    */
-  constructor (generatorSet = 'BBCNS', buffsize = 4096) {
-    this.master = AUDIO_CTX.createGain()
+  constructor (
+    generatorSet = 'BBCNS', buffsize = 4096,
+    audioContext = new (window.AudioContext || window.webkitAudioContext)()) {
+    this.audioContext = audioContext
+    this.master = audioContext.createGain()
     this.setMasterVolume(0.5)
-    this.master.connect(AUDIO_CTX.destination)
-    this.processor = AUDIO_CTX.createScriptProcessor(buffsize, 2, 2)
+    this.master.connect(audioContext.destination)
+    this.processor = audioContext.createScriptProcessor(buffsize, 2, 2)
     this.generator = []
     generatorSet.split('').forEach(elem => {
       switch (elem) {
@@ -67,7 +71,7 @@ export class Aoec {
   }
 
   setMasterVolume (vol) {
-    this.master.gain.setValueAtTime(vol, AUDIO_CTX.currentTime)
+    this.master.gain.setValueAtTime(vol, this.audioContext.currentTime)
   }
 
   connect () {
