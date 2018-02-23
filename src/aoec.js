@@ -3,8 +3,6 @@ const NoiseWaveform = require('./noise')
 const CustomWaveform = require('./custom')
 const WaveMemory = require('./wavememory')
 
-const WAVE_MEMORY = new WaveMemory()
-
 /**
  * @desc Main class of AOEC
  */
@@ -40,10 +38,10 @@ class Aoec {
     })
   }
 
-  writeWaveMemory (idx, input) { WAVE_MEMORY.write(idx, input) }
-  readWaveMemory (idx) { return WAVE_MEMORY.read(idx) }
-  lockWaveMemory (idx) { WAVE_MEMORY.lock(idx) }
-  unlockWaveMemory (idx) { WAVE_MEMORY.unlock(idx) }
+  writeWaveMemory (idx, input) { WaveMemory.write(idx, input) }
+  readWaveMemory (idx) { return WaveMemory.read(idx) }
+  lockWaveMemory (idx) { WaveMemory.lock(idx) }
+  unlockWaveMemory (idx) { WaveMemory.unlock(idx) }
 
   sendGenerator (id, freq, type, inv, volL, volR) {
     const checkID = Number.isInteger(id) && id >= 0
