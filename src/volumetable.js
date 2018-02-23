@@ -12,8 +12,6 @@ class VolumeTable {
       TABLE[i] = new Uint8Array(TABLE_SIZE)
       for (let j = 0; j < TABLE_SIZE; j++) {
         if (i === 0 || j === 0) TABLE[i][j] = 0
-        else if (i >= 16) TABLE[i][j] = TABLE[15][j]
-        else if (j >= 16) TABLE[i][j] = TABLE[i][15]
         else {
           const __mixed = Math.floor(i * j / 15)
           TABLE[i][j] = (__mixed > 1) ? __mixed : 1
