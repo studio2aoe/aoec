@@ -1,6 +1,5 @@
-const VolumeTable = require('./volumetable')
+const mixVolume = require('./mixvolume')
 
-const VOLUME_TABLE = new VolumeTable()
 const SAMPLE_RATE = 44100
 
 class WaveGenerator {
@@ -61,11 +60,11 @@ class WaveGenerator {
     ) return [0, 0]
 
     let phaseValue = this.calcPhaseValue(phase)
-    let MixedL = VOLUME_TABLE.mix(phaseValue, this.__volL)
-    let MixedR = VOLUME_TABLE.mix(phaseValue, this.__volR)
+    let mixedL = mixVolume(phaseValue, this.__volL)
+    let mixedR = mixVolume(phaseValue, this.__volR)
     return [
-      (this.__isInv) ? 15 - MixedL : MixedL,
-      (this.__isInv) ? 15 - MixedR : MixedR
+      (this.__isInv) ? 15 - mixedL : mixedL,
+      (this.__isInv) ? 15 - mixedR : mixedR
     ]
   }
 }
