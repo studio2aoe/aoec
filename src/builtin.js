@@ -4,24 +4,13 @@ const WaveGenerator = require('./wavegenerator')
  * @desc Built-in-waveform generator. it generates pulse, triangle, sawtooth wave.
  */
 class BuiltInWaveform extends WaveGenerator {
-  /**
-   * @desc Constructor of class BuiltInWaveform
-   */
-  constructor () {
-    super()
-    this.setType(0)
-    this.setVol(0x0, 0x0)
-    this.setFreq(440)
-    this.setInv(0)
-  }
-
   calcPhaseValue (phase) {
     let phaseValue
     let phaseAngle = this.getPhaseAngle(phase)
-    switch (this.__type) {
+    switch (this.waveNum) {
       case 1: case 2: case 3: case 4:
         phaseValue =
-          (phaseAngle > (this.__type / 8)) ? 0 : 15
+          (phaseAngle > (this.waveNum / 8)) ? 0 : 15
         break
       case 5:
         phaseValue =

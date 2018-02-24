@@ -18,21 +18,26 @@ class NoiseWaveform extends WaveGenerator {
   constructor () {
     super()
     this.lfsr = new Lfsr()
-    this.setType(0) // 0: long, 1: short
-    this.setVol(0x0, 0x0)
-    this.setFreq(44100)
-    this.setInv(0)
   }
-
   setFreq (freq) {
-    const gcd = GCD(freq, SAMPLE_RATE)
-    this.freq = freq
-    this.divisedFreq = freq / gcd
-    this.divisedRate = SAMPLE_RATE / gcd
-    this.quotient = Math.floor(this.divisedFreq / this.divisedRate)
-    this.remainder = this.divisedFreq % this.divisedRate
+    if (Number.isFinite(freq) && freq > 0) {
+      const gcd = GCD(freq, SAMPLE_RATE)
+      this.freq = freq
+      this.divisedFreq = freq / gcd
+      this.divisedRate = SAMPLE_RATE / gcd
+      this.quotient = Math.floor(this.divisedFreq / this.divisedRate)
+      this.remainder = this.divisedFreq % this.divisedRate
+    }
   }
-
+  setWaveform (num) {
+    if (num === 1) {
+      this.lfsr.setMode(true)
+      this.waveNum = num
+    } else if (num === 0) {
+      this.lfsr.setMode(false)
+      this.waveNum = num
+    }
+  }
   clock (phase) {
     const divisible = (this.remainder * phase) % this.divisedRate < this.remainder
     const repeat = divisible ? this.quotient + 1 : this.quotient
@@ -40,13 +45,6 @@ class NoiseWaveform extends WaveGenerator {
       this.lfsr.clock()
     }
   }
-
-  setType (type) {
-    super.setType(type)
-    if (type === 1) this.lfsr.setMode(true)
-    else this.lfsr.setMode(false)
-  }
-
   calcPhaseValue (phase) {
     let phaseValue = this.lfsr.getHex()
     this.clock(phase)

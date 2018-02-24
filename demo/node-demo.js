@@ -10,3 +10,4 @@ AUDIO_CONTEXT.outStream = new Speaker({
 })
 
 const aoec = new Aoec(AUDIO_CONTEXT, 4096, 'BBCNS')
+aoec.setMasterVolume(0.5)

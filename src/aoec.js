@@ -3,22 +3,27 @@ const NoiseWaveform = require('./noise')
 const CustomWaveform = require('./custom')
 const WaveMemory = require('./wavememory')
 
+const SAMPLE_RATE = 44100
 /**
  * @desc Main class of AOEC
  */
 class Aoec {
   /**
-   * @param {Object} audioContext Target audio context environment. default is browser.
-   * @param {Number} buffsize Buffer size of script processor. It must be a power of 2 between 256 and 16384, that is 256, 512, 1024, 2048, 4096, 8192, 16384.
-   * @param {String} generatorSet Initial generator settings. 'B' is built-in, 'C' is custom, 'N' is noise, 'S' is sampler.
+   * @param {Object} audioContext Audio context of target environment
+   * @param {Number} [buffsize=4096] Buffer size of script processor. It must be a power of 2 between 256 and 16384, that is 256, 512, 1024, 2048, 4096, 8192, 16384.
+   * @param {String} [generatorSet='BBCNS'] Initial generator settings. 'B': built-in, 'C': custom, 'N': noise, 'S': sampler.
    */
   constructor (
     audioContext, buffsize, generatorSet) {
-    this.audioContext = audioContext
     this.master = audioContext.createGain()
-    this.setMasterVolume(0.5)
     this.master.connect(audioContext.destination)
     this.processor = audioContext.createScriptProcessor(buffsize, 2, 2)
+    this.resetGenerator(generatorSet)
+    this.WaveMemory = WaveMemory
+  }
+
+  resetGenerator (generatorSet) {
+    this.disconnect()
     this.generator = []
     generatorSet.split('').forEach(elem => {
       switch (elem) {
@@ -38,34 +43,12 @@ class Aoec {
     })
   }
 
-  writeWaveMemory (idx, input) { WaveMemory.write(idx, input) }
-  readWaveMemory (idx) { return WaveMemory.read(idx) }
-  lockWaveMemory (idx) { WaveMemory.lock(idx) }
-  unlockWaveMemory (idx) { WaveMemory.unlock(idx) }
-
-  sendGenerator (id, freq, type, inv, volL, volR) {
-    const checkID = Number.isInteger(id) && id >= 0
-    const checkFreq = Number.isFinite(freq) && freq >= 0
-    const checkType = Number.isInteger(type) && type >= 0
-    const checkInv = (typeof inv === 'boolean')
-    const checkVolL = Number.isInteger(volL) && volL >= 0 && volL <= 15
-    const checkVolR = Number.isInteger(volR) && volR >= 0 && volR <= 15
-    const checkVol = checkVolL && checkVolR
-
-    if (checkID) {
-      if (checkFreq) this.generator[id].setFreq(freq)
-      if (checkType) this.generator[id].setType(type)
-      if (checkInv) this.generator[id].setInv(inv)
-      if (checkVol) this.generator[id].setVol(volL, volR)
-    }
-  }
-
   setMasterVolume (vol) {
-    this.master.gain.setValueAtTime(vol, this.audioContext.currentTime)
+    this.master.gain.setValueAtTime(vol, this.master.context.currentTime)
   }
 
   connect () {
-    let clock = 0
+    let samplerPhase = 0
     let self = this
     let buffsize = this.processor.bufferSize
 
@@ -79,25 +62,25 @@ class Aoec {
         let valueL = 0
         let valueR = 0
 
-        // Get value
+        // Get phase value from generators
         self.generator.forEach(elem => {
-          valueL += elem.getPhaseValue(clock)[0]
-          valueR += elem.getPhaseValue(clock)[1]
+          valueL += elem.getPhaseValue(samplerPhase)[0]
+          valueR += elem.getPhaseValue(samplerPhase)[1]
         })
 
-        // Convert hexadecimal to value
+        // Convert phase value hexadecimal to real
         valueL /= 16
         valueL -= 0.5
-
         valueR /= 16
         valueR -= 0.5
 
-        // Write value on output buffer
+        // Write phase value on output buffer
         output[0][i] = valueL
         output[1][i] = valueR
 
-        // Update clock
-        clock++
+        // Update Phase
+        samplerPhase++
+        if (samplerPhase % SAMPLE_RATE === 0) samplerPhase %= SAMPLE_RATE
       }
     }
   }
