@@ -6,7 +6,7 @@ const emptyStep = {
 }
 
 class FrameSequencer {
-  constructor (generator, step = emptyStep) {
+  constructor (generator) {
     this.generator = generator
     this.setStep(emptyStep)
   }
