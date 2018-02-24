@@ -49,6 +49,8 @@ class Aoec {
 
   connect () {
     let samplerPhase = 0
+    let frameInterval = 918.75
+    let framePhase = 0
     let self = this
     let buffsize = this.processor.bufferSize
 
@@ -80,7 +82,14 @@ class Aoec {
 
         // Update Phase
         samplerPhase++
+        framePhase++
         if (samplerPhase % SAMPLE_RATE === 0) samplerPhase %= SAMPLE_RATE
+        if (framePhase % frameInterval < 1) {
+          self.generator.forEach(elem => {
+            elem.sequencer.execute()
+            framePhase %= frameInterval
+          })
+        }
       }
     }
   }
