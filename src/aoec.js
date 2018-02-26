@@ -26,7 +26,7 @@ const connect = () => {
       audioEvent.outputBuffer.getChannelData(1)
     ]
     for (let i = 0; i < buffsize; i++) {
-      let value = GeneratorSet.getPhaseValue(clock)
+      let value = GeneratorSet.getVoltage(clock)
       output[0][i] = value[0]
       output[1][i] = value[1]
       clock++

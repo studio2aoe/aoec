@@ -1,6 +1,6 @@
-const BuiltInWaveform = require('./builtin')
-const NoiseWaveform = require('./noise')
-const CustomWaveform = require('./custom')
+const BuiltInGenerator = require('./builtin')
+const NoiseGenerator = require('./noise')
+const CustomGenerator = require('./custom')
 const Mixer = require('./mixer')
 
 let generatorSet = []
@@ -14,13 +14,13 @@ const init = (str = 'BBCNS') => {
 const addGenerator = (chr = '') => {
   switch (chr) {
     case 'B':
-      generatorSet.push(new BuiltInWaveform())
+      generatorSet.push(new BuiltInGenerator())
       break
     case 'C':
-      generatorSet.push(new CustomWaveform())
+      generatorSet.push(new CustomGenerator())
       break
     case 'N':
-      generatorSet.push(new NoiseWaveform())
+      generatorSet.push(new NoiseGenerator())
       break
     case 'S':
       // generatorSet.push(new Sampler())
@@ -28,16 +28,16 @@ const addGenerator = (chr = '') => {
   }
 }
 
-const getPhaseValue = (phase) => {
-  let phaseValueL = 0
-  let phaseValueR = 0
+const getVoltage = (phase) => {
+  let voltageL = 0
+  let voltageR = 0
   generatorSet.forEach((elem, idx) => {
     let gain = Mixer.getGain(idx)
-    phaseValueL += ((elem.getPhaseValue(phase)[0]) / 15) * gain
-    phaseValueR += ((elem.getPhaseValue(phase)[1]) / 15) * gain
+    voltageL += ((elem.getHexSignal(phase)[0]) / 15) * gain
+    voltageR += ((elem.getHexSignal(phase)[1]) / 15) * gain
   })
 
-  return [phaseValueL, phaseValueR]
+  return [voltageL, voltageR]
 }
 
 const send = (idx, freq, num, inv, volL, volR) => {
@@ -55,6 +55,6 @@ module.exports = {
   init: init,
   send: send,
   addGenerator: addGenerator,
-  getPhaseValue: getPhaseValue,
+  getVoltage: getVoltage,
   getGenerator: getGenerator
 }

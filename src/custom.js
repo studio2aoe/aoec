@@ -10,7 +10,7 @@ class CustomWaveform extends WaveGenerator {
       this.waveNum = num
     }
   }
-  calcPhaseValue (phase) {
+  calcHexSignal (phase) {
     let phaseIndex = Math.floor(this.getPhaseAngle(phase) * WAVE_SIZE)
     return WaveMemory.read(this.waveNum)[phaseIndex]
   }

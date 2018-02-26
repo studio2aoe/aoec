@@ -70,11 +70,11 @@ class WaveGenerator {
   }
 
   /**
-   * @desc Calculate phase value of generator. need implemented on child class.
+   * @desc Calculate hexadecimal audio signal of generator. need implemented on child class.
    * @param {Number} phase Phase of sampler (0 to 44099)
    * @return {Number} 1-digit hexadecimal
    */
-  calcPhaseValue (phase) { return 0 }
+  calcHexSignal (phase) { return 0 }
 
   /**
    * Get phase angle from sampler phase and generator period
@@ -84,20 +84,20 @@ class WaveGenerator {
   getPhaseAngle (phase) { return (phase % this.period) / this.period }
 
   /**
-   * @desc Get phase value of generator
+   * @desc Get hexadecimal audio signal of generator
    * @param {Number} phase Phase of sampler (0 to 44099)
    * @return {Number} 1-digit hexadecimal
    */
-  getPhaseValue (phase) {
+  getHexSignal (phase) {
     if (
       this.isMute === true ||
       this.freq === 0 ||
       (this.volL === 0 && this.volR === 0)
     ) return [0, 0]
 
-    let phaseValue = this.calcPhaseValue(phase)
-    let mixedL = mixVolume(phaseValue, this.volL)
-    let mixedR = mixVolume(phaseValue, this.volR)
+    let calculated = this.calcHexSignal(phase)
+    let mixedL = mixVolume(calculated, this.volL)
+    let mixedR = mixVolume(calculated, this.volR)
     return [
       (this.isInv) ? 15 - mixedL : mixedL,
       (this.isInv) ? 15 - mixedR : mixedR

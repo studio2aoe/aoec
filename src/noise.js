@@ -14,7 +14,7 @@ const GCD = function (n, m) {
   }
 }
 
-class NoiseWaveform extends WaveGenerator {
+class NoiseGenerator extends WaveGenerator {
   constructor () {
     super()
     this.lfsr = new Lfsr()
@@ -45,11 +45,11 @@ class NoiseWaveform extends WaveGenerator {
       this.lfsr.clock()
     }
   }
-  calcPhaseValue (phase) {
-    let phaseValue = this.lfsr.getHex()
+  calcHexSignal (phase) {
+    let signal = this.lfsr.getHex()
     this.clock(phase)
-    return phaseValue
+    return signal
   }
 }
 
-module.exports = NoiseWaveform
+module.exports = NoiseGenerator
