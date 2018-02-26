@@ -102,14 +102,6 @@ class WaveGenerator {
       (this.isInv) ? 15 - mixedR : mixedR
     ]
   }
-
-  /** @desc send properties to generator */
-  send (freq, num, inv, volL, volR) {
-    this.setFreq(freq)
-    this.setWaveform(num)
-    this.setInv(inv)
-    this.setVol(volL, volR)
-  }
 }
 
 module.exports = WaveGenerator

@@ -28,6 +28,15 @@ const add = (chr = '') => {
   }
 }
 
+const send = (idx, freq, num, inv, volL, volR) => {
+  generatorSet[idx].setFreq(freq)
+  generatorSet[idx].setWaveform(num)
+  generatorSet[idx].setInv(inv)
+  generatorSet[idx].setVol(volL, volR)
+}
+
+const setMute = (idx, isMute) => { generatorSet[idx].setMute(isMute) }
+
 const getVoltage = (phase) => {
   let voltageL = 0
   let voltageR = 0
@@ -36,25 +45,13 @@ const getVoltage = (phase) => {
     voltageL += ((elem.getHexSignal(phase)[0]) - 7.5) / 7.5 * gain
     voltageR += ((elem.getHexSignal(phase)[1]) - 7.5) / 7.5 * gain
   })
-
   return [voltageL, voltageR]
-}
-
-const send = (idx, freq, num, inv, volL, volR) => {
-  generatorSet[idx].setFreq(freq)
-  generatorSet[idx].setWaveform(num)
-  generatorSet[idx].setInv(inv)
-  generatorSet[idx].setVol(volL, volR)
-}
-
-const getGenerator = () => {
-  return generatorSet
 }
 
 module.exports = {
   init: init,
-  send: send,
   add: add,
-  getVoltage: getVoltage,
-  getGenerator: getGenerator
+  send: send,
+  setMute: setMute,
+  getVoltage: getVoltage
 }
