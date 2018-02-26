@@ -1,4 +1,4 @@
-const mixVolume = require('./mixvolume')
+const amplitude = require('./amplitude')
 
 const SAMPLE_RATE = 44100
 
@@ -91,11 +91,11 @@ class WaveGenerator {
   getHexSignal (phase) {
     if (this.isMute === true || this.freq === 0) return [7.5, 7.5]
 
-    let calculated = this.calcHexSignal(phase)
+    let primarySignal = this.calcHexSignal(phase)
     let mixedL =
-      (this.volL === 0) ? 7.5 : mixVolume(calculated, this.volL) + Math.floor(8 - this.volL / 2)
+      (this.volL === 0) ? 7.5 : amplitude(primarySignal, this.volL)
     let mixedR =
-      (this.volL === 0) ? 7.5 : mixVolume(calculated, this.volR) + Math.floor(8 - this.volR / 2)
+      (this.volL === 0) ? 7.5 : amplitude(primarySignal, this.volR)
 
     return [
       (this.isInv) ? 15 - mixedL : mixedL,

@@ -7,11 +7,11 @@ let generatorSet = []
 
 const init = (str = 'BBCNS') => {
   generatorSet = []
-  str.split('').forEach(elem => addGenerator(elem))
+  str.split('').forEach(elem => add(elem))
   Mixer.init(generatorSet.length)
 }
 
-const addGenerator = (chr = '') => {
+const add = (chr = '') => {
   switch (chr) {
     case 'B':
       generatorSet.push(new BuiltInGenerator())
@@ -54,7 +54,7 @@ const getGenerator = () => {
 module.exports = {
   init: init,
   send: send,
-  addGenerator: addGenerator,
+  add: add,
   getVoltage: getVoltage,
   getGenerator: getGenerator
 }
