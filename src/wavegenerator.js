@@ -86,18 +86,17 @@ class WaveGenerator {
   /**
    * @desc Get hexadecimal audio signal of generator
    * @param {Number} phase Phase of sampler (0 to 44099)
-   * @return {Number} 1-digit hexadecimal
+   * @return {Number} 1-digit hexadecimal or 7.5 (no signal)
    */
   getHexSignal (phase) {
-    if (
-      this.isMute === true ||
-      this.freq === 0 ||
-      (this.volL === 0 && this.volR === 0)
-    ) return [0, 0]
+    if (this.isMute === true || this.freq === 0) return [7.5, 7.5]
 
     let calculated = this.calcHexSignal(phase)
-    let mixedL = mixVolume(calculated, this.volL)
-    let mixedR = mixVolume(calculated, this.volR)
+    let mixedL =
+      (this.volL === 0) ? 7.5 : mixVolume(calculated, this.volL) + Math.floor(8 - this.volL / 2)
+    let mixedR =
+      (this.volL === 0) ? 7.5 : mixVolume(calculated, this.volR) + Math.floor(8 - this.volR / 2)
+
     return [
       (this.isInv) ? 15 - mixedL : mixedL,
       (this.isInv) ? 15 - mixedR : mixedR
