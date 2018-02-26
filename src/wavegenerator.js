@@ -1,5 +1,4 @@
 const mixVolume = require('./mixvolume')
-const FrameSequencer = require('./framesequencer')
 
 const SAMPLE_RATE = 44100
 
@@ -11,7 +10,6 @@ class WaveGenerator {
     this.volL = 0
     this.volR = 0
     this.isMute = false
-    this.sequencer = new FrameSequencer(this)
   }
 
   /**
@@ -112,10 +110,6 @@ class WaveGenerator {
     this.setWaveform(num)
     this.setInv(inv)
     this.setVol(volL, volR)
-  }
-
-  setStep (step) {
-    this.sequencer.setStep(step)
   }
 }
 
