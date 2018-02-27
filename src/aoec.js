@@ -1,6 +1,7 @@
 const GeneratorSet = require('./generatorset')
-const Scheduler = require('./scheduler')
 const WaveMemory = require('./wavememory')
+const Mixer = require('./mixer')
+const Scheduler = require('./scheduler')
 
 let master
 let processor
@@ -68,5 +69,11 @@ module.exports = {
     setMute: GeneratorSet.setMute
   },
   WaveMemory: WaveMemory,
+  Mixer: {
+    reset: Mixer.reset,
+    getGain: Mixer.getGain,
+    setGain: Mixer.setGain,
+    setDecibel: Mixer.setDecibel
+  },
   Scheduler: Scheduler
 }

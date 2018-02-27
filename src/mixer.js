@@ -7,6 +7,10 @@ const init = mixerLength => {
   mixerGain = new Array(mixerLength).fill(DEFAULT_GAIN)
 }
 
+const reset = () => {
+  mixerGain.fill(DEFAULT_GAIN)
+}
+
 const getGain = idx => { return mixerGain[idx] }
 const setGain = (idx, gain) => { mixerGain[idx] = gain }
 const setDecibel = (idx, dB) => {
@@ -17,6 +21,7 @@ const setDecibel = (idx, dB) => {
 
 module.exports = {
   init: init,
+  reset: reset,
   getGain: getGain,
   setGain: setGain,
   setDecibel: setDecibel
