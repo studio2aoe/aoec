@@ -3,24 +3,24 @@ const NoiseGenerator = require('./noise')
 const CustomGenerator = require('./custom')
 const Mixer = require('./mixer')
 
-let generatorSet = []
+let generatorset = []
 
-const init = (str = 'BBCNS') => {
-  generatorSet = []
+const init = (str = 'BBCN') => {
+  generatorset = []
   str.split('').forEach(elem => add(elem))
-  Mixer.init(generatorSet.length)
+  Mixer.init(generatorset.length)
 }
 
 const add = (chr = '') => {
   switch (chr) {
     case 'B':
-      generatorSet.push(new BuiltInGenerator())
+      generatorset.push(new BuiltInGenerator())
       break
     case 'C':
-      generatorSet.push(new CustomGenerator())
+      generatorset.push(new CustomGenerator())
       break
     case 'N':
-      generatorSet.push(new NoiseGenerator())
+      generatorset.push(new NoiseGenerator())
       break
     case 'S':
       // generatorSet.push(new Sampler())
@@ -29,18 +29,16 @@ const add = (chr = '') => {
 }
 
 const send = (idx, freq, num, inv, volL, volR) => {
-  generatorSet[idx].setFreq(freq)
-  generatorSet[idx].setWaveform(num)
-  generatorSet[idx].setInv(inv)
-  generatorSet[idx].setVol(volL, volR)
+  generatorset[idx].setFreq(freq)
+  generatorset[idx].setWaveform(num)
+  generatorset[idx].setInv(inv)
+  generatorset[idx].setVol(volL, volR)
 }
-
-const setMute = (idx, isMute) => { generatorSet[idx].setMute(isMute) }
 
 const getVoltage = (phase) => {
   let voltageL = 0
   let voltageR = 0
-  generatorSet.forEach((elem, idx) => {
+  generatorset.forEach((elem, idx) => {
     let gain = Mixer.getGain(idx)
     voltageL += ((elem.getHexSignal(phase)[0]) - 7.5) / 7.5 * gain
     voltageR += ((elem.getHexSignal(phase)[1]) - 7.5) / 7.5 * gain
@@ -50,8 +48,6 @@ const getVoltage = (phase) => {
 
 module.exports = {
   init: init,
-  add: add,
   send: send,
-  setMute: setMute,
   getVoltage: getVoltage
 }

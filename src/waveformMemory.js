@@ -1,4 +1,4 @@
-const WaveformData = require('./waveformdata')
+const WaveformData = require('./waveformData')
 
 const MEM_SIZE = 1024
 const MEMORY = new Array(MEM_SIZE)
@@ -18,8 +18,12 @@ function write (idx, input) {
 
 function read (idx) { return MEMORY[idx].read() }
 
-function lock (idx) { MEMORY[idx].lock() }
+function setLock (idx, isLock) {
+  if (isLock === true || isLock === false) {
+    MEMORY[idx].setLock(isLock)
+  }
+}
 
-function unlock (idx) { MEMORY[idx].unlock() }
+function isLock (idx) { return MEMORY[idx].isLock() }
 
-module.exports = { write: write, read: read, lock: lock, unlock: unlock }
+module.exports = { write: write, read: read, setLock: setLock, isLock: isLock }

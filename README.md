@@ -8,11 +8,16 @@
 - It doesn't emulate any soundchip but works just similar way.
 
 ## Implemented
-- Built-in waveform generator (Pulse, Triangle, Sawtooth)
-- LFSR based white noise generator
-- Custom waveform generator
+- Processor:
+  - ScriptProcessorNode based. mix waveforms from each channel and send to output.
+- Waveform Generator:
+  - Generates waveform to send processor.
+  - Built-in waveform (pulse, triangle, sawtooth)
+  - Custom waveform (stored in memory)
+  - White noise (LFSR based)
+- Mixer: Control volumes of each channels.
+- Scheduler: Execute event when processor reads each sample. For example, it is used for execute events that change properties of waveform generator such as frequency, waveform, volume.
 
 ## TO DO
-- Sampler
-- Demo application
-- Solve bad performance problem on nodejs
+- PCM Sampler(Waveform Generator)
+  - Generates waveform from PCM sample such as wav file.

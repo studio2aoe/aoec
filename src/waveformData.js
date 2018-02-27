@@ -3,7 +3,7 @@ class WaveformData {
   constructor (str) {
     this.__value = new Int8Array(WAVE_SIZE)
     this.write(str)
-    this.unlock()
+    this.setLock(false)
   }
   write (input = '') {
     if (this.__isLock) {
@@ -20,8 +20,12 @@ class WaveformData {
     }
   }
   read () { return this.__value }
-  lock () { this.__isLock = true }
-  unlock () { this.__isLock = false }
+  setLock (isLock) {
+    if (isLock === true || isLock === false) {
+      this.__isLock = isLock
+    }
+  }
+  isLock () { return this.__isLock }
 }
 
 module.exports = WaveformData

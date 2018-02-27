@@ -1,5 +1,5 @@
 const WaveGenerator = require('./wavegenerator')
-const WaveMemory = require('./wavememory')
+const WaveMemory = require('./waveformMemory')
 
 const MEM_SIZE = 1024
 const WAVE_SIZE = 32

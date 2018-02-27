@@ -10,7 +10,7 @@ const config = {
     path: path.resolve(__dirname, 'dist'),
     filename: './[name].bundle.js',
     libraryTarget: 'umd',
-    library: 'Aoec'
+    library: 'aoec'
   },
   module: {
     rules: [
