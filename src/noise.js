@@ -2,6 +2,12 @@ const WaveGenerator = require('./wavegenerator')
 const Lfsr = require('./lfsr')
 
 const SAMPLE_RATE = 44100
+
+/**
+ * It returns greatest common divisor
+ * @param {Number} n integer
+ * @param {Number} m integer
+ */
 const GCD = function (n, m) {
   n = Math.abs(n)
   m = Math.abs(m)
@@ -14,6 +20,9 @@ const GCD = function (n, m) {
   }
 }
 
+/**
+ * @desc White-noise generator. 15-bit LFSR based.
+ */
 class NoiseGenerator extends WaveGenerator {
   constructor () {
     super()

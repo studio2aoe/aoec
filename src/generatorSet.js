@@ -5,12 +5,20 @@ const Mixer = require('./mixer')
 
 let generatorset = []
 
-const init = (str = 'BBCN') => {
+/**
+ * Initialize generator set.
+ * @param {String} initString String of generator types. each character is type of generator. ('B': BuiltIn, 'C': Custom, 'N': Noise, 'S': Sampler (not supported yet))
+ */
+const init = (initString = 'BBCN') => {
   generatorset = []
-  str.split('').forEach(elem => add(elem))
+  initString.split('').forEach(elem => add(elem))
   Mixer.init(generatorset.length)
 }
 
+/**
+ * Add generator at generator set.
+ * @param {String} chr Type of generator. ('B': BuiltIn, 'C': Custom, 'N': Noise, 'S': Sampler (not supported yet))
+ */
 const add = (chr = '') => {
   switch (chr) {
     case 'B':
@@ -28,6 +36,15 @@ const add = (chr = '') => {
   }
 }
 
+/**
+ * Send command to generator
+ * @param {Number} idx Generator ID
+ * @param {Number} freq Frequency
+ * @param {Number} num Waveform number
+ * @param {Boolean} inv Is waveform inverted?
+ * @param {Number} volL Left volume (1-digit hex)
+ * @param {Number} volR Right volume (1-digit hex)
+ */
 const send = (idx, freq, num, inv, volL, volR) => {
   generatorset[idx].setFreq(freq)
   generatorset[idx].setWaveform(num)
@@ -35,6 +52,10 @@ const send = (idx, freq, num, inv, volL, volR) => {
   generatorset[idx].setVol(volL, volR)
 }
 
+/**
+ * Get analog value of mixed waveform.
+ * @param {Number} phase phase time of processor (1/44100sec unit)
+ */
 const getVoltage = (phase) => {
   let voltageL = 0
   let voltageR = 0

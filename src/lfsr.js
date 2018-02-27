@@ -1,5 +1,5 @@
 /**
- * @desc GB/NES style 15-bit LFSR (Linear Feedback Shift Register)
+ * GB/NES style 15-bit LFSR (Linear Feedback Shift Register)
  */
 class Lfsr {
   constructor () {
@@ -9,8 +9,8 @@ class Lfsr {
   }
 
   /**
-   * @desc Set mode flag of LFSR tap. True: Use 6 / False: Use 1
-   * @param {Boolean} mode
+   * Set mode flag of LFSR tap.
+   * @param {Boolean} mode True: Use 6 / False: Use 1
    */
   setMode (mode) {
     this.__mode = mode
@@ -18,7 +18,7 @@ class Lfsr {
   }
 
   /**
-   * @desc Calculate next bit
+   * Calculate next bit
    */
   clock () {
     const bitA = this.__register & 1 // 1 is tabA
@@ -29,7 +29,7 @@ class Lfsr {
   }
 
   /**
-   * @desc Get hexadecimal random number from the latest 4-bits of register
+   * Get hexadecimal random number from the latest 4-bits of register
    * @return {Number} Hexadecimal number (0 to 15)
    */
   getHex () {

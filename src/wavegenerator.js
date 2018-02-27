@@ -13,7 +13,7 @@ class WaveGenerator {
   }
 
   /**
-   * @desc Set frequency of generator.
+   * Set frequency of generator.
    * @param {Number} freq Frequency (1 to 22050, 0: off generator)
    */
   setFreq (freq) {
@@ -25,7 +25,7 @@ class WaveGenerator {
   }
 
   /**
-   * @desc Set waveform number
+   * Set waveform number
    * @param {Number} num Number of waveform
    */
   setWaveform (num) {
@@ -35,7 +35,7 @@ class WaveGenerator {
   }
 
   /**
-   * @desc Set phase-inverse of waveform
+   * Set phase-inverse of waveform
    * @param {boolean} inv Is waveform phase-inversed?
    */
   setInv (inv) {
@@ -45,7 +45,7 @@ class WaveGenerator {
   }
 
   /**
-   * @desc Set volume (amplitude) of generator. aoec used 2 channels.
+   * Set volume (amplitude) of generator. aoec uses 2 channels.
    * @param {Number} volL Left volume. 1-digit hexadecimal. (0 to 15)
    * @param {Number} volR Right volume. 1-digit hexadecimal. (0 to 15)
    */
@@ -60,7 +60,7 @@ class WaveGenerator {
   }
 
   /**
-   * @desc Mute or unmute generator. this properties is not available for frame, but it is used for whole track mute/unmute function.
+   * Mute or unmute generator. this properties is not available for frame, but it is used for whole track mute/unmute function.
    * @param {Boolean} mute true: mute generator, false: unmute generator
    */
   setMute (mute) {
@@ -70,7 +70,7 @@ class WaveGenerator {
   }
 
   /**
-   * @desc Calculate hexadecimal audio signal of generator. need implemented on child class.
+   * Calculate hexadecimal audio signal of generator. need implemented on child class.
    * @param {Number} phase Phase of sampler (0 to 44099)
    * @return {Number} 1-digit hexadecimal
    */
@@ -84,7 +84,7 @@ class WaveGenerator {
   getPhaseAngle (phase) { return (phase % this.period) / this.period }
 
   /**
-   * @desc Get hexadecimal audio signal of generator
+   * Get hexadecimal audio signal of generator
    * @param {Number} phase Phase of sampler (0 to 44099)
    * @return {Number} 1-digit hexadecimal or 7.5 (no signal)
    */

@@ -8,10 +8,16 @@ for (let signal = 0; signal < TABLE_SIZE; signal++) {
     else {
       let value = Math.floor(signal * amp / 15)
       value = (value > 1) ? value : 1
-      value += Math.floor((16 - amp) / 2)
+      value += Math.floor((16 - amp) / 2) // Fix downward bias of waveform
       TABLE[signal][amp] = value
     }
   }
 }
 
+/**
+ * Apply amplitude to waveform signal
+ * @param {Number} signal Waveform signal (Hexadecimal)
+ * @param {Number} amp Amplitude (Hexadecimal)
+ * @return {Number} Waveform signal applied amplitude (Hexadecimal)
+ */
 module.exports = (signal, amp) => { return TABLE[signal][amp] }
