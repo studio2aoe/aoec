@@ -1,5 +1,5 @@
-const GeneratorSet = require('./generatorSet')
-const Scheduler = require('./scheduler')
+const GeneratorSet = require('../wavegenerator')
+const Scheduler = require('../scheduler')
 
 let processorNode
 let destinationNode

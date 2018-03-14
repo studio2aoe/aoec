@@ -1,4 +1,4 @@
-const amplitude = require('./amplitude')
+const amplitude = require('../../amplitude')
 
 const SAMPLE_RATE = 44100
 

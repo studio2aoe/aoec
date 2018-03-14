@@ -1,4 +1,4 @@
-const WaveGenerator = require('./wavegenerator')
+const WaveGenerator = require('../super')
 
 /**
  * @desc Built-in-waveform generator. it generates pulse, triangle, sawtooth wave.

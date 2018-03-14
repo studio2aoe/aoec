@@ -1,6 +1,6 @@
-const WaveformData = require('./waveformData')
+const WaveformData = require('./data')
 
-const MEM_SIZE = 1024
+const MEM_SIZE = 0x1000
 const MEMORY = new Array(MEM_SIZE)
 for (let i = 0; i < MEM_SIZE; i++) {
   MEMORY[i] = new WaveformData()

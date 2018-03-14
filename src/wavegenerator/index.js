@@ -1,7 +1,7 @@
 const BuiltInGenerator = require('./builtin')
 const NoiseGenerator = require('./noise')
 const CustomGenerator = require('./custom')
-const Mixer = require('./mixer')
+const Mixer = require('../mixer')
 
 let generatorset = []
 
@@ -53,6 +53,48 @@ const send = (idx, freq, num, inv, volL, volR) => {
 }
 
 /**
+ * Get frequency of generator
+ * @param {Number} idx Generator ID
+ * @return {Number} Frequency (Hz unit)
+ */
+const getFreq = (idx) => generatorset[idx].freq
+
+/**
+ * Get waveform number of generator
+ * @param {Number} idx Generator ID
+ * @return {Number} Waveform ID
+ */
+const getNum = (idx) => generatorset[idx].waveNum
+
+/**
+ * Is generator inversed?
+ * @param {Number} idx Generator ID
+ * @return {Boolean} Is generator inversed?
+ */
+const getInv = (idx) => generatorset[idx].isInv
+
+/**
+ * Get left volume of generator
+ * @param {Number} idx Generator ID
+ * @return {Number} Volume value (hex digit)
+ */
+const getVolL = (idx) => generatorset[idx].volL
+
+/**
+ * Get right volume of generator
+ * @param {Number} idx Generator ID
+ * @return {Number} Volume value (hex digit)
+ */
+const getVolR = (idx) => generatorset[idx].volR
+
+/**
+ * is generator muted?
+ * @param {Number} idx Generator ID
+ * @return {Boolean} Is generator muted?
+ */
+const getMute = (idx) => generatorset[idx].isMute
+
+/**
  * Get analog value of mixed waveform.
  * @param {Number} phase phase time of processor (1/44100sec unit)
  */
@@ -70,5 +112,11 @@ const getVoltage = (phase) => {
 module.exports = {
   init: init,
   send: send,
+  getFreq: getFreq,
+  getNum: getNum,
+  getInv: getInv,
+  getVolL: getVolL,
+  getVolR: getVolR,
+  getMute: getMute,
   getVoltage: getVoltage
 }

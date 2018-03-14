@@ -1,6 +1,6 @@
-const Processor = require('./processor.js')
-const GeneratorSet = require('./generatorSet')
-const WaveformMemory = require('./waveformMemory')
+const Processor = require('./processor')
+const GeneratorSet = require('./wavegenerator')
+const WaveformMemory = require('./waveform')
 const Mixer = require('./mixer')
 const Scheduler = require('./scheduler')
 
@@ -14,7 +14,13 @@ module.exports = {
   },
   GeneratorSet: {
     init: GeneratorSet.init,
-    send: GeneratorSet.send
+    send: GeneratorSet.send,
+    getFreq: GeneratorSet.getFreq,
+    getNum: GeneratorSet.getNum,
+    getInv: GeneratorSet.getInv,
+    getVolL: GeneratorSet.getVolL,
+    getVolR: GeneratorSet.getVolR,
+    getMute: GeneratorSet.getMute
   },
   WaveformMemory: {
     write: WaveformMemory.write,

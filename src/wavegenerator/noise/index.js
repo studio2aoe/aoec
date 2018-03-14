@@ -1,4 +1,4 @@
-const WaveGenerator = require('./wavegenerator')
+const WaveGenerator = require('../super')
 const Lfsr = require('./lfsr')
 
 const SAMPLE_RATE = 44100

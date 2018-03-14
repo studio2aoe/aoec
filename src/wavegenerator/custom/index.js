@@ -1,5 +1,5 @@
-const WaveGenerator = require('./wavegenerator')
-const WaveMemory = require('./waveformMemory')
+const WaveGenerator = require('../super')
+const Waveform = require('../../waveform')
 
 const MEM_SIZE = 1024
 const WAVE_SIZE = 32
@@ -15,7 +15,7 @@ class CustomGenerator extends WaveGenerator {
   }
   calcHexSignal (phase) {
     let phaseIndex = Math.floor(this.getPhaseAngle(phase) * WAVE_SIZE)
-    return WaveMemory.read(this.waveNum)[phaseIndex]
+    return Waveform.read(this.waveNum)[phaseIndex]
   }
 }
 
