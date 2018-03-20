@@ -133,3 +133,22 @@ const schEvent(clock) {
 }
 aoec.Scheduler.setFunc(schEvent)
 ```
+
+### Waveform number specifications
+
+#### For Built-in Generator
+- 0: Stop generator
+- `0x01 ~ 0x1F`: Pulse wave with duty-cycle n/32
+- `0x20 ~ 0x2F`: Triangle wave
+- `0x30 ~ 0x3F`: Sawtooth wave
+
+#### For Custom-waveform Generator
+- 0 to 4095(`0xFFF`): Waveform memory number
+- Waveform memory can be written by `WaveformMemory.write()`
+- `WaveformMemory.write()` has 2 arguments: `idx` and `input`
+  - `idx`: is target memory number. (0 to 4095)
+  - `input`: is waveform string. it is composed by 32-hexadecimal digits. (eg. `FFFFFFFF000000000000000000000000` is pulse wave with 25% duty-cycle.)
+
+#### For Noise Generator
+- 0: Long noise (32767-bit period)
+- 1: Short noise (93-bit period)
