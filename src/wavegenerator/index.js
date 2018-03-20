@@ -103,8 +103,10 @@ const getVoltage = (phase) => {
   let voltageR = 0
   generatorset.forEach((elem, idx) => {
     let gain = Mixer.getGain(idx)
-    voltageL += ((elem.getHexSignal(phase)[0]) - 7.5) / 7.5 * gain
-    voltageR += ((elem.getHexSignal(phase)[1]) - 7.5) / 7.5 * gain
+    let signal = elem.getHexSignal(phase)
+    elem.processorClock(phase)
+    voltageL += (signal[0] - 7.5) / 7.5 * gain
+    voltageR += (signal[1] - 7.5) / 7.5 * gain
   })
   return [voltageL, voltageR]
 }

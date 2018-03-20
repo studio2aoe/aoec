@@ -1,8 +1,7 @@
 const WaveGenerator = require('../super')
 const Waveform = require('../../waveform')
 
-const MEM_SIZE = 1024
-const WAVE_SIZE = 32
+const MEM_SIZE = 4096
 
 /**
  * @desc Custom-waveform generator. it generates waveform from memory.
@@ -13,10 +12,7 @@ class CustomGenerator extends WaveGenerator {
       this.waveNum = num
     }
   }
-  calcHexSignal (phase) {
-    let phaseIndex = Math.floor(this.getPhaseAngle(phase) * WAVE_SIZE)
-    return Waveform.read(this.waveNum)[phaseIndex]
-  }
+  calcHexSignal () { return Waveform.read(this.waveNum)[this.generatorCount] }
 }
 
 module.exports = CustomGenerator

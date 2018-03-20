@@ -10,6 +10,7 @@ class WaveGenerator {
     this.volL = 0
     this.volR = 0
     this.isMute = false
+    this.generatorCount = 0
   }
 
   /**
@@ -20,8 +21,29 @@ class WaveGenerator {
     if (Number.isFinite(freq) && freq >= 0) {
       if (freq > 22050) freq = 22050
       this.freq = freq
-      this.period = SAMPLE_RATE / freq
+      this.setPeriod(freq * 32)
     }
+  }
+
+  setPeriod (freq) {
+    const freqRatio = freq / SAMPLE_RATE
+    const integerPart = Math.floor(freqRatio)
+    const fractionalPart = freqRatio - integerPart
+    this.repeat = integerPart
+    this.period = Math.pow(fractionalPart, -1)
+  }
+
+  processorClock (samplingCount) {
+    const divisible = samplingCount % this.period < 1
+    const repeat = divisible ? this.repeat + 1 : this.repeat
+    for (let i = 0; i < repeat; i++) {
+      this.generatorClock()
+    }
+  }
+
+  generatorClock () {
+    this.generatorCount++
+    if (this.generatorCount % 32 === 0) this.generatorCount = 0
   }
 
   /**
@@ -71,27 +93,18 @@ class WaveGenerator {
 
   /**
    * Calculate hexadecimal audio signal of generator. need implemented on child class.
-   * @param {Number} phase Phase of sampler (0 to 44099)
    * @return {Number} 1-digit hexadecimal
    */
-  calcHexSignal (phase) { return 0 }
-
-  /**
-   * Get phase angle from sampler phase and generator period
-   * @param {Number} phase Phase of sampler (0 to 44099)
-   * @return {Number} 0.0 to 1.0
-   */
-  getPhaseAngle (phase) { return (phase % this.period) / this.period }
+  calcHexSignal () { return 0 }
 
   /**
    * Get hexadecimal audio signal of generator
-   * @param {Number} phase Phase of sampler (0 to 44099)
    * @return {Number} 1-digit hexadecimal or 7.5 (no signal)
    */
-  getHexSignal (phase) {
+  getHexSignal () {
     if (this.isMute === true || this.freq === 0) return [7.5, 7.5]
 
-    let primarySignal = this.calcHexSignal(phase)
+    let primarySignal = this.calcHexSignal()
     let mixedL =
       (this.volL === 0) ? 7.5 : amplitude(primarySignal, this.volL)
     let mixedR =

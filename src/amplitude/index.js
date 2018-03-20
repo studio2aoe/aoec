@@ -20,4 +20,11 @@ for (let signal = 0; signal < TABLE_SIZE; signal++) {
  * @param {Number} amp Amplitude (Hexadecimal)
  * @return {Number} Waveform signal applied amplitude (Hexadecimal)
  */
-module.exports = (signal, amp) => { return TABLE[signal][amp] }
+module.exports = (signal, amp) => {
+  try {
+    return TABLE[signal][amp]
+  } catch (err) {
+    err.message = `Invalid Input: [Signal: ${signal} / Amp: ${amp}]`
+    throw err
+  }
+}

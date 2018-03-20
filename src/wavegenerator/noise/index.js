@@ -1,8 +1,6 @@
 const WaveGenerator = require('../super')
 const Lfsr = require('./lfsr')
 
-const SAMPLE_RATE = 44100
-
 /**
  * @desc White-noise generator. 15-bit LFSR based.
  */
@@ -14,11 +12,7 @@ class NoiseGenerator extends WaveGenerator {
   setFreq (freq) {
     if (Number.isFinite(freq) && freq > 0) {
       this.freq = freq
-      const freqRatio = freq / SAMPLE_RATE
-      const integerPart = Math.floor(freqRatio)
-      const fractionalPart = freqRatio - integerPart
-      this.repeat = integerPart
-      this.period = Math.pow(fractionalPart, -1)
+      this.setPeriod(freq)
     }
   }
   setWaveform (num) {
@@ -30,18 +24,8 @@ class NoiseGenerator extends WaveGenerator {
       this.waveNum = num
     }
   }
-  clock (phase) {
-    const divisible = phase % this.period < 1
-    const repeat = divisible ? this.repeat + 1 : this.repeat
-    for (let i = 0; i < repeat; i++) {
-      this.lfsr.clock()
-    }
-  }
-  calcHexSignal (phase) {
-    let signal = this.lfsr.getHex()
-    this.clock(phase)
-    return signal
-  }
+  generatorClock () { this.lfsr.clock() }
+  calcHexSignal (phase) { return this.lfsr.getHex() }
 }
 
 module.exports = NoiseGenerator
