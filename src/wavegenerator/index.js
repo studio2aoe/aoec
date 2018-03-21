@@ -46,11 +46,53 @@ const add = (chr = '') => {
  * @param {Number} volR Right volume (1-digit hex)
  */
 const send = (idx, freq, num, inv, volL, volR) => {
-  generatorset[idx].setFreq(freq)
-  generatorset[idx].setWaveform(num)
-  generatorset[idx].setInv(inv)
-  generatorset[idx].setVol(volL, volR)
+  sendFreq(idx, freq)
+  sendNum(idx, num)
+  sendInv(idx, inv)
+  sendVolL(idx, volL)
+  sendVolR(idx, volR)
 }
+/**
+ * Send frequency to generator
+ * @param {Number} idx Generator ID
+ * @param {Number} freq Frequency
+ */
+const sendFreq = (idx, freq) => { generatorset[idx].setFreq(freq) }
+
+/**
+ * Send waveform number to generator
+ * @param {Number} idx Generator ID
+ * @param {Number} num Waveform number
+ */
+const sendNum = (idx, num) => { generatorset[idx].setWaveform(num) }
+
+/**
+ * Send waveform inverse command to generator
+ * @param {Number} idx Generator ID
+ * @param {Boolean} inv Is waveform inverted?
+ */
+const sendInv = (idx, inv) => { generatorset[idx].setInv(inv) }
+
+/**
+ * Send left volume to generator
+ * @param {Number} idx Generator ID
+ * @param {Number} volL Left volume (1-digit hex)
+ */
+const sendVolL = (idx, vol) => { generatorset[idx].setVolL(vol) }
+
+/**
+ * Send right volume to generator
+ * @param {Number} idx Generator ID
+ * @param {Number} volR Right volume (1-digit hex)
+ */
+const sendVolR = (idx, vol) => { generatorset[idx].setVolR(vol) }
+
+/**
+ * Send mute command to generator
+ * @param {Number} idx Generator ID
+ * @param {Boolean} mute Is generator muted?
+ */
+const sendMute = (idx, mute) => { generatorset[idx].setMute(mute) }
 
 /**
  * Get frequency of generator
@@ -114,6 +156,12 @@ const getVoltage = (phase) => {
 module.exports = {
   init: init,
   send: send,
+  sendFreq: sendFreq,
+  sendNum: sendNum,
+  sendInv: sendInv,
+  sendVolL: sendVolL,
+  sendVolR: sendVolR,
+  sendMute: sendMute,
   getFreq: getFreq,
   getNum: getNum,
   getInv: getInv,

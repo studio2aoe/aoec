@@ -15,6 +15,12 @@ module.exports = {
   GeneratorSet: {
     init: GeneratorSet.init,
     send: GeneratorSet.send,
+    sendFreq: GeneratorSet.sendFreq,
+    sendNum: GeneratorSet.sendNum,
+    sendInv: GeneratorSet.sendInv,
+    sendVolL: GeneratorSet.sendVolL,
+    sendVolR: GeneratorSet.sendVolR,
+    sendMute: GeneratorSet.sendMute,
     getFreq: GeneratorSet.getFreq,
     getNum: GeneratorSet.getNum,
     getInv: GeneratorSet.getInv,

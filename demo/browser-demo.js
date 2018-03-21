@@ -25,11 +25,12 @@ const tempo = 120
 const beatperiod = 60 / tempo
 const frameperiod = (beatperiod / 24) * 44100
 let fcount = 0
+aoec.GeneratorSet.send(0, 440, 16, true, 15, 15)
 aoec.Scheduler.setFunc((clock) => {
   if (clock % frameperiod < 1) {
-    if (fcount % 3 === 0) aoec.GeneratorSet.send(0, 440, 16, true, 15, 15)
-    else if (fcount % 3 === 1) aoec.GeneratorSet.send(0, 660, 16, true, 15, 15)
-    else if (fcount % 3 === 2) aoec.GeneratorSet.send(0, 880, 16, true, 15, 15)
+    if (fcount % 3 === 0) aoec.GeneratorSet.sendFreq(0, 440)
+    else if (fcount % 3 === 1) aoec.GeneratorSet.sendFreq(0, 660)
+    else if (fcount % 3 === 2) aoec.GeneratorSet.sendFreq(0, 880)
     fcount++
   }
 })

@@ -67,18 +67,21 @@ class WaveGenerator {
   }
 
   /**
-   * Set volume (amplitude) of generator. aoec uses 2 channels.
+   * Set left volume (amplitude) of generator. aoec uses 2 channels.
    * @param {Number} volL Left volume. 1-digit hexadecimal. (0 to 15)
+   */
+  setVolL (volL) {
+    const checkVol = Number.isInteger(volL) && volL >= 0 && volL <= 15
+    if (checkVol) this.volL = volL
+  }
+
+  /**
+   * Set right volume (amplitude) of generator. aoec uses 2 channels.
    * @param {Number} volR Right volume. 1-digit hexadecimal. (0 to 15)
    */
-  setVol (volL, volR) {
-    const checkVolL = Number.isInteger(volL) && volL >= 0 && volL <= 15
-    const checkVolR = Number.isInteger(volR) && volR >= 0 && volR <= 15
-    const checkVol = checkVolL && checkVolR
-    if (checkVol) {
-      this.volL = volL
-      this.volR = volR
-    }
+  setVolR (volR) {
+    const checkVol = Number.isInteger(volR) && volR >= 0 && volR <= 15
+    if (checkVol) this.volR = volR
   }
 
   /**
