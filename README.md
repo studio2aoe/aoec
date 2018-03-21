@@ -101,16 +101,24 @@ aoec.Processor.connect(masterGain)
 
 ### Set Generator properties
 
-- use `aoec.GeneratorSet.send()`
-- `aoec.GeneratorSet.send()` has 6 arguments: `idx, freq, num, inv, volL, volR`
-- `idx` is Generator ID. if `idx` is 3, send function works to Generator 3.
-- `freq` is Frequency of waveform.
-- `num` is Number of waveform. it works differently each generator type.
-- `inv` is Inversed-waveform option.
-- `volL` and `volR` is Left, Right channel volume. volume value is 1-digit hexadecimal (0 to 0xF)
+- Each generator has 6 properties
+- Frequency: Use `GeneratorSet.sendFreq(idx, freq)`, set frequency of waveform
+  - `idx` argument is generator id. if `idx` is 3, send function works to Generator 3.
+- Waveform number: Use `GeneratorSet.sendNum(idx, num)`, `num` works differently each generator type.
+- Inversed waveform: Use `GeneratorSet.sendInv(idx, inv)`, `inv` is if waveform inversed.
+- Volume: Use `GeneratorSet.sendVolL(idx, vol)` or `sendVolR`, these send left / right volume by 1-digit hexadecimal.
+- Mute generator: Use `GeneratorSet.sendMute(idx, mute)`, `mute` is if generator is muted.
+- Use `GeneratorSet.send(idx, freq, num, inv, volL, volR)`, set 5 properties (except `mute`) at one time.
 
 ```js
-aoec.GeneratorSet.send(0, 440, 4, 0, 15, 15)
+aoec.GeneratorSet.sendFreq(0, 440)
+aoec.GeneratorSet.sendNum(0, 4)
+aoec.GeneratorSet.sendInv(0, false)
+aoec.GeneratorSet.sendVolL(0, 15)
+aoec.GeneratorSet.sendVolR(0, 15)
+
+/* It works same previous 5 lines */
+aoec.GeneratorSet.send(0, 440, 4, false, 15, 15)
 ```
 
 ### Play generators
