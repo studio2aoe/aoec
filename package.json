@@ -1,6 +1,6 @@
 {
   "name": "aoec",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Web-audio-based chiptune sound engine. this project is part of aoetracker.",
   "authors": {
     "name": "studio2aoe",
