@@ -7,6 +7,7 @@ const Lfsr = require('./lfsr')
 class NoiseGenerator extends WaveGenerator {
   constructor () {
     super()
+    this.generatorType = 'N'
     this.lfsr = new Lfsr()
   }
   setFreq (freq) {

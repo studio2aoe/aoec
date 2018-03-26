@@ -26,7 +26,8 @@ module.exports = {
     getInv: GeneratorSet.getInv,
     getVolL: GeneratorSet.getVolL,
     getVolR: GeneratorSet.getVolR,
-    getMute: GeneratorSet.getMute
+    getMute: GeneratorSet.getMute,
+    getString: GeneratorSet.getString
   },
   WaveformMemory: {
     write: WaveformMemory.write,

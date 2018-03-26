@@ -20,6 +20,7 @@ aoec.Processor.connect(master)
 
 /* Setup Waveform generator */
 aoec.GeneratorSet.init('BBCN')
+console.log(aoec.GeneratorSet.getString())
 
 /*
 aoec.WaveformMemory.write(1, 'FFFFFFFFFFFFFFFF0000000000000000')

@@ -4,6 +4,10 @@ const WaveGenerator = require('../super')
  * @desc Built-in-waveform generator. it generates pulse, triangle, sawtooth wave.
  */
 class BuiltInGenerator extends WaveGenerator {
+  constructor () {
+    super()
+    this.generatorType = 'B'
+  }
   calcHexSignal () {
     let idx = this.generatorCount
     let num = this.waveNum
