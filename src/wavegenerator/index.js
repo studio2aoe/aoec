@@ -1,4 +1,4 @@
-const BuiltInGenerator = require('./builtin')
+const OscGenerator = require('./oscil')
 const NoiseGenerator = require('./noise')
 const CustomGenerator = require('./custom')
 const Mixer = require('../mixer')
@@ -8,9 +8,9 @@ let GENERATOR_STRING = ''
 
 /**
  * Initialize generator set.
- * @param {String} initString String of generator types. each character is type of generator. ('B': BuiltIn, 'C': Custom, 'N': Noise, 'S': Sampler (not supported yet))
+ * @param {String} initString String of generator types. each character is type of generator. ('O': Oscillated, 'C': Custom, 'N': Noise, 'S': Sampler (not supported yet)
  */
-const init = (initString = 'BBCN') => {
+const init = (initString = 'OOCN') => {
   GENERATOR_SET = initString.split('').map(elem => createGenerator(elem))
   GENERATOR_STRING = GENERATOR_SET.map(elem => elem.generatorType).join('')
   Mixer.init(GENERATOR_SET.length)
@@ -18,12 +18,12 @@ const init = (initString = 'BBCN') => {
 
 /**
  * Add generator at generator set.
- * @param {String} chr Type of generator. ('B': BuiltIn, 'C': Custom, 'N': Noise, 'S': Sampler (not supported yet))
+ * @param {String} chr Type of generator. ('O': Oscillated, 'C': Custom, 'N': Noise, 'S': Sampler (not supported yet))
  */
 const createGenerator = (chr = '') => {
   switch (chr) {
-    case 'B':
-      return new BuiltInGenerator()
+    case 'O':
+      return new OscGenerator()
     case 'C':
       return new CustomGenerator()
     case 'N':

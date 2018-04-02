@@ -19,7 +19,7 @@ aoec.Processor.init(AUDIO_CONTEXT, 4096)
 aoec.Processor.connect(master)
 
 /* Setup Waveform generator */
-aoec.GeneratorSet.init('BBCN')
+aoec.GeneratorSet.init('OOCN')
 console.log(aoec.GeneratorSet.getString())
 
 /*

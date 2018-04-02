@@ -3,9 +3,9 @@ const check = require('check-types').assert
 const misc = require('../misc')
 
 /* Alias */
-const EMPTY_DATA = {
+const EMPTY = {
   name: '',
-  list: [],
+  list: [0],
   loopstart: -1,
   loopend: -1
 }
@@ -20,11 +20,11 @@ const __loopend = Symbol('loopend')
 
 /* Public */
 class AutomationData {
-  constructor (init = EMPTY_DATA) {
-    this[__name] = init.name
-    this[__list] = init.list
-    this[__loopstart] = init.loopstart
-    this[__loopend] = init.loopend
+  constructor (init = {}) {
+    this.name = (init.name === undefined) ? EMPTY.name : init.name
+    this.list = (init.list === undefined) ? EMPTY.list : init.list
+    this.loopstart = (init.loopstart === undefined) ? EMPTY.loopstart : init.loopstart
+    this.loopend = (init.loopend === undefined) ? EMPTY.loopend : init.loopend
   }
   set name (name) { this[__name] = check.string(name).slice(0, 32) }
   get name () { return this[__name] }
@@ -38,6 +38,7 @@ class AutomationData {
       else throw error
     }
   }
+
   get loopstart () { return this[__loopstart] }
   set loopend (id) {
     try {
