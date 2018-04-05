@@ -1,6 +1,7 @@
 const Processor = require('./processor')
 const GeneratorSet = require('./wavegenerator')
-const WaveformMemory = require('./waveform')
+const WaveformMemory = require('./waveform').Memory
+const OscillatorMemory = require('./oscil').Memory
 const Mixer = require('./mixer')
 const Scheduler = require('./scheduler')
 
@@ -32,8 +33,12 @@ module.exports = {
   WaveformMemory: {
     write: WaveformMemory.write,
     read: WaveformMemory.read,
-    setLock: WaveformMemory.setLock,
-    isLock: WaveformMemory.isLock
+    init: WaveformMemory.init
+  },
+  OscillatorMemory: {
+    write: OscillatorMemory.write,
+    read: OscillatorMemory.read,
+    init: OscillatorMemory.init
   },
   Mixer: {
     reset: Mixer.reset,

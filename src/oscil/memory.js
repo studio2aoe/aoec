@@ -14,13 +14,13 @@ const init = () => {
 
   /* Set default functions */
   for (let i = 0x00; i < 0x20; i++) {
-    MEMORY[i] = FUNC.pulse(i)
+    MEMORY[i] = new Data({ func: FUNC.pulse(i) })
   }
   for (let i = 0x20; i < 0x2F; i++) {
-    MEMORY[i] = FUNC.triangle
+    MEMORY[i] = new Data({ func: FUNC.triangle })
   }
   for (let i = 0x30; i < 0x3F; i++) {
-    MEMORY[i] = FUNC.sawtooth
+    MEMORY[i] = new Data({ func: FUNC.sawtooth })
   }
 }
 
