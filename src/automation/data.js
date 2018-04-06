@@ -30,9 +30,9 @@ class AutomationData {
   get name () { return this[__name] }
   set list (list) { this[__list] = list.map(elem => checkByte(elem)) }
   get list () { return this[__list] }
-  set loopstart (id) { 
+  set loopstart (id) {
     try {
-      this[__loopstart] = checkID(id, this[__list]) 
+      this[__loopstart] = checkID(id, this[__list])
     } catch (error) {
       if (id === -1) this[__loopstart] = id
       else throw error
@@ -52,4 +52,3 @@ class AutomationData {
 }
 
 module.exports = AutomationData
-

@@ -3,7 +3,6 @@ const check = require('check-types').assert
 const Data = require('./data')
 const misc = require('../misc')
 
-
 /* Alias */
 const TABLE_TYPE_REGEX = '[ADEWw]'
 
