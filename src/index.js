@@ -1,5 +1,5 @@
 const Processor = require('./processor')
-const GeneratorSet = require('./wavegenerator')
+const WaveGenerator = require('./wavegenerator')
 const WaveformMemory = require('./waveform').Memory
 const OscillatorMemory = require('./oscil').Memory
 const Mixer = require('./mixer')
@@ -13,22 +13,10 @@ module.exports = {
     play: Processor.play,
     stop: Processor.stop
   },
-  GeneratorSet: {
-    init: GeneratorSet.init,
-    send: GeneratorSet.send,
-    sendFreq: GeneratorSet.sendFreq,
-    sendNum: GeneratorSet.sendNum,
-    sendInv: GeneratorSet.sendInv,
-    sendVolL: GeneratorSet.sendVolL,
-    sendVolR: GeneratorSet.sendVolR,
-    sendMute: GeneratorSet.sendMute,
-    getFreq: GeneratorSet.getFreq,
-    getNum: GeneratorSet.getNum,
-    getInv: GeneratorSet.getInv,
-    getVolL: GeneratorSet.getVolL,
-    getVolR: GeneratorSet.getVolR,
-    getMute: GeneratorSet.getMute,
-    getString: GeneratorSet.getString
+  WaveGenerator: {
+    init: WaveGenerator.init,
+    list: WaveGenerator.list,
+    string: WaveGenerator.string
   },
   WaveformMemory: {
     write: WaveformMemory.write,

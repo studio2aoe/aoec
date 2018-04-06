@@ -32,7 +32,7 @@ const disconnect = () => {
  * Play processor.
  */
 const play = () => {
-  let clock = 0
+  let sampleCount = 0
   let buffsize = processorNode.bufferSize
   processorNode.onaudioprocess = (audioEvent) => {
     let output = [
@@ -40,11 +40,11 @@ const play = () => {
       audioEvent.outputBuffer.getChannelData(1)
     ]
     for (let i = 0; i < buffsize; i++) {
-      let value = GeneratorSet.getVoltage(clock)
+      let value = GeneratorSet.voltage(sampleCount)
       output[0][i] = value[0]
       output[1][i] = value[1]
-      Scheduler.execute(clock)
-      clock++
+      Scheduler.execute(sampleCount)
+      sampleCount++
     }
   }
 }
