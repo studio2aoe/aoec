@@ -3,6 +3,7 @@ const OscGenerator = require('./oscil')
 const NoiseGenerator = require('./noise')
 const CustomGenerator = require('./custom')
 const Mixer = require('../mixer')
+const misc = require('../misc')
 
 /* Structure */
 let TABLE = []
@@ -30,9 +31,10 @@ const init = (initString = 'OOCN') => {
   STRING = TABLE.map(elem => elem.generatorType).join('')
   Mixer.init(TABLE.length)
 }
-
-const table = () => TABLE
-const string = () => STRING
+const getList = () => TABLE
+const getString = () => STRING
+const getGenerator = (id) => TABLE[misc.checkArrayID(id, TABLE)]
+const getType = (id) => STRING[misc.checkArrayID(id, STRING)]
 
 const voltage = (phase) => {
   let voltageL = 0
@@ -49,7 +51,9 @@ const voltage = (phase) => {
 
 module.exports = {
   init: init,
-  list: table,
-  string: string,
+  getList: getList,
+  getString: getString,
+  getGenerator: getGenerator,
+  getType: getType,
   voltage: voltage
 }

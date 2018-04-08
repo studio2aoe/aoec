@@ -18,10 +18,10 @@ class NoiseGenerator extends WaveGenerator {
   }
   setWaveform (id) {
     if (id === 1) {
-      this.lfsr.setMode(true)
+      this.sequencer.setMode(true)
       this.waveNum = id
     } else if (id === 0) {
-      this.lfsr.setMode(false)
+      this.sequencer.setMode(false)
       this.waveNum = id
     }
   }

@@ -1,4 +1,4 @@
-const GeneratorSet = require('../wavegenerator')
+const WaveGenerator = require('../wavegenerator')
 const Scheduler = require('../scheduler')
 
 let processorNode
@@ -40,7 +40,7 @@ const play = () => {
       audioEvent.outputBuffer.getChannelData(1)
     ]
     for (let i = 0; i < buffsize; i++) {
-      let value = GeneratorSet.voltage(sampleCount)
+      let value = WaveGenerator.voltage(sampleCount)
       output[0][i] = value[0]
       output[1][i] = value[1]
       Scheduler.execute(sampleCount)

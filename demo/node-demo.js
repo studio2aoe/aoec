@@ -2,6 +2,7 @@ const aoec = require('../src/index.js')
 const WebAudioAPI = require('web-audio-api')
 const Speaker = require('speaker')
 
+/* Setup Audio Context */
 const AUDIO_CONTEXT = new WebAudioAPI.AudioContext()
 AUDIO_CONTEXT.outStream = new Speaker({
   channels: AUDIO_CONTEXT.format.numberOfChannels,
@@ -14,34 +15,59 @@ const master = AUDIO_CONTEXT.createGain()
 master.connect(AUDIO_CONTEXT.destination)
 master.gain.setValueAtTime(0.5, master.context.currentTime)
 
-/* Setup AOEC Processor */
+/* Setup Processor */
 aoec.Processor.init(AUDIO_CONTEXT, 4096)
 aoec.Processor.connect(master)
 
-/* Setup Waveform generator */
-aoec.WaveGenerator.init('OOCN')
+/* Setup Memory */
 aoec.OscillatorMemory.init()
 aoec.WaveformMemory.init()
+aoec.AutomationMemory.init()
 
-
-const tempo = 120
-const beatperiod = 60 / tempo
-const frameperiod = (beatperiod / 24) * 44100
-let fcount = 0
-const gen0 = aoec.WaveGenerator.list()[0]
-gen0.setFreq(440)
-gen0.setWaveform(48)
-gen0.setInv(false)
-gen0.setVolL(15)
-gen0.setVolR(15)
-aoec.Scheduler.setFunc((clock) => {
-  if (clock % frameperiod < 1) {
-    if (fcount % 3 === 0) gen0.setFreq(440)
-    else if (fcount % 3 === 1) gen0.setFreq(660)
-    else if (fcount % 3 === 2) gen0.setFreq(880)
-    fcount++
+aoec.AutomationMemory.write('E', 0,
+  {
+    list: [0xFF, 0xEE, 0xDD, 0xCC,
+      0xBB, 0xAA, 0x99, 0x88,
+      0x77, 0x66, 0x55, 0x44,
+      0x33, 0x22, 0x11, 0x00,
+      0x00, 0x00, 0x00, 0x00,
+      0x00, 0x00, 0x00, 0x00],
+    loopstart: 0,
+    loopend: 23
   }
-})
+)
+
+aoec.AutomationMemory.write('A', 1,
+  {
+    list: [0, 7, 10],
+    loopstart: 0,
+    loopend: 2
+  }
+)
+
+aoec.AutomationMemory.write('W', 1,
+  {
+    list: [16],
+    loopstart: -1,
+    loopend: -1
+  }
+)
+
+aoec.Instrument.init('OOCN')
+/*
+const inst0 = aoec.Instrument.getInst(0)
+inst0.setNote('A 4')
+inst0.setVol(15, 15)
+inst0.setAutomation('W', 1)
+inst0.setAutomation('A', 1)
+inst0.setAutomation('E', 0)
+*/
+const inst3 = aoec.Instrument.getInst(3)
+inst3.setNote('AF ')
+inst3.setVol(15, 15)
+inst3.setAutomation('A', 1)
+inst3.setAutomation('E', 0)
+inst3.setTuneType(1)
 
 /* Play */
 aoec.Processor.play()

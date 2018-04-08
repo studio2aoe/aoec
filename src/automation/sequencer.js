@@ -7,7 +7,12 @@ const __current = Symbol('current')
 const __released = Symbol('released')
 
 class AutomationSequencer {
-  constructor (data) {
+  constructor (data = {
+    name: '',
+    list: [0],
+    loopstart: -1,
+    loopend: -1
+  }) {
     this[__list] = data.list
     this[__loopstart] = data.loopstart
     this[__loopend] = data.loopend
@@ -19,7 +24,7 @@ class AutomationSequencer {
     this[__released] = false
   }
   read () {
-    return this.list[this[__current]]
+    return this[__list][this[__current]]
   }
   next () {
     const hasLoopStart = this[__loopstart] >= 0
