@@ -15,7 +15,7 @@ class WaveformSequencer {
     this[__current] = 0
   }
   read () {
-    return this.list[this[__current]]
+    return this[__list][this[__current]]
   }
   next () {
     const hasNext = this[__current] < WAVE_SIZE - 1

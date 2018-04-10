@@ -1,7 +1,6 @@
 /* Require */
 const check = require('check-types').assert
 const misc = require('../misc')
-const amplitude = require('../amplitude')
 
 /* Alias */
 const SAMPLE_RATE = 44100
@@ -78,19 +77,21 @@ class WaveGenerator {
   }
 
   /**
-   * Get hexadecimal audio signal of generator
-   * @return {Number} 1-digit hexadecimal or 7.5 (no signal)
+   * Get left, rightvolume of generator
+   * @return {Array} [1-digit Hex, 1-digit Hex]
+   */
+  getVol () {
+    if (this.isMute === true || this.freq === 0) return [0, 0]
+    return [this.volL, this.volR]
+  }
+
+  /**
+   * Get primary signal of generator
+   * @return {Number} 1-digit hexadecimal
    */
   getHexSignal () {
-    if (this.isMute === true || this.freq === 0) return [7.5, 7.5]
-
-    let primarySignal = this.sequencer.read()
-    let mixedL = amplitude(primarySignal, this.volL)
-    let mixedR = amplitude(primarySignal, this.volR)
-    return [
-      (this.isInv) ? 15 - mixedL : mixedL,
-      (this.isInv) ? 15 - mixedR : mixedR
-    ]
+    let signal = this.sequencer.read()
+    return (this.isInv) ? 15 - signal : signal
   }
 }
 

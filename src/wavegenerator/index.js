@@ -2,6 +2,7 @@
 const OscGenerator = require('./oscil')
 const NoiseGenerator = require('./noise')
 const CustomGenerator = require('./custom')
+const amplitude = require('../amplitude')
 const Mixer = require('../mixer')
 const misc = require('../misc')
 
@@ -37,16 +38,17 @@ const getGenerator = (id) => LIST[misc.checkArrayID(id, LIST)]
 const getType = (id) => STRING[misc.checkArrayID(id, STRING)]
 
 const voltage = (phase) => {
-  let voltageL = 0
-  let voltageR = 0
+  let totalSignalL = 0
+  let totalSignalR = 0
   LIST.map((elem, idx) => {
-    let gain = Mixer.getGain(idx)
     let signal = elem.getHexSignal(phase)
+    let mixerVol = Mixer.getGain(idx)
+    let vol = elem.getVol()
+    totalSignalL += (amplitude(signal, vol[0]) - 7.5) / 7.5 * mixerVol
+    totalSignalR += (amplitude(signal, vol[1]) - 7.5) / 7.5 * mixerVol
     elem.processorClock(phase)
-    voltageL += (signal[0] - 7.5) / 7.5 * gain
-    voltageR += (signal[1] - 7.5) / 7.5 * gain
   })
-  return [voltageL, voltageR]
+  return [totalSignalL, totalSignalR]
 }
 
 module.exports = {
