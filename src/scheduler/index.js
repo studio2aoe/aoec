@@ -8,10 +8,10 @@ const SAMPLE_RATE = 44100
 /* Structure */
 const SCHEDULER = {
   tempo: 125,
-  period: 0.02,
+  period: 882,
   customfunc: (count) => null,
   executeInst: (count) => {
-    if (count % (SCHEDULER.period * SAMPLE_RATE) < 1) {
+    if (count % (SCHEDULER.period) < 1) {
       Instrument.getList().forEach(elem => {
         elem.execute()
         elem.next()
@@ -29,8 +29,7 @@ const calcPeriod = (tempo) => {
 /* Public */
 const setTempo = (tempo) => {
   check.number(tempo)
-  if (tempo < 30) SCHEDULER.tempo = 30
-  if (tempo > 255) SCHEDULER.tempo = 255
+  SCHEDULER.tempo = tempo
   SCHEDULER.period = calcPeriod(SCHEDULER.tempo)
 }
 const getTempo = () => SCHEDULER.tempo

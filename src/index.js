@@ -19,20 +19,22 @@ module.exports = {
     getInst: Instrument.getInst,
     getType: Instrument.getType
   },
-  WaveformMemory: {
-    write: WaveformMemory.write,
-    read: WaveformMemory.read,
-    init: WaveformMemory.init
-  },
-  OscillatorMemory: {
-    write: OscillatorMemory.write,
-    read: OscillatorMemory.read,
-    init: OscillatorMemory.init
-  },
-  AutomationMemory: {
-    write: AutomationMemory.write,
-    read: AutomationMemory.read,
-    init: AutomationMemory.init
+  Memory: {
+    Waveform: {
+      init: WaveformMemory.init,
+      read: WaveformMemory.read,
+      write: WaveformMemory.write
+    },
+    Oscillator: {
+      init: OscillatorMemory.init,
+      read: OscillatorMemory.read,
+      write: OscillatorMemory.write
+    },
+    Automation: {
+      init: AutomationMemory.init,
+      read: AutomationMemory.read,
+      write: AutomationMemory.write
+    }
   },
   Mixer: {
     reset: Mixer.reset,
@@ -41,6 +43,9 @@ module.exports = {
     setDecibel: Mixer.setDecibel
   },
   Scheduler: {
+    setTempo: Scheduler.setTempo,
+    getTempo: Scheduler.getTempo,
+    getPeriod: Scheduler.getPeriod,
     setFunc: Scheduler.setFunc
   }
 }

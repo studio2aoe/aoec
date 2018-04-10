@@ -85,11 +85,8 @@ class WaveGenerator {
     if (this.isMute === true || this.freq === 0) return [7.5, 7.5]
 
     let primarySignal = this.sequencer.read()
-    let mixedL =
-      (this.volL === 0) ? 7.5 : amplitude(primarySignal, this.volL)
-    let mixedR =
-      (this.volL === 0) ? 7.5 : amplitude(primarySignal, this.volR)
-
+    let mixedL = amplitude(primarySignal, this.volL)
+    let mixedR = amplitude(primarySignal, this.volR)
     return [
       (this.isInv) ? 15 - mixedL : mixedL,
       (this.isInv) ? 15 - mixedR : mixedR

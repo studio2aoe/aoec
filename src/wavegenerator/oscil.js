@@ -15,7 +15,7 @@ const checkID = (id) => misc.checkRangedInt(id, 0, MEM_SIZE - 1)
 class OscGenerator extends WaveGenerator {
   constructor () {
     super()
-    this.generatorType = 'B'
+    this.generatorType = 'O'
     this.sequencer = new Sequencer(Memory.read(0))
   }
   setWaveform (id) {
