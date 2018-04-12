@@ -13,7 +13,7 @@ const init = () => { MEMORY = new Array(0) }
 /**
  * Write waveform data
  * @param {Number} idx Index of waveform memory
- * @param {Array} input Waveform data array (32-digits hexadecimal)
+ * @param {Object} Waveform input data. {name: String, list: Array}
  */
 const write = (id, input) => {
   MEMORY[checkID(id)] = new Data(input)
