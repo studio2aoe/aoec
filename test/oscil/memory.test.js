@@ -5,7 +5,7 @@ const Data = require('../../src/oscil/data')
 const FUNC = require('../../src/oscil/functions')
 
 /* Alias */
-RANGE_32 = new Array(32).fill(null).map((e, i) => i)
+const RANGE_32 = new Array(32).fill(null).map((e, i) => i)
 
 /* Test */
 describe('Test oscil/memory.js', () => {
@@ -17,6 +17,7 @@ describe('Test oscil/memory.js', () => {
       RANGE_32.forEach(elem => {
         assert.strictEqual(actual.func(elem), FUNC.pulse(4)(elem))
       })
+      assert.deepStrictEqual(actual, expected)
       done()
     })
   })

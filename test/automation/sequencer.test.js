@@ -42,7 +42,7 @@ describe('Test automation/sequencer.js', () => {
       done()
     })
     it('Jump from last', done => {
-      const seq = new Sequencer(SAMPLE_3) 
+      const seq = new Sequencer(SAMPLE_3)
       setCurrent(seq, 11)
       assert.strictEqual(seq.next(), 3)
       done()
