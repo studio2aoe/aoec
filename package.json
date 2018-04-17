@@ -16,7 +16,8 @@
   "main": "src/index.js",
   "scripts": {
     "build": "webpack",
-    "test": "mocha $(find ./ -name '*.test.js')"
+    "test": "mocha $(find ./ -name '*.test.js')",
+    "lint": "eslint ./src ./test ./demo"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
@@ -36,6 +37,7 @@
     "webpack-dev-server": "^2.11.1"
   },
   "dependencies": {
-    "check-types": "^7.3.0"
+    "check-types": "^7.3.0",
+    "uint4": "^0.1.2"
   }
 }
