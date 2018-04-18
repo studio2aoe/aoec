@@ -48,7 +48,9 @@ describe('Test waveform/data.js', () => {
       done()
     })
     it('Check element type', done => {
-      assert.throws(() => new Data({ list: INVALID_TYPE }), TypeError)
+      assert.throws(() => new Data({
+        list: INVALID_TYPE
+      }), TypeError)
       done()
     })
     it('Check element number', done => {
