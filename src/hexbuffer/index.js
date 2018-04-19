@@ -5,7 +5,7 @@ const check = require('check-types').assert
 /* Alias */
 const readHex = uint4.readUInt4LE
 const writeHex = uint4.writeUInt4LE
-const checkPosInt = (num) => check.integer(check.positive(num))
+const checkPosInt = (num) => check.greaterOrEqual(check.integer(num), 0)
 const NOSET_ERROR = new Error('This paramater can\'t be changed directly. please use init()')
 
 class HexBuffer {
