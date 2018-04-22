@@ -37,7 +37,6 @@
     "webpack-dev-server": "^2.11.1"
   },
   "dependencies": {
-    "check-types": "^7.3.0",
-    "uint4": "^0.1.2"
+    "check-types": "^7.3.0"
   }
 }

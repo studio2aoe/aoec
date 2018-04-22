@@ -1,7 +1,6 @@
 /* Require */
 const check = require('check-types').assert
 const misc = require('../misc')
-const HexBuffer = require('../hexbuffer')
 
 /* Alias */
 const checkHex = misc.checkHex
@@ -13,7 +12,6 @@ const EMPTY = {
 
 class WaveformData {
   constructor (init = {}) {
-    this.__list = new HexBuffer(WAVE_SIZE)
     this.name = (init.name === undefined) ? EMPTY.name : init.name
     this.list = (init.list === undefined) ? EMPTY.list : init.list
   }
@@ -22,9 +20,9 @@ class WaveformData {
   set list (list) {
     check.equal(list.length, WAVE_SIZE)
     list.forEach(elem => checkHex(elem))
-    this.__list.write(list)
+    this.__list = list
   }
-  get list () { return this.__list.read() }
+  get list () { return this.__list }
 }
 
 module.exports = WaveformData
