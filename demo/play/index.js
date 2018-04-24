@@ -9,10 +9,10 @@ const resetAll = () => {
   inst.forEach(elem => {
     elem.setNote('---')
     elem.setVol(0, 0)
-    elem.setAutomation('A', 0)
-    elem.setAutomation('D', 0)
-    elem.setAutomation('E', 0)
-    elem.setAutomation('W', 0)
+    elem.setA(0)
+    elem.setD(0)
+    elem.setE(0)
+    elem.setW(0)
     elem.setBank(0)
   })
 }

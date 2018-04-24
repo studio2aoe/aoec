@@ -7,9 +7,6 @@ const misc = require('../misc')
 const mixVol = require('../volume')
 
 /* Alias */
-const TABLE_REGEX = '[ADEW]'
-const checkType = (type) =>
-  check.match(check.hasLength(type, 1), TABLE_REGEX)
 const checkHex = misc.checkHex
 const checkUByte = misc.checkUByte
 const convertSByte = misc.convertSByte
@@ -26,50 +23,10 @@ class Instrument {
     this.__volR = 0x0
     this.__tuneType = 0
     this.__bank = 0x0
-
-    this.__automation = {
-      A: new Automation.Sequencer(),
-      D: new Automation.Sequencer(),
-      E: new Automation.Sequencer(),
-      W: new Automation.Sequencer(),
-      w: new Automation.Sequencer()
-    }
-    this.__automationID = {}
-
-    this.setAutomation('A', 0x00)
-    this.setAutomation('D', 0x00)
-    this.setAutomation('E', 0x00)
-    this.setAutomation('W', 0x00)
-  }
-
-  __readAutomation (type) { return this.__automation[checkType(type)].read() }
-
-  __readPitch () {
-    const note = this.__note
-    if (note === '---') return 0
-    check.string(note)
-    check.hasLength(note, 3)
-    const semi = convertSByte(this.__readAutomation('A'))
-    const cent = convertSByte(this.__readAutomation('D'))
-    const type = this.__tuneType
-    return Pitch.getFreq(type, note, semi, cent)
-  }
-
-  __readEnvelope () {
-    if (this.note === '---') return 0
-    const env = this.__readAutomation('E')
-    const envL = Math.floor(env / 16)
-    const envR = env % 16
-    const volL = this.__volL
-    const volR = this.__volR
-    return { L: mixVol(volL, envL), R: mixVol(volR, envR) }
-  }
-
-  __readWaveNumber () {
-    const prefix = this.__bank
-    const suffix = this.__readAutomation('W')
-    if (this.__type === 'C') return prefix * 0x100 + suffix
-    else return suffix
+    this.__seqA = new Automation.Sequencer()
+    this.__seqD = new Automation.Sequencer()
+    this.__seqE = new Automation.Sequencer()
+    this.__seqW = new Automation.Sequencer()
   }
 
   setNote (note) {
@@ -85,52 +42,110 @@ class Instrument {
       case '---':
       default:
         this.__note = note
-        this.__automation.A.init()
-        this.__automation.D.init()
+        this.__seqA.init()
+        this.__seqD.init()
     }
   }
-
   setVol (volL, volR) {
+    this.setVolL(volL)
+    this.setVolR(volR)
+  }
+  setVolL (volL) {
     try {
       this.__volL = checkHex(volL)
-    } catch (err) { }
+    } catch (err) {}
+    this.__seqE.init()
+    this.__seqW.init()
+  }
+  setVolR (volR) {
     try {
       this.__volR = checkHex(volR)
     } catch (err) { }
-    this.__automation.E.init()
-    this.__automation.W.init()
-    this.__automation.w.init()
+    this.__seqE.init()
+    this.__seqW.init()
   }
 
   setTuneType (id) { this.__tuneType = checkHex(id) }
 
   setBank (id) { this.__bank = checkUByte(id) }
 
-  setAutomation (type, id) {
+  setA (id) {
     checkUByte(id)
-    checkType(type)
-    this.__automation[type] =
-      new Automation.Sequencer(Automation.Memory.read(type, id))
-    this.__automationID[type] = id
-    if (type === 'E' || type === 'W' || type === 'w') {
-      this.__automation.E.init()
-      this.__automation.W.init()
-      this.__automation.w.init()
-    }
-    if (type === 'A' || type === 'D') {
-      this.__automation.A.init()
-      this.__automation.D.init()
-    }
+    this.__seqA = new Automation.Sequencer(Automation.Memory.read('A', id))
+    this.__seqA.id = id
+    this.__seqA.init()
+    this.__seqD.init()
+  }
+  setD (id) {
+    checkUByte(id)
+    this.__seqD = new Automation.Sequencer(Automation.Memory.read('D', id))
+    this.__seqD.id = id
+    this.__seqA.init()
+    this.__seqD.init()
+  }
+  setE (id) {
+    checkUByte(id)
+    this.__seqE = new Automation.Sequencer(Automation.Memory.read('E', id))
+    this.__seqE.id = id
+    this.__seqE.init()
+    this.__seqW.init()
+  }
+  setW (id) {
+    checkUByte(id)
+    this.__seqW = new Automation.Sequencer(Automation.Memory.read('W', id))
+    this.__seqW.id = id
+    this.__seqE.init()
+    this.__seqW.init()
   }
 
   setInst (id) {
-    this.inst = checkUByte(id)
+    this.__inst = checkUByte(id)
     /* TODO: Implement inst data */
-    this.__automation.A.init()
-    this.__automation.D.init()
-    this.__automation.E.init()
-    this.__automation.W.init()
-    this.__automation.w.init()
+    /*
+    const data = Memory.read(id)
+    if (data.inv) this.setInv(data.inv)
+    if (data.volL) this.setVolL(data.volL)
+    if (data.volR) this.setVolR(data.volR)
+    if (data.tuneType) this.setTuneType(data.tuneType)
+    if (data.bank) this.setBank(data.bank)
+    if (data.seqA) this.setA(data.seqA)
+    if (data.seqD) this.setD(data.seqD)
+    if (data.seqE) this.setE(data.seqE)
+    if (data.seqW) this.setW(data.seqW)
+    */
+
+    this.__seqA.init()
+    this.__seqD.init()
+    this.__seqE.init()
+    this.__seqW.init()
+  }
+
+  __readPitch () {
+    const note = this.__note
+    if (note === '---') return 0
+    check.string(note)
+    check.hasLength(note, 3)
+    const semi = convertSByte(this.__seqA.read())
+    const cent = convertSByte(this.__seqD.read())
+    const type = this.__tuneType
+    return Pitch.getFreq(type, note, semi, cent)
+  }
+
+  __readEnvelope () {
+    if (this.note === '---') return 0
+    const env = this.__seqE.read()
+    const envL = Math.floor(env / 16)
+    const envR = env % 16
+    const volL = this.__volL
+    const volR = this.__volR
+    return { L: mixVol(volL, envL), R: mixVol(volR, envR) }
+  }
+
+  __readWaveNumber () {
+    const prefix = this.__bank
+    const suffix = this.__seqW.read()
+    if (this.__type === 'C') return prefix * 0x100 + suffix
+    else return suffix
   }
 
   execute () {
@@ -142,19 +157,17 @@ class Instrument {
   }
 
   release () {
-    this.__automation.A.release()
-    this.__automation.D.release()
-    this.__automation.E.release()
-    this.__automation.W.release()
-    this.__automation.w.release()
+    this.__seqA.release()
+    this.__seqD.release()
+    this.__seqE.release()
+    this.__seqW.release()
   }
 
   next () {
-    this.__automation.A.next()
-    this.__automation.D.next()
-    this.__automation.E.next()
-    this.__automation.W.next()
-    this.__automation.w.next()
+    this.__seqA.next()
+    this.__seqD.next()
+    this.__seqE.next()
+    this.__seqW.next()
   }
 }
 module.exports = Instrument
