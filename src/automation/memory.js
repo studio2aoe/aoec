@@ -4,7 +4,7 @@ const Data = require('./data')
 const misc = require('../misc')
 
 /* Alias */
-const TABLE_TYPE_REGEX = '[ADEWw]'
+const TABLE_TYPE_REGEX = '[ADEW]'
 
 const checkID = (id) => misc.checkRangedInt(id, 0, 255)
 const checkType = (type) =>
@@ -17,7 +17,6 @@ const init = () => {
   MEMORY.D = new Array(0)
   MEMORY.E = new Array(0)
   MEMORY.W = new Array(0)
-  MEMORY.w = new Array(0)
 }
 
 const read = (type, id) => {

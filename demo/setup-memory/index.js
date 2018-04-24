@@ -49,14 +49,6 @@ const setupMemory = () => {
       loopend: -1
     }
   )
-
-  aoec.Memory.Automation.write('w', 1,
-    {
-      list: [16],
-      loopstart: -1,
-      loopend: -1
-    }
-  )
 }
 
 module.exports = setupMemory

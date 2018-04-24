@@ -7,7 +7,7 @@ const misc = require('../misc')
 const mixVol = require('../volume')
 
 /* Alias */
-const TABLE_REGEX = '[ADEWw]'
+const TABLE_REGEX = '[ADEW]'
 const checkType = (type) =>
   check.match(check.hasLength(type, 1), TABLE_REGEX)
 const checkHex = misc.checkHex
@@ -25,6 +25,7 @@ class Instrument {
     this.__volL = 0x0
     this.__volR = 0x0
     this.__tuneType = 0
+    this.__bank = 0x0
 
     this.__automation = {
       A: new Automation.Sequencer(),
@@ -39,7 +40,6 @@ class Instrument {
     this.setAutomation('D', 0x00)
     this.setAutomation('E', 0x00)
     this.setAutomation('W', 0x00)
-    this.setAutomation('w', 0x00)
   }
 
   __readAutomation (type) { return this.__automation[checkType(type)].read() }
@@ -66,12 +66,10 @@ class Instrument {
   }
 
   __readWaveNumber () {
-    const prefix = this.__readAutomation('W')
-    const suffix = convertSByte(this.__readAutomation('w'))
-    if (this.__type === 'C') {
-      let num = prefix * 0x10 + suffix
-      return (num < 0) ? num + 0x1000 : num
-    } else return prefix
+    const prefix = this.__bank
+    const suffix = this.__readAutomation('W')
+    if (this.__type === 'C') return prefix * 0x100 + suffix
+    else return suffix
   }
 
   setNote (note) {
@@ -104,17 +102,9 @@ class Instrument {
     this.__automation.w.init()
   }
 
-  setInst (id) {
-    this.inst = checkUByte(id)
-    /* TODO: Implement inst data */
-    this.__automation.A.init()
-    this.__automation.D.init()
-    this.__automation.E.init()
-    this.__automation.W.init()
-    this.__automation.w.init()
-  }
-
   setTuneType (id) { this.__tuneType = checkHex(id) }
+
+  setBank (id) { this.__bank = checkUByte(id) }
 
   setAutomation (type, id) {
     checkUByte(id)
@@ -131,6 +121,16 @@ class Instrument {
       this.__automation.A.init()
       this.__automation.D.init()
     }
+  }
+
+  setInst (id) {
+    this.inst = checkUByte(id)
+    /* TODO: Implement inst data */
+    this.__automation.A.init()
+    this.__automation.D.init()
+    this.__automation.E.init()
+    this.__automation.W.init()
+    this.__automation.w.init()
   }
 
   execute () {

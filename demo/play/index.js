@@ -13,7 +13,7 @@ const resetAll = () => {
     elem.setAutomation('D', 0)
     elem.setAutomation('E', 0)
     elem.setAutomation('W', 0)
-    elem.setAutomation('w', 0)
+    elem.setBank(0)
   })
 }
 
