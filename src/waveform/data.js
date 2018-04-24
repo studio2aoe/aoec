@@ -1,55 +1,28 @@
-const WAVE_SIZE = 32
+/* Require */
+const check = require('check-types').assert
+const misc = require('../misc')
 
-/**
- * Waveform data for custom-waveform generator.
- */
+/* Alias */
+const checkHex = misc.checkHex
+const WAVE_SIZE = require('./const').WAVE_SIZE
+const EMPTY = {
+  name: '',
+  list: new Array(WAVE_SIZE).fill(0)
+}
+
 class WaveformData {
-  constructor (str) {
-    this.__value = new Int8Array(WAVE_SIZE)
-    this.write(str)
-    this.setLock(false)
+  constructor (init = {}) {
+    this.name = (init.name === undefined) ? EMPTY.name : init.name
+    this.list = (init.list === undefined) ? EMPTY.list : init.list
   }
-
-  /**
-   * Write waveform data
-   * @param {String} input Waveform data string (32-digits hexadecimal)
-   */
-  write (input = '') {
-    if (this.__isLock) {
-      const err = new Error()
-      err.name = `WaveformLocked`
-      err.message = `This waveform is locked`
-      throw err
-    } else {
-      this.__value = this.__value.map((elem, idx) => {
-        const parsed = parseInt(input[idx], 16)
-        const isHex = (Number.isInteger(parsed) && parsed >= 0 && parsed <= 16)
-        return isHex ? parsed : 0
-      })
-    }
+  set name (name) { this.__name = check.string(name).slice(0, 32) }
+  get name () { return this.__name }
+  set list (list) {
+    check.equal(list.length, WAVE_SIZE)
+    list.forEach(elem => checkHex(elem))
+    this.__list = list
   }
-
-  /**
-   * Read waveform data
-   * @returns {String} 32-digits hexadecimal
-   */
-  read () { return this.__value }
-
-  /**
-   * Lock / unlock writting waveform data. if waveform data is locked, this data can't be written.
-   * @param {Boolean} isLock waveform data is locked?
-   */
-  setLock (isLock) {
-    if (isLock === true || isLock === false) {
-      this.__isLock = isLock
-    }
-  }
-
-  /**
-   * Check if waveform data is locked. if waveform data is locked, this data can't be written.
-   * @returns {Boolean} waveform data is locked?
-   */
-  isLock () { return this.__isLock }
+  get list () { return this.__list }
 }
 
 module.exports = WaveformData

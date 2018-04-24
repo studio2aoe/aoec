@@ -1,4 +1,4 @@
-const WaveGenerator = require('../super')
+const WaveGenerator = require('./super')
 const Lfsr = require('./lfsr')
 
 /**
@@ -8,7 +8,7 @@ class NoiseGenerator extends WaveGenerator {
   constructor () {
     super()
     this.generatorType = 'N'
-    this.lfsr = new Lfsr()
+    this.sequencer = new Lfsr()
   }
   setFreq (freq) {
     if (Number.isFinite(freq) && freq > 0) {
@@ -16,17 +16,15 @@ class NoiseGenerator extends WaveGenerator {
       this.setPeriod(freq)
     }
   }
-  setWaveform (num) {
-    if (num === 1) {
-      this.lfsr.setMode(true)
-      this.waveNum = num
-    } else if (num === 0) {
-      this.lfsr.setMode(false)
-      this.waveNum = num
+  setWaveform (id) {
+    if (id === 1) {
+      this.sequencer.setMode(true)
+      this.waveNum = id
+    } else if (id === 0) {
+      this.sequencer.setMode(false)
+      this.waveNum = id
     }
   }
-  generatorClock () { this.lfsr.clock() }
-  calcHexSignal (phase) { return this.lfsr.getHex() }
 }
 
 module.exports = NoiseGenerator
