@@ -2,7 +2,6 @@ const WaveGenerator = require('../wavegenerator')
 const Scheduler = require('../scheduler')
 
 let processorNode
-let destinationNode
 
 /**
  * Initialize processor.
@@ -15,9 +14,9 @@ const init = (audioContext, buffsize) => {
 
 /**
  * Connect processor to other audio node.
- * @param {Object} destination destination oudio node. if this argument is undefined, processor connects to recently connected destination.
+ * @param {Object} destination destination oudio node.
  */
-const connect = (destination = destinationNode) => {
+const connect = (destination) => {
   processorNode.connect(destination)
 }
 
