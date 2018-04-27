@@ -28,4 +28,4 @@ aoec.Instrument.init('OOCN')
 aoec.Scheduler.setTempo(30)
 
 /* Play */
-playInst(2)
+playInst(4)

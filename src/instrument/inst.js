@@ -5,6 +5,7 @@ const Automation = require('../automation')
 const Pitch = require('../pitch')
 const misc = require('../misc')
 const mixVol = require('../volume')
+const Memory = require('./memory')
 
 /* Alias */
 const checkHex = misc.checkHex
@@ -67,7 +68,7 @@ class Instrument {
 
   setTuneType (id) { this.__tuneType = checkHex(id) }
 
-  setBank (id) { this.__bank = checkUByte(id) }
+  setBank (id) { this.__bank = checkHex(id) }
 
   setA (id) {
     checkUByte(id)
@@ -100,19 +101,14 @@ class Instrument {
 
   setInst (id) {
     this.__inst = checkUByte(id)
-    /* TODO: Implement inst data */
-    /*
     const data = Memory.read(id)
     if (data.inv) this.setInv(data.inv)
-    if (data.volL) this.setVolL(data.volL)
-    if (data.volR) this.setVolR(data.volR)
     if (data.tuneType) this.setTuneType(data.tuneType)
     if (data.bank) this.setBank(data.bank)
     if (data.seqA) this.setA(data.seqA)
     if (data.seqD) this.setD(data.seqD)
     if (data.seqE) this.setE(data.seqE)
     if (data.seqW) this.setW(data.seqW)
-    */
 
     this.__seqA.init()
     this.__seqD.init()

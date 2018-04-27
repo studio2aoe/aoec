@@ -5,6 +5,7 @@ const setupMemory = () => {
   aoec.Memory.Oscillator.init()
   aoec.Memory.Waveform.init()
   aoec.Memory.Automation.init()
+  aoec.Memory.Instrument.init()
 
   aoec.Memory.Waveform.write(16,
     {
@@ -47,6 +48,16 @@ const setupMemory = () => {
       list: [16],
       loopstart: -1,
       loopend: -1
+    }
+  )
+
+  aoec.Memory.Instrument.write(1,
+    {
+      tuneType: 0,
+      bank: 0,
+      seqA: 1,
+      seqE: 0,
+      seqW: 1
     }
   )
 }

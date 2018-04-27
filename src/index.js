@@ -1,5 +1,6 @@
 const Processor = require('./processor')
 const Instrument = require('./instrument')
+const InstrumentMemory = require('./instrument/memory')
 const WaveformMemory = require('./waveform').Memory
 const OscillatorMemory = require('./oscil').Memory
 const AutomationMemory = require('./automation').Memory
@@ -34,6 +35,11 @@ module.exports = {
       init: AutomationMemory.init,
       read: AutomationMemory.read,
       write: AutomationMemory.write
+    },
+    Instrument: {
+      init: InstrumentMemory.init,
+      read: InstrumentMemory.read,
+      write: InstrumentMemory.write
     }
   },
   Mixer: {
