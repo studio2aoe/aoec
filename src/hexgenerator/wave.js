@@ -12,7 +12,7 @@ const checkID = (id) => misc.checkRangedInt(id, 0, MEM_SIZE - 1)
 /**
  * @desc Custom-waveform generator. it generates waveform from memory.
  */
-class CustomGenerator extends HexGenerator {
+class WaveGenerator extends HexGenerator {
   constructor () {
     super()
     this.generatorType = 'C'
@@ -24,4 +24,4 @@ class CustomGenerator extends HexGenerator {
   }
 }
 
-module.exports = CustomGenerator
+module.exports = WaveGenerator

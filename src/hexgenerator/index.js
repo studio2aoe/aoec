@@ -1,7 +1,7 @@
 /* Require */
-const OscGenerator = require('./oscil')
+const OscilGenerator = require('./oscil')
 const NoiseGenerator = require('./noise')
-const CustomGenerator = require('./custom')
+const WaveGenerator = require('./wave')
 const amplitude = require('../amplitude')
 const Mixer = require('../mixer')
 const misc = require('../misc')
@@ -15,9 +15,9 @@ let STRING = ''
 const create = (chr = '') => {
   switch (chr) {
     case 'O':
-      return new OscGenerator()
-    case 'C':
-      return new CustomGenerator()
+      return new OscilGenerator()
+    case 'W':
+      return new WaveGenerator()
     case 'N':
       return new NoiseGenerator()
     case 'S':
@@ -27,7 +27,7 @@ const create = (chr = '') => {
 
 /* Public */
 
-const init = (initString = 'OOCN') => {
+const init = (initString = 'OOWN') => {
   LIST = initString.split('').map(elem => create(elem))
   STRING = LIST.map(elem => elem.generatorType).join('')
   Mixer.init(LIST.length)

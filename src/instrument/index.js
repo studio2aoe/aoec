@@ -15,7 +15,7 @@ let STRING = null
 
 /* Public */
 
-const init = (initString = 'OOCN') => {
+const init = (initString = 'OOWN') => {
   initString = check.string(initString).slice(0, MAX_CHANNEL_NUM)
   HexGenerator.init(initString)
   STRING = HexGenerator.getString()

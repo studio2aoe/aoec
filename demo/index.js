@@ -24,7 +24,7 @@ aoec.Processor.connect(master)
 
 setupMemory()
 
-aoec.Instrument.init('OOCN')
+aoec.Instrument.init('OOWN')
 aoec.Scheduler.setTempo(30)
 
 /* Play */
