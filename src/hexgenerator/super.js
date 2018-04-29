@@ -6,7 +6,7 @@ const misc = require('../misc')
 const SAMPLE_RATE = 44100
 const checkHex = misc.checkHex
 
-class WaveGenerator {
+class HexGenerator {
   constructor () {
     this.freq = 0
     this.waveNum = 0
@@ -95,4 +95,4 @@ class WaveGenerator {
   }
 }
 
-module.exports = WaveGenerator
+module.exports = HexGenerator

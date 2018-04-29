@@ -1,6 +1,6 @@
 /* Require */
 const check = require('check-types').assert
-const WaveGenerator = require('../wavegenerator')
+const HexGenerator = require('../hexgenerator')
 const Automation = require('../automation')
 const Pitch = require('../pitch')
 const misc = require('../misc')
@@ -14,9 +14,9 @@ const convertSByte = misc.convertSByte
 
 class Instrument {
   constructor (id) {
-    this.__id = misc.checkArrayID(id, WaveGenerator.getString())
-    this.__type = WaveGenerator.getType(this.__id)
-    this.__generator = WaveGenerator.getGenerator(this.__id)
+    this.__id = misc.checkArrayID(id, HexGenerator.getString())
+    this.__type = HexGenerator.getType(this.__id)
+    this.__generator = HexGenerator.getGenerator(this.__id)
 
     this.__note = '---'
     this.__inv = false

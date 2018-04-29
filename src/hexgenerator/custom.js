@@ -1,5 +1,5 @@
 /* Require */
-const WaveGenerator = require('./super')
+const HexGenerator = require('./super')
 const Waveform = require('../waveform')
 const misc = require('../misc')
 
@@ -12,7 +12,7 @@ const checkID = (id) => misc.checkRangedInt(id, 0, MEM_SIZE - 1)
 /**
  * @desc Custom-waveform generator. it generates waveform from memory.
  */
-class CustomGenerator extends WaveGenerator {
+class CustomGenerator extends HexGenerator {
   constructor () {
     super()
     this.generatorType = 'C'

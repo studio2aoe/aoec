@@ -1,6 +1,6 @@
 /* Require */
 const check = require('check-types').assert
-const WaveGenerator = require('../wavegenerator')
+const HexGenerator = require('../hexgenerator')
 
 const Instrument = require('./inst')
 const misc = require('../misc')
@@ -17,8 +17,8 @@ let STRING = null
 
 const init = (initString = 'OOCN') => {
   initString = check.string(initString).slice(0, MAX_CHANNEL_NUM)
-  WaveGenerator.init(initString)
-  STRING = WaveGenerator.getString()
+  HexGenerator.init(initString)
+  STRING = HexGenerator.getString()
   LIST = Array.from(STRING).map((elem, id) => new Instrument(id))
 }
 

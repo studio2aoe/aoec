@@ -1,10 +1,10 @@
-const WaveGenerator = require('./super')
+const HexGenerator = require('./super')
 const Lfsr = require('./lfsr')
 
 /**
  * @desc White-noise generator. 15-bit LFSR based.
  */
-class NoiseGenerator extends WaveGenerator {
+class NoiseGenerator extends HexGenerator {
   constructor () {
     super()
     this.generatorType = 'N'

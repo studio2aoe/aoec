@@ -1,5 +1,5 @@
 /* Require */
-const WaveGenerator = require('./super')
+const HexGenerator = require('./super')
 const Oscillator = require('../oscil')
 const misc = require('../misc')
 
@@ -12,7 +12,7 @@ const checkID = (id) => misc.checkRangedInt(id, 0, MEM_SIZE - 1)
 /**
  * @desc Oscillated-waveform generator. it generates function-based waveform.
  */
-class OscGenerator extends WaveGenerator {
+class OscGenerator extends HexGenerator {
   constructor () {
     super()
     this.generatorType = 'O'
