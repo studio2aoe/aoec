@@ -46,7 +46,8 @@ module.exports = {
     reset: Mixer.reset,
     getGain: Mixer.getGain,
     setGain: Mixer.setGain,
-    setDecibel: Mixer.setDecibel
+    setDecibel: Mixer.setDecibel,
+    getDecibel: Mixer.getDecibel
   },
   Scheduler: {
     setTempo: Scheduler.setTempo,
