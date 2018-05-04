@@ -419,7 +419,7 @@ aoec.Memory.Waveform.write(0x37, {
  * [8, 9, 11, 12, 13, 14, 15, 15, 15, 15, 15, 14, 13, 12, 11, 9,
  *  8, 6, 4, 3, 2, 1, 0, 0, 0, 0, 0, 1, 2, 3, 4, 6] */
 aoec.Memory.Oscillator.write(0x40, {
-  name: 'Sine wave`,
+  name: 'Sine wave',
   func: function (phase) {
     const hexdigit = Math.floor(Math.sin((phase * Math.PI) / 16) * 8 + 8)
     if (hexdigit === 16) hexdigit = 15
