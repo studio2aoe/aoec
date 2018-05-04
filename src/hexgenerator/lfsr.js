@@ -20,7 +20,7 @@ class Lfsr {
   /**
    * Calculate next bit
    */
-  clock () {
+  next () {
     const bitA = this.__register & 1 // 1 is tabA
     const bitB = (this.__register >> this.__tapB) & 1
     const feedback = (bitA ^ bitB) << 14
@@ -32,7 +32,7 @@ class Lfsr {
    * Get hexadecimal random number from the latest 4-bits of register
    * @return {Number} Hexadecimal number (0 to 15)
    */
-  getHex () {
+  read () {
     return this.__register >> 11
   }
 }

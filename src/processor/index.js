@@ -1,8 +1,7 @@
-const GeneratorSet = require('../wavegenerator')
+const HexGenerator = require('../hexgenerator')
 const Scheduler = require('../scheduler')
 
 let processorNode
-let destinationNode
 
 /**
  * Initialize processor.
@@ -15,9 +14,9 @@ const init = (audioContext, buffsize) => {
 
 /**
  * Connect processor to other audio node.
- * @param {Object} destination destination oudio node. if this argument is undefined, processor connects to recently connected destination.
+ * @param {Object} destination destination oudio node.
  */
-const connect = (destination = destinationNode) => {
+const connect = (destination) => {
   processorNode.connect(destination)
 }
 
@@ -32,7 +31,7 @@ const disconnect = () => {
  * Play processor.
  */
 const play = () => {
-  let clock = 0
+  let sampleCount = 0
   let buffsize = processorNode.bufferSize
   processorNode.onaudioprocess = (audioEvent) => {
     let output = [
@@ -40,11 +39,11 @@ const play = () => {
       audioEvent.outputBuffer.getChannelData(1)
     ]
     for (let i = 0; i < buffsize; i++) {
-      let value = GeneratorSet.getVoltage(clock)
+      let value = HexGenerator.voltage(sampleCount)
       output[0][i] = value[0]
       output[1][i] = value[1]
-      Scheduler.execute(clock)
-      clock++
+      Scheduler.execute(sampleCount)
+      sampleCount++
     }
   }
 }
