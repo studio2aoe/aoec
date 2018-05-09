@@ -33,9 +33,9 @@
   - Type `O`: Oscillator track. generate function-based signal. It works like pulse track, but it can oscillate other waveforms. (eg. triangle, sawtooth)
   - Type `W`: Waveform track. generate memory-based signal. It works like Famicom N163 extension or Gameboy WAV track.
   - Type `N`: Noise track. generate random signal from 15-bit linear feedback shift register. It works like noise track of Famicom & Gameboy.
-- `Memory`: Store waveform, oscillator function, automation table, instrument preset.
+- `Memory`: Store waveform, oscillator function, automation sequence, instrument preset.
 - `Mixer`: Control gain of each track.
-- `Scheduler`: Control automation table and tempo
+- `Scheduler`: Control automation sequence and tempo
 
 ## To do
 - Quick automation function: Set automation data directly
@@ -279,12 +279,12 @@ inst2.setBank(0xF) // Using 16th bank
 ```
 
 #### `setA`, `setD`, `setE`, `setW`
-- Set automation table of type `A`, `D`, `E`, `W`
+- Set automation sequence of type `A`, `D`, `E`, `W`
   - `A` is Arpeggio, controls pitch by semitone unit. it is used for make arpeggio
   - `D` is Detune, controls pitch by cent unit. it is used for make vibrato
   - `E` is Envelope, controls volume. it is used for make envelope.
   - `W` is Waveform, controls waveform type. it is used for make timbre
-- Paramter is ID of automation table, it must be 0x00 to 0xFF
+- Paramter is ID of automation sequence, it must be 0x00 to 0xFF
 - See [`Memory.Automation`](#memoryautomation-module) section.
 
 ```javascript
@@ -292,6 +292,20 @@ inst0.setA(4)
 inst1.setD(5)
 inst2.setE(6)
 inst3.setW(7)
+```
+
+#### `setQuickA`, `setQuickD`, `setQuickE`, `setQuickW`
+- Set automation sequence directly.
+- Parameter is automation sequence object
+- See [`Memory.Automation`](#memoryautomation-module) section.
+
+```javascript
+inst0.setQuickA({
+  name: 'Power chord',
+  list: [0, 7, 12],
+  loopstart: 0,
+  loopend: 2
+})
 ```
 
 #### `setInst`

@@ -4,6 +4,7 @@ const playOscil1 = require('./inst1')
 const playCustom = require('./inst2')
 const playNoise = require('./inst3')
 const playPreset = require('./preset')
+const playQuick = require('./setquick')
 
 const resetAll = () => {
   const inst = [0, 1, 2, 3].map(elem => aoec.Instrument.getInst(elem))
@@ -36,6 +37,9 @@ const play = (num) => {
       break
     case 4:
       playPreset()
+      break
+    case 5:
+      playQuick()
   }
   aoec.Processor.play()
 }

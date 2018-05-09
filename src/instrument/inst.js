@@ -73,33 +73,52 @@ class Instrument {
 
   setBank (id) { this.__bank = checkHex(id) }
 
+  setQuickA (data) {
+    this.__seqA = new Automation.Sequencer(data)
+    this.__seqA.init()
+    this.__seqD.init()
+    this.__seqA.id = undefined
+  }
+
+  setQuickD (data) {
+    this.__seqD = new Automation.Sequencer(data)
+    this.__seqA.init()
+    this.__seqD.init()
+    this.__seqD.id = undefined
+  }
+
+  setQuickE (data) {
+    this.__seqE = new Automation.Sequencer(data)
+    this.__seqE.init()
+    this.__seqW.init()
+    this.__seqE.id = undefined
+  }
+
+  setQuickW (data) {
+    this.__seqW = new Automation.Sequencer(data)
+    this.__seqE.init()
+    this.__seqW.init()
+    this.__seqW.id = undefined
+  }
+
   setA (id) {
-    checkUByte(id)
-    this.__seqA = new Automation.Sequencer(Automation.Memory.read('A', id))
+    this.setQuickA(Automation.Memory.read('A', checkUByte(id)))
     this.__seqA.id = id
-    this.__seqA.init()
-    this.__seqD.init()
   }
+
   setD (id) {
-    checkUByte(id)
-    this.__seqD = new Automation.Sequencer(Automation.Memory.read('D', id))
+    this.setQuickD(Automation.Memory.read('D', checkUByte(id)))
     this.__seqD.id = id
-    this.__seqA.init()
-    this.__seqD.init()
   }
+
   setE (id) {
-    checkUByte(id)
-    this.__seqE = new Automation.Sequencer(Automation.Memory.read('E', id))
+    this.setQuickE(Automation.Memory.read('E', checkUByte(id)))
     this.__seqE.id = id
-    this.__seqE.init()
-    this.__seqW.init()
   }
+
   setW (id) {
-    checkUByte(id)
-    this.__seqW = new Automation.Sequencer(Automation.Memory.read('W', id))
+    this.setQuickW(Automation.Memory.read('W', checkUByte(id)))
     this.__seqW.id = id
-    this.__seqE.init()
-    this.__seqW.init()
   }
 
   setInst (id) {
