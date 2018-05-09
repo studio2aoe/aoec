@@ -12,13 +12,13 @@
   - [`Processor` module](#processor-module)
   - [`Instrument` module](#instrument-module)
   - [Each instrument object (from `Instrument.getInst()`)](#each-instrument-object-from-instrumentgetinst)
-  - [`Memory.Automation`](#memoryautomation)
-  - [`Memory.Waveform`](#memorywaveform)
-  - [`Memory.Oscillator`](#memoryoscillator)
-  - [`Memory.Instrument`](#memoryinstrument)
-  - [`Memory.Tuning`](#memorytuning)
-  - [`Mixer`](#mixer)
-  - [`Scheduler`](#scheduler)
+  - [`Memory.Automation` module](#memoryautomation-module)
+  - [`Memory.Waveform` module](#memorywaveform-module)
+  - [`Memory.Oscillator` module](#memoryoscillator-module)
+  - [`Memory.Instrument` module](#memoryinstrument-module)
+  - [`Memory.Tuning` module](#memorytuning-module)
+  - [`Mixer` module](#mixer-module)
+  - [`Scheduler` module](#scheduler-module)
 - [License](#license)
 
 ## Goal
@@ -38,10 +38,10 @@
 - `Scheduler`: Control automation table and tempo
 
 ## To do
+- Quick automation function: Set automation data directly
+- Create GUI demonstration
 - `Instrument` type `S`: PCM Sampler track. generate sample-based signal. It works like Famicom DPCM or Gameboy WAV track.
-- Write Documentation
 - `Processor` implementation based on `AudioWorklet`
-- Quick automation command (like `0CC`)
 
 ## Require
 - Implementation of Web Audio API (need support `ScriptProcessorNode`)
@@ -262,6 +262,7 @@ inst1.setInv(true)
 - Parameter is ID of tuning type, it must be 0x0 to 0xF
   - `0` is 12-Equal Temperament, default tuning function.
   - `1` is Gameboy style noise pitch notation
+  - See [`Memory.Tuning`](#memorytuning-module) section.
 
 ```javascript
 inst3.setTuneType(1)
@@ -284,7 +285,7 @@ inst2.setBank(0xF) // Using 16th bank
   - `E` is Envelope, controls volume. it is used for make envelope.
   - `W` is Waveform, controls waveform type. it is used for make timbre
 - Paramter is ID of automation table, it must be 0x00 to 0xFF
-- See `Memory.Automation` section.
+- See [`Memory.Automation`](#memoryautomation-module) section.
 
 ```javascript
 inst0.setA(4)
@@ -296,7 +297,7 @@ inst3.setW(7)
 #### `setInst`
 - Set instrument preset. it stores tune type, bank, automation `A`, `D`, `E`, `W`.
 - Parameter is ID of instrument preset.
-- See `Memory.Instrument` section.
+- See [`Memory.Instrument`](#memoryinstrument-module) section.
 
 ```javascript
 inst1.setInst(3)
@@ -309,7 +310,7 @@ Release automation from loop. some automations have and repeat loop, but when th
 inst1.release()
 ```
 
-### `Memory.Automation`
+### `Memory.Automation` module
 It has 4 memory for automation type `A`, `D`, `E`, `W`, each memory can store 256 automation sequence.
 
 #### `Memory.Automation.init`
@@ -332,12 +333,9 @@ It has 4 memory for automation type `A`, `D`, `E`, `W`, each memory can store 25
     - Type `E`: Change volume. Each hex digit is Left / Right volume. (eg. 0xDF: Left 13 and Right 15)
     - Type `W`: Change waveform. it works differently by track types
       - `O` track: Load function from memory, ID is `W` value.
-        - `0x00` to `0x1F`: Pulse wave which has duty cycle n/32. (eg. `0x10`: 50%)
-        - `0x20` to `0x2F`: Triangle wave
-        - `0x30` to `0x3F`: Sawtooth wave
-        - `0x40` and after: Empty function. See `Memory.Oscillator`
+        - See [`Memory.Oscillator`](#memoryoscillator-module)
       - `W` track: Determines last 2 hex-digit of waveform memory ID.
-        - See `Memory.Waveform`
+        - See [`Memory.Waveform`](#memorywaveform-module)
       - `N` track: Change LFSR tap.
         - `0`: Use tap 1, noise loop length will be 32767-bit. (soft noise)
         - `1`: Use tap 6, noise loop length will be 93-bit. (metallic noise)
@@ -389,7 +387,7 @@ aoec.Memory.Automation.write('W', 0xFE, {
 ```
 
 
-### `Memory.Waveform`
+### `Memory.Waveform` module
 - It has single memory which can store 65536 waveforms. (`0x0000` to `0xFFFF`)
 - Bank value determines first 2 hex-digits, `W` automation determines last 2 hex-digits.
 
@@ -432,11 +430,16 @@ aoec.Memory.Waveform.write(0x37, {
 })
 ```
 
-### `Memory.Oscillator`
+### `Memory.Oscillator` module
 - It has single memory which can store 256 functions (`0x00` ~ `0xFF`)
+- Memory has these default oscillator functions:
+  - `0x00` to `0x1F`: Pulse wave which has duty cycle n/32. (eg. `0x10`: 50%)
+  - `0x20` to `0x2F`: Triangle wave
+  - `0x30` to `0x3F`: Sawtooth wave
+  - `0x40` and after: Empty function
 
 #### `Memory.Oscillator.init`
-- Initialize memory, all memories will be erased.
+- Initialize memory, all memories will be erased and set default functions
 
 #### `Memory.Oscillator.read`
 - Read function from memory.
@@ -468,7 +471,7 @@ aoec.Memory.Oscillator.write(0x40, {
 })
 ```
 
-### `Memory.Instrument`
+### `Memory.Instrument` module
 - It has single memory which can store 256 instrument presets (`0x00` ~ `0xFF`)
 
 #### `Memory.Instrument.init`
@@ -508,9 +511,11 @@ Inst2.setInst(3)
  */
 ```
 
-### `Memory.Tuning`
+### `Memory.Tuning` module
 - It has single memory which can store 16 tuning functions
-- Defaultly, id:0 is 12-equal temperament, id:1 is gameboy style noise pitch.
+- Memory has these default tuning function:
+  - `0` is 12-Equal Temperament, default tuning function.
+  - `1` is Gameboy style noise pitch notation
 
 #### `Memory.Tuning.init`
 - Initialize memory
@@ -587,7 +592,7 @@ const getFreq = (note, semi = 0, cent = 0) => {
 module.exports = getFreq
 ```
 
-### `Mixer`
+### `Mixer` module
 - Mixer module controls gain of each track.
 
 #### `Mixer.reset`
@@ -622,7 +627,7 @@ aoec.Mixer.setDecibel(1, 12)
 aoec.Mixer.getGain(1) // approximately 1.0
 ```
 
-### `Scheduler`
+### `Scheduler` module
 - Scheduler module controls automation and user's scheduling function.
 
 #### `Scheduler.setTempo`
