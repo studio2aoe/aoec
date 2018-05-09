@@ -47,6 +47,7 @@ class Instrument {
         this.__seqD.init()
     }
   }
+
   setVol (volL, volR) {
     this.setVolL(volL)
     this.setVolR(volR)
@@ -65,6 +66,8 @@ class Instrument {
     this.__seqE.init()
     this.__seqW.init()
   }
+
+  setInv (isInv) { this.__inv = check.boolean(isInv) }
 
   setTuneType (id) { this.__tuneType = checkHex(id) }
 

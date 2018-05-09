@@ -22,7 +22,6 @@
 - Write Documentation
 - `Processor` implementation based on `AudioWorklet`
 - API for access tuning function memory.
-- setInv function of instrument object.
 - Quick automation command (like `0CC`)
 
 ## Require
@@ -225,6 +224,14 @@ inst3.setVol(undefined, 0x8) // Set volume only Right: 8, left volume isn't chan
 ```javascript
 inst1.setVolL(0xF) // It is same to inst1.setVol(0xF)
 inst1.setVolR(0xF) // It is same to inst1.setVol(undefined, 0xF)
+```
+
+#### `setInv`
+- Set inversed waveform
+- Parameter is boolean, it means 'is waveform inversed?'
+
+```javascript
+inst1.setInv(true)
 ```
 
 #### `setTuneType`
