@@ -529,6 +529,7 @@ Inst2.setInst(3)
 - `note` is 3-byte string, musical note for using `setNote` function of instrument object.
 - `semi` is number, transposition of pitch by semitone (1/12 octave) unit.
 - `cent` is number, transposition of pitch by cent (1/1200 octave) unit.
+- Return value is frequency
 - Following example is source of 12-equal temperament function(id: 0), exported `getFreq` is tuning function.
 
 ```javascript
