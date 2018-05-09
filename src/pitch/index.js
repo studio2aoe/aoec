@@ -3,8 +3,15 @@ const noisegb = require('./noisegb')
 
 const TUNE_FUNC = new Array(16)
 
-TUNE_FUNC[0] = equal12
-TUNE_FUNC[1] = noisegb
+/**
+ * Initialize tuning function memory
+ */
+const init = () => {
+  TUNE_FUNC.fill(undefined)
+  TUNE_FUNC[0] = equal12
+  TUNE_FUNC[1] = noisegb
+}
+init()
 
 /**
  * Get frequency of musical note.
@@ -22,11 +29,12 @@ const getFreq = (idx, note, semi = 0, cent = 0) => {
  * @param {Number} idx Index of tunings.
  * @param {Function} func Frequency function called when 'getFreq' is called. function must returns finite positive number
  */
-const setTune = (idx, func) => {
+const write = (idx, func) => {
   TUNE_FUNC[idx] = func
 }
 
 module.exports = {
   getFreq: getFreq,
-  setTune: setTune
+  init: init,
+  write: write
 }

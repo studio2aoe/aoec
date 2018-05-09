@@ -21,7 +21,6 @@
 - `Instrument` type `S`: PCM Sampler track. generate sample-based signal. It works like Famicom DPCM or Gameboy WAV track.
 - Write Documentation
 - `Processor` implementation based on `AudioWorklet`
-- API for access tuning function memory.
 - Quick automation command (like `0CC`)
 
 ## Require
@@ -470,6 +469,83 @@ Inst2.setInst(3)
  * Inst2.setBank(0)
  * Inst2.setE(0xEF)
  */
+```
+
+### `Memory.Tuning`
+- It has single memory which can store 16 tuning functions
+- Defaultly, id:0 is 12-equal temperament, id:1 is gameboy style noise pitch.
+
+#### `Memory.Tuning.init`
+- Initialize memory
+#### `Memory.Tuning.write`
+- Write tuning function to memory.
+- First param is id, second param is function or lambda-expression.
+#### How to write tuning function
+- Tuning function has 3 parameter, `note`, `semi`, `cent`.
+- `note` is 3-byte string, musical note for using `setNote` function of instrument object.
+- `semi` is number, transposition of pitch by semitone (1/12 octave) unit.
+- `cent` is number, transposition of pitch by cent (1/1200 octave) unit.
+- Following example is source of 12-equal temperament function(id: 0), exported `getFreq` is tuning function.
+
+```javascript
+/* Alias */
+
+/** Frequency of Pitch Standard (A4=440) */
+const STANDARD_A4 = 440
+
+/** Tone name */
+const NAME_TO_CENT = Object.freeze({
+  'C': 0,
+  'D': 200,
+  'E': 400,
+  'F': 500,
+  'G': 700,
+  'A': 900,
+  'B': 1100,
+  'c': 0,
+  'd': 200,
+  'e': 400,
+  'f': 500,
+  'g': 700,
+  'a': 900,
+  'b': 1100
+})
+
+/** Halftone sign */
+const SIGN_TO_CENT = Object.freeze({
+  '#': 100,
+  '+': 100,
+  'b': -100,
+  '-': -100,
+  ' ': 0
+})
+
+/**
+ * Get cent value of musical note.
+ * @param {String} note Musical note. (eg. 'A 4', 'C#5', 'Gb2')
+ * @param {Number} semi Transpose note by semitone unit
+ * @param {Number} cent Detuning pitch by cent unit.
+ */
+const getCent = (note, semi = 0, cent = 0) => {
+  const name = NAME_TO_CENT[note[0]]
+  const sign = SIGN_TO_CENT[note[1]]
+  const octa = (parseInt(note[2]) + 1) * 1200
+  return name + sign + octa + (semi * 100) + cent
+}
+
+/**
+ * Get frequency of musical note.
+ * @param {String} note Musical note. (eg. 'A 4', 'C#5', 'Gb2')
+ * @param {Number} semi Transpose note by semitone unit
+ * @param {Number} cent Detuning pitch by cent unit.
+ */
+const getFreq = (note, semi = 0, cent = 0) => {
+  const centVal = getCent(note, semi, cent)
+  const freqRatio = (centVal - 6900) / 1200
+  return STANDARD_A4 * Math.pow(2, freqRatio)
+}
+
+module.exports = getFreq
 ```
 
 ### `Mixer`

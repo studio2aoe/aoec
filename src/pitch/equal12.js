@@ -1,3 +1,8 @@
+/* Alias */
+
+/** Frequency of Pitch Standard (A4=440) */
+const STANDARD_A4 = 440
+
 /** Tone name */
 const NAME_TO_CENT = Object.freeze({
   'C': 0,
@@ -47,7 +52,7 @@ const getCent = (note, semi = 0, cent = 0) => {
 const getFreq = (note, semi = 0, cent = 0) => {
   const centVal = getCent(note, semi, cent)
   const freqRatio = (centVal - 6900) / 1200
-  return 440 * Math.pow(2, freqRatio)
+  return STANDARD_A4 * Math.pow(2, freqRatio)
 }
 
 module.exports = getFreq
