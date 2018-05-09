@@ -2,7 +2,27 @@
 - Web-audio-based chiptune sound engine
 - This is part of aoetracker
 
-## GOAL
+## Index
+- [Goal](#goal)
+- [Implemented](#implemented)
+- [To do](#to-do)
+- [Requide](#require)
+- [How to load](#how-to-load)
+- [How to use](#how-to-use)
+  - [`Processor` module](#-processor-module)
+  - [`Instrument` module](#-instrument-module)
+  - [Each instrument object (from `Instrument.getInst()`)](#each-instrument-object-from-instrument-getinst-)
+  - [`Memory.Automation`](#-memory-automation-)
+  - [`Memory.Waveform`](#-memory-waveform-)
+  - [`Memory.Oscillator`](#-memory-oscillator-)
+  - [`Memory.Instrument`](#-memory-instrument-)
+  - [`Memory.Tuning`](#-memory-tuning-)
+  - [`Mixer`](#-mixer-)
+  - [`Scheduler`](#-scheduler-)
+- [License](#license)
+
+## Goal
+
 ### PSG-like chiptune sound
 - GB, NES style 4-bit quantized sound
 - It doesn't emulate any chip but works just similar way
@@ -17,7 +37,7 @@
 - `Mixer`: Control gain of each track.
 - `Scheduler`: Control automation table and tempo
 
-## TO DO
+## To do
 - `Instrument` type `S`: PCM Sampler track. generate sample-based signal. It works like Famicom DPCM or Gameboy WAV track.
 - Write Documentation
 - `Processor` implementation based on `AudioWorklet`
@@ -29,6 +49,7 @@
     - NodeJs runtime (Tested on NodeJs 8.x LTS + npm web-audio-api + npm speaker)
 
 ## How to load
+
 ### Load on Browser
 - Download `aoec.bundle.js` on release
 - Load on browser
@@ -118,6 +139,7 @@ const config = {
 ## How to use
 
 ### `Processor` module
+
 #### `Processor.init`
 - Initialize processor module.
 - First parameter is AudioContext object.
@@ -160,6 +182,7 @@ aoec.Processor.stop()
 ```
 
 ### `Instrument` module
+
 #### `Instrument.init`
 - Initialize instruments(tracks).
 - Parameter is type string, it determines how many tracks are created and type of each track.
@@ -194,6 +217,7 @@ const Type3 = aoec.Instrument.getType(3) // return 'N' (Noise)
 ```
 
 ### Each instrument object (from `Instrument.getInst()`)
+
 #### `setNote`
 - Set pitch notation of instrument.
 - Parameter is note string, it's syntax differs by tuning function.
@@ -287,14 +311,18 @@ inst1.release()
 
 ### `Memory.Automation`
 It has 4 memory for automation type `A`, `D`, `E`, `W`, each memory can store 256 automation sequence.
+
 #### `Memory.Automation.init`
 - Initialize memory, all memories will be erased.
+
 #### `Memory.Automation.read`
 - Read sequence from memory.
 - First param is automation type, Second is sequence id.
+
 #### `Memory.Automation.write`
 - Write sequence to memory.
 - First param is automation type, Second is sequence id, Third is sequence data.
+
 #### How to write sequence data
 - Sequence data object is composed 4 properties: `name`, `list`, `loopstart`, `loopend`.
   - `name` is name of automation sequence. It must be string type, max 32-bytes.
@@ -379,12 +407,15 @@ Inst1.setW(0x04)
 
 #### `Memory.Waveform.init`
 - Initialize memory, all memories will be erased.
+
 #### `Memory.Waveform.read`
 - Read waveform from memory.
 - First param is waveform id.
+
 #### `Memory.Waveform.write`
 - Write waveform to memory.
 - First param is waveform id, Second is waveform data.
+
 #### How to write waveform data
 - Waveform data has 2 properties, `name` and `list`
   - `name` is name of waveform. It must be string type, max 32-bytes.
@@ -406,12 +437,15 @@ aoec.Memory.Waveform.write(0x37, {
 
 #### `Memory.Oscillator.init`
 - Initialize memory, all memories will be erased.
+
 #### `Memory.Oscillator.read`
 - Read function from memory.
 - First param is function id.
+
 #### `Memory.Oscillator.write`
 - Write function to memory.
 - First param is function id, Second is function data.
+
 #### How to write function data
 - Function data has 2 properties, `name` and `func`
   - `name` is name of function. It must be string type, max 32-bytes.
@@ -439,12 +473,15 @@ aoec.Memory.Oscillator.write(0x40, {
 
 #### `Memory.Instrument.init`
 - Initialize memory, all memories will be erased.
+
 #### `Memory.Instrument.read`
 - Read preset from memory.
 - First param is function id.
+
 #### `Memory.Instrumemt.write`
 - Write preset to memory.
 - First param is function id, Second is preset data.
+
 #### How to write function data
 - preset data has 7 properties, `name`, `tuneType`, `bank`, `seqA`, `seqD`, `seqE`, `seqW`
   - `name` is name of preset. It must be string type, max 32-bytes.
@@ -477,9 +514,11 @@ Inst2.setInst(3)
 
 #### `Memory.Tuning.init`
 - Initialize memory
+
 #### `Memory.Tuning.write`
 - Write tuning function to memory.
 - First param is id, second param is function or lambda-expression.
+
 #### How to write tuning function
 - Tuning function has 3 parameter, `note`, `semi`, `cent`.
 - `note` is 3-byte string, musical note for using `setNote` function of instrument object.
@@ -550,19 +589,24 @@ module.exports = getFreq
 
 ### `Mixer`
 - Mixer module controls gain of each track.
+
 #### `Mixer.reset`
 - Reset mixer gain values to default. Default value is 0.25 = 0.0dB
+
 #### `Mixer.getGain`
 - Get gain value from track.
 - Parameter is ID of track
+
 #### `Mixer.setGain`
 - Set gain value to track.
 - First param is ID of track, second is gain value.
   - Gain value is real number in range 0.0 to 1.0
+
 #### `Mixer.getDecibel`
 - Get gain value of decibel unit from track.
 - Parameter is ID of track.
 - Return value is calculated decibel unit. 0.25 is calculated to 0.0dB
+
 #### `Mixer.setDecibel`
 - Set gain value by decibel unit
 - First param is ID of track, second is gain value of decibel unit.
@@ -580,10 +624,13 @@ aoec.Mixer.getGain(1) // approximately 1.0
 
 ### `Scheduler`
 - Scheduler module controls automation and user's scheduling function.
+
 #### `Scheduler.setTempo`
 - Set tempo value. Param is tempo value of BPM unit.
+
 #### `Scheduler.getTempo`
 - Get tempo value. value is BPM unit.
+
 #### `Scheduler.getPeriod`
 - Get 1-tick(step) period of automation. It is 1/24 beat, so it differs by tempo value.
 - Return value is sample (1/44100hz) unit.
@@ -608,3 +655,8 @@ aoec.Scheduler.setFunc(count => {
 })
 ```
 
+## License
+The MIT License (MIT)
+Copyright (c) 2018 [studio2AOE](https://github.com/studio2aoe)
+
+See [LICENSE.md](./LICENSE.md)
