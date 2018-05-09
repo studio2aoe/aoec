@@ -38,7 +38,6 @@
 - `Scheduler`: Control automation sequence and tempo
 
 ## To do
-- Quick automation function: Set automation data directly
 - Create GUI demonstration
 - `Instrument` type `S`: PCM Sampler track. generate sample-based signal. It works like Famicom DPCM or Gameboy WAV track.
 - `Processor` implementation based on `AudioWorklet`
