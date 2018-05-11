@@ -16,9 +16,10 @@
   "main": "src/index.js",
   "scripts": {
     "build": "webpack",
-    "test": "mocha $(find ./ -name '*.test.js')",
+    "test": "mocha $(find ./test/ -name '*.test.js')",
     "lint": "eslint ./src ./test ./demo"
   },
+  "license": "MIT",
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
