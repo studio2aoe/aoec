@@ -2,44 +2,32 @@ const path = require('path')
 const webpack = require('webpack')
 
 const config = {
-  context: path.resolve(__dirname, 'src'),
+  mode: 'none',
   entry: {
-    aoec: './index.js'
+    aoec: './src/index.js',
+    demo: './demo/index-browser.js'
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: './[name].bundle.js',
+    filename: '[name].bundle.js',
     libraryTarget: 'umd',
-    library: 'aoec'
+    library: '[name]'
   },
   module: {
-    rules: [
-      // Compile ES6
-      {
-        test: /\.js/,
-        include: path.resolve(__dirname, 'src'),
-        use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              presets: [
-                'env'
-              ]
-            }
-          },
-          {
-            loader: 'eslint-loader'
-          }
-        ]
-      }
-    ]
+    rules: [{
+      test: /\.js/,
+      include: [path.resolve(__dirname, 'src'), path.resolve(__dirname, 'demo')],
+      use: [{
+        loader: 'babel-loader',
+        options: { presets: ['env'] }
+      }]
+    }]
+  },
+  optimization: {
+    minimize: true
   },
   plugins: [
-    new webpack.optimize.UglifyJsPlugin({
-      compressor: {
-        warnings: false
-      }
-    })
+    new webpack.LoaderOptionsPlugin({ options: { loader: 'eslint-loader' } })
   ]
 }
 

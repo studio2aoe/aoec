@@ -1,6 +1,10 @@
 const Processor = require('./processor')
-const GeneratorSet = require('./wavegenerator')
-const WaveformMemory = require('./waveform')
+const Instrument = require('./instrument')
+const InstrumentMemory = require('./instrument/memory')
+const WaveformMemory = require('./waveform').Memory
+const OscillatorMemory = require('./oscil').Memory
+const AutomationMemory = require('./automation').Memory
+const TuningMemory = require('./pitch')
 const Mixer = require('./mixer')
 const Scheduler = require('./scheduler')
 
@@ -12,36 +16,48 @@ module.exports = {
     play: Processor.play,
     stop: Processor.stop
   },
-  GeneratorSet: {
-    init: GeneratorSet.init,
-    send: GeneratorSet.send,
-    sendFreq: GeneratorSet.sendFreq,
-    sendNum: GeneratorSet.sendNum,
-    sendInv: GeneratorSet.sendInv,
-    sendVolL: GeneratorSet.sendVolL,
-    sendVolR: GeneratorSet.sendVolR,
-    sendMute: GeneratorSet.sendMute,
-    getFreq: GeneratorSet.getFreq,
-    getNum: GeneratorSet.getNum,
-    getInv: GeneratorSet.getInv,
-    getVolL: GeneratorSet.getVolL,
-    getVolR: GeneratorSet.getVolR,
-    getMute: GeneratorSet.getMute,
-    getString: GeneratorSet.getString
+  Instrument: {
+    init: Instrument.init,
+    getInst: Instrument.getInst,
+    getType: Instrument.getType
   },
-  WaveformMemory: {
-    write: WaveformMemory.write,
-    read: WaveformMemory.read,
-    setLock: WaveformMemory.setLock,
-    isLock: WaveformMemory.isLock
+  Memory: {
+    Waveform: {
+      init: WaveformMemory.init,
+      read: WaveformMemory.read,
+      write: WaveformMemory.write
+    },
+    Oscillator: {
+      init: OscillatorMemory.init,
+      read: OscillatorMemory.read,
+      write: OscillatorMemory.write
+    },
+    Automation: {
+      init: AutomationMemory.init,
+      read: AutomationMemory.read,
+      write: AutomationMemory.write
+    },
+    Instrument: {
+      init: InstrumentMemory.init,
+      read: InstrumentMemory.read,
+      write: InstrumentMemory.write
+    },
+    Tuning: {
+      init: TuningMemory.init,
+      write: TuningMemory.write
+    }
   },
   Mixer: {
     reset: Mixer.reset,
     getGain: Mixer.getGain,
     setGain: Mixer.setGain,
-    setDecibel: Mixer.setDecibel
+    setDecibel: Mixer.setDecibel,
+    getDecibel: Mixer.getDecibel
   },
   Scheduler: {
+    setTempo: Scheduler.setTempo,
+    getTempo: Scheduler.getTempo,
+    getPeriod: Scheduler.getPeriod,
     setFunc: Scheduler.setFunc
   }
 }

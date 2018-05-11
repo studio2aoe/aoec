@@ -1,8 +1,12 @@
-const amplitude = require('../../amplitude')
+/* Require */
+const check = require('check-types').assert
+const misc = require('../misc')
 
+/* Alias */
 const SAMPLE_RATE = 44100
+const checkHex = misc.checkHex
 
-class WaveGenerator {
+class HexGenerator {
   constructor () {
     this.freq = 0
     this.waveNum = 0
@@ -10,7 +14,6 @@ class WaveGenerator {
     this.volL = 0
     this.volR = 0
     this.isMute = false
-    this.generatorCount = 0
   }
 
   /**
@@ -37,22 +40,7 @@ class WaveGenerator {
     const divisible = samplingCount % this.period < 1
     const repeat = divisible ? this.repeat + 1 : this.repeat
     for (let i = 0; i < repeat; i++) {
-      this.generatorClock()
-    }
-  }
-
-  generatorClock () {
-    this.generatorCount++
-    if (this.generatorCount % 32 === 0) this.generatorCount = 0
-  }
-
-  /**
-   * Set waveform number
-   * @param {Number} num Number of waveform
-   */
-  setWaveform (num) {
-    if (Number.isInteger(num) && num >= 0) {
-      this.waveNum = num
+      this.sequencer.next()
     }
   }
 
@@ -61,9 +49,7 @@ class WaveGenerator {
    * @param {boolean} inv Is waveform phase-inversed?
    */
   setInv (inv) {
-    if (typeof inv === 'boolean') {
-      this.isInv = inv
-    }
+    this.isInv = check.boolean(inv)
   }
 
   /**
@@ -71,8 +57,7 @@ class WaveGenerator {
    * @param {Number} volL Left volume. 1-digit hexadecimal. (0 to 15)
    */
   setVolL (volL) {
-    const checkVol = Number.isInteger(volL) && volL >= 0 && volL <= 15
-    if (checkVol) this.volL = volL
+    this.volL = checkHex(volL)
   }
 
   /**
@@ -80,8 +65,7 @@ class WaveGenerator {
    * @param {Number} volR Right volume. 1-digit hexadecimal. (0 to 15)
    */
   setVolR (volR) {
-    const checkVol = Number.isInteger(volR) && volR >= 0 && volR <= 15
-    if (checkVol) this.volR = volR
+    this.volR = checkHex(volR)
   }
 
   /**
@@ -89,35 +73,26 @@ class WaveGenerator {
    * @param {Boolean} mute true: mute generator, false: unmute generator
    */
   setMute (mute) {
-    if (typeof mute === 'boolean') {
-      this.isMute = mute
-    }
+    this.isMute = check.boolean(mute)
   }
 
   /**
-   * Calculate hexadecimal audio signal of generator. need implemented on child class.
-   * @return {Number} 1-digit hexadecimal
+   * Get left, rightvolume of generator
+   * @return {Array} [1-digit Hex, 1-digit Hex]
    */
-  calcHexSignal () { return 0 }
+  getVol () {
+    if (this.isMute === true || this.freq === 0) return [0, 0]
+    return [this.volL, this.volR]
+  }
 
   /**
-   * Get hexadecimal audio signal of generator
-   * @return {Number} 1-digit hexadecimal or 7.5 (no signal)
+   * Get primary signal of generator
+   * @return {Number} 1-digit hexadecimal
    */
   getHexSignal () {
-    if (this.isMute === true || this.freq === 0) return [7.5, 7.5]
-
-    let primarySignal = this.calcHexSignal()
-    let mixedL =
-      (this.volL === 0) ? 7.5 : amplitude(primarySignal, this.volL)
-    let mixedR =
-      (this.volL === 0) ? 7.5 : amplitude(primarySignal, this.volR)
-
-    return [
-      (this.isInv) ? 15 - mixedL : mixedL,
-      (this.isInv) ? 15 - mixedR : mixedR
-    ]
+    let signal = this.sequencer.read()
+    return (this.isInv) ? 15 - signal : signal
   }
 }
 
-module.exports = WaveGenerator
+module.exports = HexGenerator
