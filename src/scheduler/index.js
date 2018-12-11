@@ -1,6 +1,6 @@
 /* Require */
 const check = require('check-types').assert
-const Instrument = require('../instrument')
+const TrackList = require('../tracklist')
 
 /* Alias */
 const SAMPLE_RATE = 44100
@@ -12,7 +12,7 @@ const SCHEDULER = {
   customfunc: (count) => null,
   executeInst: (count) => {
     if (count % (SCHEDULER.period) < 1) {
-      Instrument.getList().forEach(elem => {
+      TrackList.getList().forEach(elem => {
         elem.execute()
         elem.next()
       })

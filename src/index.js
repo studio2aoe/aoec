@@ -1,6 +1,6 @@
 const Processor = require('./processor')
-const Instrument = require('./instrument')
-const InstrumentMemory = require('./instrument/memory')
+const TrackList = require('./tracklist')
+const InstrumentMemory = require('./instrument').Memory
 const WaveformMemory = require('./waveform').Memory
 const OscillatorMemory = require('./oscil').Memory
 const AutomationMemory = require('./automation').Memory
@@ -16,10 +16,10 @@ module.exports = {
     play: Processor.play,
     stop: Processor.stop
   },
-  Instrument: {
-    init: Instrument.init,
-    getInst: Instrument.getInst,
-    getType: Instrument.getType
+  TrackList: {
+    init: TrackList.init,
+    getTrack: TrackList.getTrack,
+    getType: TrackList.getType
   },
   Memory: {
     Waveform: {
