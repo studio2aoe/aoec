@@ -1,4 +1,4 @@
-# aoec v0.4.0
+# aoec v0.4.1
 - Web-audio-based chiptune sound engine
 - This is part of aoetracker
 
