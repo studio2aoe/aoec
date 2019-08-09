@@ -7,3 +7,4 @@ webpack.config.js
 .eslintignore
 .eslintrc
 .gitignore
+.babelrc
