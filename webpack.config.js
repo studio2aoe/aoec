@@ -18,8 +18,7 @@ const config = {
       test: /\.js/,
       include: [path.resolve(__dirname, 'src'), path.resolve(__dirname, 'demo')],
       use: [{
-        loader: 'babel-loader',
-        options: { presets: ['env'] }
+        loader: 'babel-loader'
       }]
     }]
   },

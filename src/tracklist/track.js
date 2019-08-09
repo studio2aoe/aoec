@@ -52,6 +52,7 @@ class Track {
     this.setVolL(volL)
     this.setVolR(volR)
   }
+
   setVolL (volL) {
     try {
       this.__volL = checkHex(volL)
@@ -59,6 +60,7 @@ class Track {
     this.__seqE.init()
     this.__seqW.init()
   }
+
   setVolR (volR) {
     try {
       this.__volR = checkHex(volR)

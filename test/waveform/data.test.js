@@ -24,7 +24,7 @@ const INVALID_TYPE = [
   '0', '0', '0', '0', '0', '0', '0', '0'
 ]
 
-const INVALID_SIZE_0 = [ 0xF, 0xF, 0x0, 0x0 ]
+const INVALID_SIZE_0 = [0xF, 0xF, 0x0, 0x0]
 
 describe('Test waveform/data.js', () => {
   describe('Test constructor', () => {

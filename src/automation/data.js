@@ -26,10 +26,15 @@ class AutomationData {
     this.loopstart = (init.loopstart === undefined) ? EMPTY.loopstart : init.loopstart
     this.loopend = (init.loopend === undefined) ? EMPTY.loopend : init.loopend
   }
+
   set name (name) { this[__name] = check.string(name).slice(0, 32) }
+
   get name () { return this[__name] }
+
   set list (list) { this[__list] = list.map(elem => checkByte(elem)) }
+
   get list () { return this[__list] }
+
   set loopstart (id) {
     try {
       this[__loopstart] = checkID(id, this[__list])
@@ -40,6 +45,7 @@ class AutomationData {
   }
 
   get loopstart () { return this[__loopstart] }
+
   set loopend (id) {
     try {
       this[__loopend] = checkID(id, this[__list])
@@ -48,6 +54,7 @@ class AutomationData {
       else throw error
     }
   }
+
   get loopend () { return this[__loopend] }
 }
 

@@ -19,13 +19,16 @@ class AutomationSequencer {
     this[__current] = 0
     this[__released] = false
   }
+
   init () {
     this[__current] = 0
     this[__released] = false
   }
+
   read () {
     return this[__list][this[__current]]
   }
+
   next () {
     const hasLoopStart = this[__loopstart] >= 0
     const hasLoopEnd = this[__loopend] >= 0 && this[__loopend] >= this[__loopstart]
@@ -35,6 +38,7 @@ class AutomationSequencer {
     const hasNext = this[__current] < jumpfrom
     return hasNext ? (this[__current] += 1) : (this[__current] = jumpto)
   }
+
   release () {
     this[__released] = true
   }

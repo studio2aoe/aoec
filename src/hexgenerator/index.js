@@ -41,9 +41,9 @@ const voltage = (phase) => {
   let totalSignalL = 0
   let totalSignalR = 0
   LIST.map((elem, idx) => {
-    let signal = elem.getHexSignal(phase)
-    let mixerVol = Mixer.getGain(idx)
-    let vol = elem.getVol()
+    const signal = elem.getHexSignal(phase)
+    const mixerVol = Mixer.getGain(idx)
+    const vol = elem.getVol()
     totalSignalL += (amplitude(signal, vol[0]) - 7.5) / 7.5 * mixerVol
     totalSignalR += (amplitude(signal, vol[1]) - 7.5) / 7.5 * mixerVol
     elem.processorClock(phase)

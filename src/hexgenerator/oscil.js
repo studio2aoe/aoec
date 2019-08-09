@@ -18,6 +18,7 @@ class OscGenerator extends HexGenerator {
     this.generatorType = 'O'
     this.sequencer = new Sequencer(Memory.read(0))
   }
+
   setWaveform (id) {
     this.waveNum = checkID(id)
     this.sequencer = new Sequencer(Memory.read(id))

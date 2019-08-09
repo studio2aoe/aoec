@@ -10,12 +10,14 @@ class NoiseGenerator extends HexGenerator {
     this.generatorType = 'N'
     this.sequencer = new Lfsr()
   }
+
   setFreq (freq) {
     if (Number.isFinite(freq) && freq > 0) {
       this.freq = freq
       this.setPeriod(freq)
     }
   }
+
   setWaveform (id) {
     if (id === 1) {
       this.sequencer.setMode(true)
