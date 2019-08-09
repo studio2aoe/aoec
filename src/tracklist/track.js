@@ -5,14 +5,14 @@ const Automation = require('../automation')
 const Pitch = require('../pitch')
 const misc = require('../misc')
 const mixVol = require('../volume')
-const Memory = require('./memory')
+const Instrument = require('../instrument')
 
 /* Alias */
 const checkHex = misc.checkHex
 const checkUByte = misc.checkUByte
 const convertSByte = misc.convertSByte
 
-class Instrument {
+class Track {
   constructor (id) {
     this.__id = misc.checkArrayID(id, HexGenerator.getString())
     this.__type = HexGenerator.getType(this.__id)
@@ -52,6 +52,7 @@ class Instrument {
     this.setVolL(volL)
     this.setVolR(volR)
   }
+
   setVolL (volL) {
     try {
       this.__volL = checkHex(volL)
@@ -59,6 +60,7 @@ class Instrument {
     this.__seqE.init()
     this.__seqW.init()
   }
+
   setVolR (volR) {
     try {
       this.__volR = checkHex(volR)
@@ -123,7 +125,7 @@ class Instrument {
 
   setInst (id) {
     this.__inst = checkUByte(id)
-    const data = Memory.read(id)
+    const data = Instrument.Memory.read(id)
     if (data.inv) this.setInv(data.inv)
     if (data.tuneType) this.setTuneType(data.tuneType)
     if (data.bank) this.setBank(data.bank)
@@ -188,4 +190,4 @@ class Instrument {
     this.__seqW.next()
   }
 }
-module.exports = Instrument
+module.exports = Track

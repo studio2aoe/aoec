@@ -18,6 +18,7 @@ class WaveGenerator extends HexGenerator {
     this.generatorType = 'C'
     this.sequencer = new Sequencer(Memory.read(0))
   }
+
   setWaveform (id) {
     this.waveNum = checkID(id)
     this.sequencer = new Sequencer(Memory.read(id))

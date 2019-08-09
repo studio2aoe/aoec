@@ -10,12 +10,15 @@ class OscillatorSequencer {
     this[__function] = data.func
     this[__current] = 0
   }
+
   init () {
     this[__current] = 0
   }
+
   read () {
     return this[__function](this[__current])
   }
+
   next () {
     const hasNext = this[__current] < WAVE_SIZE - 1
     return hasNext ? (this[__current] += 1) : (this[__current] = 0)

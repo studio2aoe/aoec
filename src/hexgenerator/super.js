@@ -90,7 +90,7 @@ class HexGenerator {
    * @return {Number} 1-digit hexadecimal
    */
   getHexSignal () {
-    let signal = this.sequencer.read()
+    const signal = this.sequencer.read()
     return (this.isInv) ? 15 - signal : signal
   }
 }

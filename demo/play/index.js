@@ -7,7 +7,7 @@ const playPreset = require('./preset')
 const playQuick = require('./setquick')
 
 const resetAll = () => {
-  const inst = [0, 1, 2, 3].map(elem => aoec.Instrument.getInst(elem))
+  const inst = [0, 1, 2, 3].map(elem => aoec.TrackList.getTrack(elem))
   inst.forEach(elem => {
     elem.setNote('---')
     elem.setVol(0, 0)

@@ -32,14 +32,14 @@ const disconnect = () => {
  */
 const play = () => {
   let sampleCount = 0
-  let buffsize = processorNode.bufferSize
+  const buffsize = processorNode.bufferSize
   processorNode.onaudioprocess = (audioEvent) => {
-    let output = [
+    const output = [
       audioEvent.outputBuffer.getChannelData(0),
       audioEvent.outputBuffer.getChannelData(1)
     ]
     for (let i = 0; i < buffsize; i++) {
-      let value = HexGenerator.voltage(sampleCount)
+      const value = HexGenerator.voltage(sampleCount)
       output[0][i] = value[0]
       output[1][i] = value[1]
       Scheduler.execute(sampleCount)
@@ -52,9 +52,9 @@ const play = () => {
  * Stop processor.
  */
 const stop = () => {
-  let buffsize = processorNode.bufferSize
+  const buffsize = processorNode.bufferSize
   processorNode.onaudioprocess = (audioEvent) => {
-    let output = [
+    const output = [
       audioEvent.outputBuffer.getChannelData(0),
       audioEvent.outputBuffer.getChannelData(1)
     ]

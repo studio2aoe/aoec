@@ -13,8 +13,8 @@ const isHexDigit = (value) => {
  * @param {Number} cent Detuning pitch by cent unit.
  */
 const getFreq = (note, semi = 0, cent = 0) => {
-  let digit0 = parseInt(note[0], 16)
-  let digit1 = parseInt(note[1], 16)
+  const digit0 = parseInt(note[0], 16)
+  const digit1 = parseInt(note[1], 16)
   isHexDigit(digit0)
   isHexDigit(digit1)
   const s = 15 - digit0
