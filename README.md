@@ -1,3 +1,7 @@
+# The branch is deprecated
+The branch is based on ScriptProcessorNode, but it is deprecated.
+The main branch will be re-written from beginning.
+
 # aoec v0.4.1
 - Web-audio-based chiptune sound engine
 - This is part of aoetracker
