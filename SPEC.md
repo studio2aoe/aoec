@@ -33,7 +33,20 @@ Actual soundchip structs implementing above traits.
 
 ## `aoec::BuiltIn`
 - Generating mathmatically oscillated, built-in waveform
-- Noise (GB like), Pulse (with duty cycle), Triangle, Sawtooth (positive, negative)
+- BuiltIn waveform types by the first parameter
+  - `0`: Mute
+  - `1`: Pulse
+    - The second param means the duty cycle is `n/32`.
+    - example) `0x10` means `16/32`, it is 50% (square wave)
+  - `2`: Triangle
+  - `3`: Sawtooth
+    - The second param means the sawtooth directions.
+    - Even number: Decreasing sawtooth
+    - Odd number: Increasing sawtooth
+  - `4`: Noise
+    - The second param means the noise length
+    - Even number: Long noise (32768-sample length)
+    - Odd number: Short noise (93-sample length)
 
 ## `aoec::Custom`
 - Generating the 32-sample length custom waveform (It likes the wave track of Gameboy)
@@ -56,5 +69,5 @@ The structs to support the aoec soundchips
 # Memory
 The memory structs
 
-## `aoec::WaveformMemory` (private): The memory stores custom waveforms
-## `aoec::SampleMemory`   (private): The memory stores PCM samples
+## `aoec::memory::Waveform` (public): The memory stores custom waveforms
+## `aoec::memory::Sample`   (public): The memory stores PCM samples
