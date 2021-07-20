@@ -13,12 +13,12 @@ impl DAC {
     pub fn new() -> DAC {
         DAC {
             mute: false,
-            env: [1, 1]
+            env: [0, 0]
         }
     }
     pub fn reset(&mut self) {
         self.mute = false;
-        self.env = [1, 1];
+        self.env = [0, 0];
     }
     pub fn mix(&self, ch: usize, hex: u8) -> f32 {
         mix!(hex, self.env[ch])

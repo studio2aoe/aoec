@@ -1,18 +1,8 @@
-/* lib.rs
- * Manage and export the public modules
- */
-
-mod traits;
-pub use traits::Play;
-pub use traits::Control;
-
-mod soundchips;
-pub use soundchips::BuiltIn;
-// pub use soundchips::Custom;
-// pub use soundchips::Sample;
+pub mod traits;
+pub mod soundchips;
+pub mod memories;
 
 mod subchips;
-
 
 #[cfg(test)]
 mod tests {

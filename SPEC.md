@@ -1,17 +1,16 @@
 # aoec: chiptune style soundchip
 
-# Soundchips
-Generate the sound sample
+---
 
-# Traits
-All of the aoec soundchips must implement `aoec::Play`,
-and should implement `aoec::Control`
+# Traits (`aoec::traits`)
+All of the aoec soundchips must implement `aoec::traits::Play`,
+and should implement `aoec::traits::Control`
 
-## `aoec::Play`
+## `aoec::traits::Play`
 - `clock(&mut self)`: Clock the soundchip to generate the next sample
 - `read_sample(&self, ch: usize) -> f32`: Read the current sample of given channel
 
-## `aoec::Control`
+## `aoec::traits::Control`
 The setters and getters of these parameters:
   - Frequency (freq): the pitch of sound, determine clock speed
   - Volume (vol): the volume of sound
@@ -28,10 +27,12 @@ The setters and getters of these parameters:
 - `get_mute(&self) -> bool`
 - `get_param(&self, key: usize) -> u32`
 
-# Structs
+---
+
+# Soundchip module (`aoec::soundchips`)
 Actual soundchip structs implementing above traits.
 
-## `aoec::BuiltIn`
+## `aoec::soundchips::BuiltIn`
 - Generating mathmatically oscillated, built-in waveform
 - BuiltIn waveform types by the first parameter
   - `0`: Mute
@@ -48,26 +49,26 @@ Actual soundchip structs implementing above traits.
     - Even number: Long noise (32768-sample length)
     - Odd number: Short noise (93-sample length)
 
-## `aoec::Custom`
+## `aoec::soundchips::Custom`
 - Generating the 32-sample length custom waveform (It likes the wave track of Gameboy)
 - The memory limit is 65536-waveforms (ID `0x0000` \~ ID `0xFFFF`)
 
-## `aoec::Sample`
+## `aoec::soundchips::Sample`
 - Generating custom length waveform (It likes the DPCM sampler of NES)
 
 ---
 
-# Subchips
+# Subchip module (aoec::subchips)
 The structs to support the aoec soundchips
 
-## `aoec::OSC`  (private): Calculate clock speed from given frequency
-## `aoec::DAC`  (private): Convert the sound sample from hex to f32
-## `aoec::LFSR` (private): Generates the random number for noise waveform
+## `aoec::subchips::OSC`  (private): Calculate clock speed from given frequency
+## `aoec::subchips::DAC`  (private): Convert the sound sample from hex to f32
+## `aoec::subchips::LFSR` (private): Generates the random number for noise waveform
 
 ---
 
-# Memory
+# Memory module (aoec::memories)
 The memory structs
 
-## `aoec::memory::Waveform` (public): The memory stores custom waveforms
-## `aoec::memory::Sample`   (public): The memory stores PCM samples
+## `aoec::memories::Waveform` (public): The memory stores custom waveforms
+## `aoec::memories::Sample`   (public): The memory stores PCM samples

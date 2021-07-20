@@ -1,6 +1,8 @@
-use crate::subchips::dac::DAC;
-use crate::subchips::osc::OSC;
-use crate::subchips::lfsr::LFSR;
+use crate::subchips::DAC;
+use crate::subchips::OSC;
+use crate::subchips::LFSR;
+use crate::traits::Play;
+use crate::traits::Control;
 
 macro_rules! hex_pulse {
     ($duty: expr, $offset: expr) => {
@@ -35,7 +37,11 @@ macro_rules! hex_sawtooth_negative {
 const BUILTIN_WAVELENGTH: u32 = 32;
 
 enum WaveType {
-    Mute, Pulse, Triangle, Sawtooth, Noise, Preserved
+    Mute,       // 0
+    Pulse,      // 1
+    Triangle,   // 2
+    Sawtooth,   // 3
+    Noise,      // 4
 }
 
 struct HEX {
@@ -66,8 +72,8 @@ impl HEX {
 
     fn clock(&mut self) {
         match self.wtype {
+            WaveType::Mute => (),
             WaveType::Noise => self.lfsr.clock(),
-            WaveType::Preserved => (),
             _ => {
                 self.offset += 1;
                 self.offset %= 32;
@@ -77,7 +83,7 @@ impl HEX {
 
     fn is_muted(&self) -> bool {
         match self.wtype {
-            WaveType::Preserved => true,
+            WaveType::Mute => true,
             WaveType::Pulse => match self.param {
                 0x00 => true,
                 _ => false,
@@ -97,7 +103,6 @@ impl HEX {
                 _ => unreachable!()
             },
             WaveType::Noise => self.lfsr.read_hex(),
-            WaveType::Preserved => 0,
         }
     }
 
@@ -108,7 +113,7 @@ impl HEX {
             2 => WaveType::Triangle,
             3 => WaveType::Sawtooth,
             4 => WaveType::Noise,
-            _ => WaveType::Preserved
+            _ => WaveType::Mute
         }
     }
 
@@ -148,7 +153,7 @@ impl BuiltIn {
 }
 
 
-impl crate::Play for BuiltIn {
+impl Play for BuiltIn {
     fn clock(&mut self) {
         (0..self.osc.count_repeat()).for_each(|_| self.hex.clock());
         self.osc.clock();
@@ -162,7 +167,7 @@ impl crate::Play for BuiltIn {
     }
 }
 
-impl crate::Control for BuiltIn {
+impl Control for BuiltIn {
     fn set_freq(&mut self, freq: f32) {
         self.osc.set_freq(freq, BUILTIN_WAVELENGTH);
     }
