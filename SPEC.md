@@ -6,22 +6,24 @@
 All of the aoec soundchips must implement `aoec::traits::Play`,
 and should implement `aoec::traits::Control`
 
-## `aoec::traits::Play`
+## `aoec::traits::Play` (public)
 - `clock(&mut self)`: Clock the soundchip to generate the next sample
 - `read_sample(&self, ch: usize) -> f32`: Read the current sample of given channel
 
-## `aoec::traits::Control`
+## `aoec::traits::Control` (public)
 The setters and getters of these parameters:
   - Frequency (freq): the pitch of sound, determine clock speed
   - Volume (vol): the volume of sound
   - Muting (mute): If the soundchip is mute
   - Custom parameters (param): Usually used to change the timbre
 
-- `set_freq(&mut self)`
+- `set_sample_rate(&mut self, sample_rate: f32)`
+- `set_freq(&mut self, freq: f32)`
 - `set_vol(&mut self, ch: usize, vol: u8)`
 - `set_mute(&mut self, mute: bool)`
 - `set_param(&mut self, key: usize, value: u32)`
 
+- `get_sample_rate(&self) -> f32`
 - `get_freq(&self) -> f32`
 - `get_vol(&self, ch: usize) -> u8`
 - `get_mute(&self) -> bool`
@@ -32,7 +34,7 @@ The setters and getters of these parameters:
 # Soundchip module (`aoec::soundchips`)
 Actual soundchip structs implementing above traits.
 
-## `aoec::soundchips::BuiltIn`
+## `aoec::soundchips::BuiltIn` (public)
 - Generating mathmatically oscillated, built-in waveform
 - BuiltIn waveform types by the first parameter
   - `0`: Mute
@@ -49,11 +51,11 @@ Actual soundchip structs implementing above traits.
     - Even number: Long noise (32768-sample length)
     - Odd number: Short noise (93-sample length)
 
-## `aoec::soundchips::Custom`
+## `aoec::soundchips::Custom` (public)
 - Generating the 32-sample length custom waveform (It likes the wave track of Gameboy)
 - The memory limit is 65536-waveforms (ID `0x0000` \~ ID `0xFFFF`)
 
-## `aoec::soundchips::Sample`
+## `aoec::soundchips::Sample` (public)
 - Generating custom length waveform (It likes the DPCM sampler of NES)
 
 ---

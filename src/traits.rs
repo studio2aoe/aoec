@@ -9,11 +9,13 @@ pub trait Play {
 }
 
 pub trait Control {
+    fn set_sample_rate(&mut self, sample_rate: f32);
     fn set_freq(&mut self, freq: f32);
     fn set_vol(&mut self, ch: usize, vol: u8);
     fn set_mute(&mut self, mute: bool);
     fn set_param(&mut self, key: usize, value: u32);
 
+    fn get_sample_rate(&self) -> f32;
     fn get_freq(&self) -> f32;
     fn get_vol(&self, ch: usize) -> u8;
     fn get_mute(&self) -> bool;

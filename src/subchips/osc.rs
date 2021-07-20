@@ -1,14 +1,18 @@
 pub struct OSC {
-    sample_rate: u32,
+    sample_rate: f32,
+    wavelength: u32,
+    freq: f32,
     repeat: u32,
     period: f32,
     offset: f32
 }
 impl OSC
 {
-    pub fn new(sample_rate: u32) -> OSC {
+    pub fn new(sample_rate: f32, wavelength: u32) -> OSC {
         let mut new = OSC {
             sample_rate,
+            wavelength,
+            freq: 440_f32,
             period: 0_f32,
             repeat: 0_u32,
             offset: 0_f32,
@@ -17,7 +21,7 @@ impl OSC
         new
     }
     pub fn init(&mut self) {
-        self.set_freq(440f32, 32);
+        self.refresh_freq();
         self.reset_offset();
     }
 
@@ -40,24 +44,48 @@ impl OSC
         self.offset += 1.0;
     }
 
-    pub fn set_freq(&mut self, freq: f32, wavelength: u32) {
-        let freq = match freq {
+    pub fn set_sample_rate(&mut self, sample_rate: f32) {
+        self.sample_rate = match sample_rate {
+            sample_rate if sample_rate == 0f32 => panic!("sample_rate value must not be 0"),
+            _ => sample_rate
+        };
+        self.refresh_freq();
+    }
+
+    pub fn set_wavelength(&mut self, wavelength: u32) {
+        self.wavelength = match wavelength {
+            wavelength if wavelength == 0u32 => panic!("wavelength value must not be 0"),
+            _ => wavelength
+        };
+        self.refresh_freq();
+    }
+
+    pub fn set_freq(&mut self, freq: f32) {
+        self.freq = match freq {
             freq if freq  < 0f32 => freq * -1f32, // use absolute value
             freq if freq == 0f32 => panic!("freq value must not be 0.0"),
             _ => freq,
         };
+        self.refresh_freq();
+    }
 
-        let clock_freq = freq * wavelength as f32;
+    pub fn get_sample_rate(&self) -> f32 {
+        self.sample_rate
+    }
+
+    pub fn get_wavelength(&self) -> u32 {
+        self.wavelength
+    }
+
+    pub fn get_freq(&self) -> f32 {
+        self.freq
+    }
+
+    fn refresh_freq(&mut self) {
+        let clock_freq = self.freq * self.wavelength as f32;
         let ratio = clock_freq / (self.sample_rate as f32);
 
         self.repeat = ratio.trunc() as u32;
         self.period = 1.0 / ratio.fract();
-    }
-
-    pub fn get_freq(&self, wavelength: u32) -> f32 {
-        let ratio = self.repeat as f32 + 1.0 / self.period;
-        let clock_freq = ratio * self.sample_rate as f32;
-        let freq = clock_freq / wavelength as f32;
-        freq
     }
 }
