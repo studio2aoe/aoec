@@ -15,7 +15,3 @@
 
 ## Browser demo
 see `https://github.com/studio2aoe/aoec-browser-demo`
-
-## Fix the bugs
-  - Wrong behavor of `set_mute` function of builtin soundchip
-
