@@ -39,8 +39,8 @@ Actual soundchip structs implementing above traits.
 - BuiltIn waveform types by the first parameter
   - `0`: Mute
   - `1`: Pulse
-    - The second param means the duty cycle is `n/32`.
-    - example) `0x10` means `16/32`, it is 50% (square wave)
+    - The second param means the duty cycle is `n/16`.
+    - example) `0x08` means `8/16`, it is 50% (square wave)
   - `2`: Triangle
   - `3`: Sawtooth
     - The second param means the sawtooth directions.

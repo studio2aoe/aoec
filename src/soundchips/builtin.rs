@@ -95,7 +95,10 @@ impl HEX {
     fn read_hex(&self) -> u8 {
         match self.wtype {
             WaveType::Mute => 0,
-            WaveType::Pulse => hex_pulse!(self.param as usize, self.offset),
+            WaveType::Pulse => hex_pulse!(
+                self.param as usize * 2, 
+                self.offset
+            ),
             WaveType::Triangle => hex_triangle!(self.offset),
             WaveType::Sawtooth => match self.param % 2 {
                 0 => hex_sawtooth_negative!(self.offset),
