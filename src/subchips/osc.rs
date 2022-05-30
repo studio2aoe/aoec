@@ -69,10 +69,6 @@ impl OSC
         self.refresh_freq();
     }
 
-    pub fn get_sample_rate(&self) -> f32 {
-        self.sample_rate
-    }
-
     pub fn get_wavelength(&self) -> u32 {
         self.wavelength
     }

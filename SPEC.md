@@ -12,18 +12,22 @@ and should implement `aoec::traits::Control`
 
 ## `aoec::traits::Control` (public)
 The setters and getters of these parameters:
+  - Sample Rate (sample_rate)
+  - Tempo (tempo): determine the clock period of scheduler. it needs to implement automation for chip control.
   - Frequency (freq): the pitch of sound, determine clock speed
   - Volume (vol): the volume of sound
   - Muting (mute): If the soundchip is mute
   - Custom parameters (param): Usually used to change the timbre
 
 - `set_sample_rate(&mut self, sample_rate: f32)`
+- `set_tempo(&mut self, tempo: f32)`
 - `set_freq(&mut self, freq: f32)`
 - `set_vol(&mut self, ch: usize, vol: u8)`
 - `set_mute(&mut self, mute: bool)`
 - `set_param(&mut self, key: usize, value: u32)`
 
 - `get_sample_rate(&self) -> f32`
+- `get_tempo(&self) -> f32`
 - `get_freq(&self) -> f32`
 - `get_vol(&self, ch: usize) -> u8`
 - `get_mute(&self) -> bool`
@@ -63,14 +67,14 @@ Actual soundchip structs implementing above traits.
 # Subchip module (aoec::subchips)
 The structs to support the aoec soundchips
 
-## `aoec::subchips::OSC`  (private): Calculate clock speed from given frequency
-## `aoec::subchips::DAC`  (private): Convert the sound sample from hex to f32
-## `aoec::subchips::LFSR` (private): Generates the random number for noise waveform
+## `aoec::subchips::Metronome` (private)
+Determines if the scheduler clocks at a given tempo.
 
----
+## `aoec::subchips::OSC`  (private)
+Determines if the hex generator clocks at a given frequency.
 
-# Memory module (aoec::memories)
-The memory structs
+## `aoec::subchips::DAC`  (private)
+Convert the sound sample from hex to f32
 
-## `aoec::memories::Waveform` (public): The memory stores custom waveforms
-## `aoec::memories::Sample`   (public): The memory stores PCM samples
+## `aoec::subchips::LFSR` (private)
+Generates the random number for noise waveform
