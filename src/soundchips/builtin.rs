@@ -194,8 +194,11 @@ impl Control for BuiltIn {
         self.osc.set_wavelength(BUILTIN_WAVELENGTH);
         self.osc.set_freq(freq);
     }
-    fn set_vol(&mut self, ch: usize, vol: u8) {
-        self.dac.env[ch] = vol;
+    fn set_env(&mut self, env: u8) {
+        self.dac.env = env;
+    }
+    fn set_pan(&mut self, pan: u8) {
+        self.dac.pan = pan;
     }
     fn set_mute(&mut self, mute: bool) {
         self.dac.mute = mute;
@@ -223,8 +226,11 @@ impl Control for BuiltIn {
     fn get_freq(&self) -> f32 {
         self.osc.get_freq()
     }
-    fn get_vol(&self, ch: usize) -> u8 {
-        self.dac.env[ch]
+    fn get_env(&self) -> u8 {
+        self.dac.env
+    }
+    fn get_pan(&self) -> u8 {
+        self.dac.pan
     }
     fn get_mute(&self) -> bool {
         self.dac.mute
