@@ -1,7 +1,10 @@
+use crate::param::Frequency;
+use crate::param::Param;
+
 pub struct OSC {
     sample_rate: f32,
     wavelength: u32,
-    freq: f32,
+    freq: Frequency,
     repeat: u32,
     period: f32,
     offset: f32
@@ -12,7 +15,7 @@ impl OSC
         let mut new = OSC {
             sample_rate,
             wavelength,
-            freq: 440_f32,
+            freq: Frequency::new(440_f32),
             period: 0_f32,
             repeat: 0_u32,
             offset: 0_f32,
@@ -42,6 +45,9 @@ impl OSC
 
     pub fn clock(&mut self) {
         self.offset += 1.0;
+        if self.freq.clock() {
+            self.refresh_freq();
+        }
     }
 
     pub fn set_sample_rate(&mut self, sample_rate: f32) {
@@ -61,11 +67,7 @@ impl OSC
     }
 
     pub fn set_freq(&mut self, freq: f32) {
-        self.freq = match freq {
-            freq if freq  < 0f32 => freq * -1f32, // use absolute value
-            freq if freq == 0f32 => panic!("freq value must not be 0.0"),
-            _ => freq,
-        };
+        self.freq.set_base(freq);
         self.refresh_freq();
     }
 
@@ -74,11 +76,12 @@ impl OSC
     }
 
     pub fn get_freq(&self) -> f32 {
-        self.freq
+        self.freq.get_now()
     }
 
     fn refresh_freq(&mut self) {
-        let clock_freq = self.freq * self.wavelength as f32;
+        let freq = self.freq.get_now();
+        let clock_freq = freq * self.wavelength as f32;
         let ratio = clock_freq / (self.sample_rate as f32);
 
         self.repeat = ratio.trunc() as u32;
