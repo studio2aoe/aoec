@@ -57,10 +57,6 @@ impl Metronome {
         self.refresh_tempo();
     }
 
-    pub fn get_tempo(&self) -> f32 {
-        self.tempo
-    }
-
     fn refresh_tempo(&mut self) {
         let minute_period = self.sample_rate * 60_f32;
         let beat_period = minute_period / self.tempo;

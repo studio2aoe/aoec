@@ -69,14 +69,6 @@ impl OSC
         self.refresh_freq();
     }
 
-    pub fn get_wavelength(&self) -> u32 {
-        self.wavelength
-    }
-
-    pub fn get_freq(&self) -> f32 {
-        self.freq
-    }
-
     fn refresh_freq(&mut self) {
         let clock_freq = self.freq * self.wavelength as f32;
         let ratio = clock_freq / (self.sample_rate as f32);

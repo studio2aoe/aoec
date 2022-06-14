@@ -10,7 +10,6 @@ use crate::traits::Play;
 use crate::traits::Control;
 
 pub struct BuiltIn {
-    sample_rate: f32,
     hex: HEX,
     osc: OSC,
     dac: DAC,
@@ -21,7 +20,6 @@ pub struct BuiltIn {
 impl BuiltIn {
     pub fn new(sample_rate: f32) -> BuiltIn {
         let mut new = BuiltIn {
-            sample_rate,
             hex: HEX::new(),
             osc: OSC::new(sample_rate, hex::W_LENGTH),
             dac: DAC::new(),
@@ -92,33 +90,6 @@ impl Control for BuiltIn {
             _ => (),
         };
         self.param[key] = value;
-    }
-
-    fn get_sample_rate(&self) -> f32 {
-        self.osc.get_wavelength();
-        // TODO: remove the above function call before production,
-        // or after the function is used other soundchip module.
-        // the function call is dummy for avoding the warning about
-        // never used function.
-        self.sample_rate
-    }
-    fn get_tempo(&self) -> f32 {
-        self.metronome.get_tempo()
-    }
-    fn get_freq(&self) -> f32 {
-        self.osc.get_freq()
-    }
-    fn get_env(&self) -> u8 {
-        self.dac.env
-    }
-    fn get_pan(&self) -> u8 {
-        self.dac.pan
-    }
-    fn get_mute(&self) -> bool {
-        self.dac.mute
-    }
-    fn get_param(&self, key: usize) -> u32 {
-        self.param[key]
     }
 }
 
