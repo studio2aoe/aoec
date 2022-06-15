@@ -39,6 +39,7 @@ impl DAC {
         self.mute = false;
         self.vol = 0;
         self.pan = 0;
+        self.refresh_realvol();
     }
 
     pub fn set_vol(&mut self, vol: u8) {
