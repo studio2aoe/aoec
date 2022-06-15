@@ -45,7 +45,7 @@ impl BuiltIn {
 impl Play for BuiltIn {
     fn clock(&mut self) {
         (0..self.osc.count_repeat()).for_each(|_| self.hex.clock());
-        
+
         if self.metronome.tick() {
             /* TODO: The scheduler clocks every 1 tick */
         }
@@ -55,7 +55,7 @@ impl Play for BuiltIn {
     }
 
     fn read_sample(&self, ch: usize) -> f32 {
-        match self.dac.mute || self.hex.is_muted() {
+        match self.hex.is_muted() {
             true => 0.0,
             false => self.dac.mix(ch, self.hex.read_hex()),
         }
@@ -75,13 +75,13 @@ impl Control for BuiltIn {
         self.osc.set_freq(freq);
     }
     fn set_env(&mut self, env: u8) {
-        self.dac.env = env;
+        self.dac.set_vol(env)
     }
     fn set_pan(&mut self, pan: u8) {
-        self.dac.pan = pan;
+        self.dac.set_pan(pan)
     }
     fn set_mute(&mut self, mute: bool) {
-        self.dac.mute = mute;
+        self.dac.set_mute(mute)
     }
     fn set_param(&mut self, key: usize, value: u32) {
         match key {
