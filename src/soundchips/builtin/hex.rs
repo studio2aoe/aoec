@@ -44,7 +44,7 @@ pub struct HEX {
     lfsr: LFSR,
     offset: usize,
     wtype: WaveType,
-    param: u32,
+    wparam: u32,
 }
 
 impl HEX {
@@ -53,7 +53,7 @@ impl HEX {
             lfsr: LFSR::new(),
             offset: 0,
             wtype: WaveType::Pulse,
-            param: 0
+            wparam: 0
         };
         new.reset();
         new
@@ -63,7 +63,7 @@ impl HEX {
         self.lfsr.reset();
         self.offset = 0;
         self.wtype = WaveType::Pulse;
-        self.param = 0;
+        self.wparam = 0;
     }
 
     pub fn clock(&mut self) {
@@ -80,8 +80,8 @@ impl HEX {
     pub fn is_muted(&self) -> bool {
         match self.wtype {
             WaveType::Mute => true,
-            WaveType::Pulse => match self.param {
-                0x00 => true,
+            WaveType::Pulse => match self.wparam {
+                0 => true,
                 _ => false,
             },
             _ => false,
@@ -92,11 +92,11 @@ impl HEX {
         match self.wtype {
             WaveType::Mute => 0,
             WaveType::Pulse => hex_pulse!(
-                self.param as usize * 2, 
+                self.wparam as usize * 2,
                 self.offset
             ),
             WaveType::Triangle => hex_triangle!(self.offset),
-            WaveType::Sawtooth => match self.param % 2 {
+            WaveType::Sawtooth => match self.wparam % 2 {
                 0 => hex_sawtooth_negative!(self.offset),
                 1 => hex_sawtooth_positive!(self.offset),
                 _ => unreachable!()
@@ -116,8 +116,8 @@ impl HEX {
         }
     }
 
-    pub fn set_param(&mut self, value: u32) {
-        self.param = value;
-        self.lfsr.set_noise_type(self.param);
+    pub fn set_wparam(&mut self, value: u32) {
+        self.wparam = value;
+        self.lfsr.set_noise_type(self.wparam);
     }
 }

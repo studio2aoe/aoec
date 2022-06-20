@@ -1,5 +1,5 @@
 pub struct OSC {
-    sample_rate: f32,
+    sample_rate: u32,
     wavelength: u32,
     freq: f32,
     repeat: u32,
@@ -8,7 +8,7 @@ pub struct OSC {
 }
 impl OSC
 {
-    pub fn new(sample_rate: f32, wavelength: u32) -> OSC {
+    pub fn new(sample_rate: u32, wavelength: u32) -> OSC {
         let mut new = OSC {
             sample_rate,
             wavelength,
@@ -44,9 +44,9 @@ impl OSC
         self.offset += 1.0;
     }
 
-    pub fn set_sample_rate(&mut self, sample_rate: f32) {
+    pub fn set_sample_rate(&mut self, sample_rate: u32) {
         self.sample_rate = match sample_rate {
-            sample_rate if sample_rate == 0f32 => panic!("sample_rate value must not be 0"),
+            sample_rate if sample_rate == 0u32 => panic!("sample_rate value must not be 0"),
             _ => sample_rate
         };
         self.refresh_freq();
@@ -60,7 +60,8 @@ impl OSC
         self.refresh_freq();
     }
 
-    pub fn set_freq(&mut self, freq: f32) {
+    pub fn set_freq(&mut self, freq: u32) {
+        let freq: f32 = f32::from_bits(freq);
         self.freq = match freq {
             freq if freq  < 0f32 => freq * -1f32, // use absolute value
             freq if freq == 0f32 => panic!("freq value must not be 0.0"),

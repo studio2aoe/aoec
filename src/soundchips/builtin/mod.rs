@@ -12,16 +12,14 @@ pub struct BuiltIn {
     hex: HEX,
     osc: OSC,
     dac: DAC,
-    param: [u32; 2]
 }
 
 impl BuiltIn {
-    pub fn new(sample_rate: f32) -> BuiltIn {
+    pub fn new(sample_rate: u32) -> BuiltIn {
         let mut new = BuiltIn {
             hex: HEX::new(),
             osc: OSC::new(sample_rate, hex::W_LENGTH),
             dac: DAC::new(),
-            param: [0_u32; 2],
         };
         new.reset();
         new
@@ -31,10 +29,8 @@ impl BuiltIn {
         self.hex.reset();
         self.osc.init();
         self.osc.set_wavelength(hex::W_LENGTH);
-        self.osc.set_freq(440_f32);
+        self.osc.set_freq(440_f32.to_bits());
         self.dac.reset();
-        self.param[0] = 0;
-        self.param[1] = 0;
     }
 }
 
@@ -54,29 +50,18 @@ impl Play for BuiltIn {
 }
 
 impl Control for BuiltIn {
-    fn set_sample_rate(&mut self, sample_rate: f32) {
-        self.osc.set_sample_rate(sample_rate);
-    }
-    fn set_freq(&mut self, freq: f32) {
-        self.osc.set_wavelength(hex::W_LENGTH);
-        self.osc.set_freq(freq);
-    }
-    fn set_env(&mut self, env: u8) {
-        self.dac.set_vol(env)
-    }
-    fn set_pan(&mut self, pan: u8) {
-        self.dac.set_pan(pan)
-    }
-    fn set_mute(&mut self, mute: bool) {
-        self.dac.set_mute(mute)
-    }
-    fn set_param(&mut self, key: usize, value: u32) {
+    fn setparam(&mut self, key: u32, value: u32) {
         match key {
-            0 => self.hex.set_wtype(value),
-            1 => self.hex.set_param(value),
+            0x00 => (),
+            0x11 => self.osc.set_sample_rate(value),
+            0x12 => self.osc.set_freq(value),
+            0x21 => self.dac.set_vol(value),
+            0x22 => self.dac.set_pan(value),
+            0x23 => self.dac.set_mute(value),
+            0x31 => self.hex.set_wtype(value),
+            0x32 => self.hex.set_wparam(value),
             _ => (),
-        };
-        self.param[key] = value;
+        }
     }
 }
 

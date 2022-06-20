@@ -20,39 +20,39 @@ const HTOA_TABLE: [f32; 16] = [
 ];
 
 pub struct DAC {
-    mute: bool,
-    vol: u8,
-    pan: u8,
+    mute: u32,
+    vol: u32,
+    pan: u32,
     realvol: [f32; 2],
 }
 
 impl DAC {
     pub fn new() -> DAC {
         DAC {
-            mute: false,
+            mute: 0,
             vol: 0,
             pan: 0,
             realvol: [0f32, 0f32],
         }
     }
     pub fn reset(&mut self) {
-        self.mute = false;
+        self.mute = 0;
         self.vol = 0;
         self.pan = 0;
         self.refresh_realvol();
     }
 
-    pub fn set_vol(&mut self, vol: u8) {
-        self.vol = vol & 0x0F;
+    pub fn set_vol(&mut self, vol: u32) {
+        self.vol = vol & 0x0000_000F;
         self.refresh_realvol();
     }
 
-    pub fn set_pan(&mut self, pan: u8) {
-        self.pan = pan & 0x0F;
+    pub fn set_pan(&mut self, pan: u32) {
+        self.pan = pan & 0x0000_000F;
         self.refresh_realvol();
     }
 
-    pub fn set_mute(&mut self, mute: bool) {
+    pub fn set_mute(&mut self, mute: u32) {
         self.mute = mute;
         self.refresh_realvol();
     }
@@ -63,10 +63,8 @@ impl DAC {
     }
 
     fn refresh_realvol(&mut self) {
-        if self.mute == true {
-            self.realvol = [0.0, 0.0]
-        }
-        else {
+        // If the track is not mute
+        if self.mute == 0 {
             let vtoa = self.vol as f32 / 15.0; // volume to analogue
             let ptoa = match self.pan { // panning to analogue
                 0 => 0.0,
@@ -76,7 +74,11 @@ impl DAC {
             self.realvol = [
                 (rad.cos() - rad.sin()) * SQRT2 * vtoa,
                 (rad.cos() + rad.sin()) * SQRT2 * vtoa
-            ]
+            ];
+        }
+        // If the track is mute
+        else {
+            self.realvol = [0.0, 0.0];
         }
     }
 }

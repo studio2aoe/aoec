@@ -11,27 +11,22 @@ and should implement `aoec::traits::Control`
 - `read_sample(&self, ch: usize) -> f32`: Read the current sample of given channel
 
 ## `aoec::traits::Control` (public)
-The setters and getters of these parameters:
-  - Sample Rate (sample_rate)
-  - Tempo (tempo): determine the clock period of scheduler. it needs to implement automation for chip control.
-  - Frequency (freq): the pitch of sound, determine clock speed
-  - Volume (vol): the volume of sound
-  - Muting (mute): If the soundchip is mute
-  - Custom parameters (param): Usually used to change the timbre
-
-- `set_sample_rate(&mut self, sample_rate: f32)`
-- `set_tempo(&mut self, tempo: f32)`
-- `set_freq(&mut self, freq: f32)`
-- `set_vol(&mut self, ch: usize, vol: u8)`
-- `set_mute(&mut self, mute: bool)`
-- `set_param(&mut self, key: usize, value: u32)`
-
-- `get_sample_rate(&self) -> f32`
-- `get_tempo(&self) -> f32`
-- `get_freq(&self) -> f32`
-- `get_vol(&self, ch: usize) -> u8`
-- `get_mute(&self) -> bool`
-- `get_param(&self, key: usize) -> u32`
+aoec uses the one setter, `setparam`.
+- `setparam(&mut self, key: u32, value: u32)`
+    - The behavior depends on the `key`.
+    - key `0x00` => igonred
+    - key `0x11` => set sample rate
+        - the sample rate uses u32 value directly.
+    - key `0x12` => set frequency
+        - the frequency value is IEEE-754 representation of f32.
+          for example, to change frequency to `440_f32`,
+          give the `440_f32.to_bits()` or `0x43dc0000` as `value`.
+    - key `0x21` => set volume
+    - key `0x22` => set panning
+        - vol & pan uses only last 1 hex-digit (mod 16) of `value`
+    - key `0x23` => set mute the track
+        - if `value` is non-zero (true), the track is muted
+    - others => depends on the chip type.
 
 ---
 
@@ -40,18 +35,19 @@ Actual soundchip structs implementing above traits.
 
 ## `aoec::soundchips::BuiltIn` (public)
 - Generating mathmatically oscillated, built-in waveform
-- BuiltIn waveform types by the first parameter
+- BuiltIn waveform types depends on key `0x31`,
+  and waveform parameters depends on key `0x32`.
   - `0`: Mute
   - `1`: Pulse
-    - The second param means the duty cycle is `n/16`.
+    - key `0x32` means the duty cycle is `n/16`.
     - example) `0x08` means `8/16`, it is 50% (square wave)
   - `2`: Triangle
   - `3`: Sawtooth
-    - The second param means the sawtooth directions.
+    - key `0x32` means the sawtooth directions.
     - Even number: Decreasing sawtooth
     - Odd number: Increasing sawtooth
   - `4`: Noise
-    - The second param means the noise length
+    - key `0x32` means the noise length
     - Even number: Long noise (32768-sample length)
     - Odd number: Short noise (93-sample length)
 
@@ -67,14 +63,8 @@ Actual soundchip structs implementing above traits.
 # Subchip module (aoec::subchips)
 The structs to support the aoec soundchips
 
-## `aoec::subchips::Metronome` (private)
-Determines if the scheduler clocks at a given tempo.
-
 ## `aoec::subchips::OSC`  (private)
 Determines if the hex generator clocks at a given frequency.
 
 ## `aoec::subchips::DAC`  (private)
 Convert the sound sample from hex to f32
-
-## `aoec::subchips::LFSR` (private)
-Generates the random number for noise waveform
