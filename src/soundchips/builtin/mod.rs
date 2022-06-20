@@ -3,7 +3,6 @@ mod lfsr;
 
 use crate::subchips::DAC;
 use crate::subchips::OSC;
-use crate::subchips::Metronome;
 use hex::HEX;
 
 use crate::traits::Play;
@@ -13,7 +12,6 @@ pub struct BuiltIn {
     hex: HEX,
     osc: OSC,
     dac: DAC,
-    metronome: Metronome,
     param: [u32; 2]
 }
 
@@ -23,7 +21,6 @@ impl BuiltIn {
             hex: HEX::new(),
             osc: OSC::new(sample_rate, hex::W_LENGTH),
             dac: DAC::new(),
-            metronome: Metronome::new(sample_rate, 125_f32),
             param: [0_u32; 2],
         };
         new.reset();
@@ -45,13 +42,7 @@ impl BuiltIn {
 impl Play for BuiltIn {
     fn clock(&mut self) {
         (0..self.osc.count_repeat()).for_each(|_| self.hex.clock());
-
-        if self.metronome.tick() {
-            /* TODO: The scheduler clocks every 1 tick */
-        }
-
         self.osc.clock();
-        self.metronome.clock();
     }
 
     fn read_sample(&self, ch: usize) -> f32 {
@@ -65,10 +56,6 @@ impl Play for BuiltIn {
 impl Control for BuiltIn {
     fn set_sample_rate(&mut self, sample_rate: f32) {
         self.osc.set_sample_rate(sample_rate);
-        self.metronome.set_sample_rate(sample_rate);
-    }
-    fn set_tempo(&mut self, tempo: f32) {
-        self.metronome.set_tempo(tempo)
     }
     fn set_freq(&mut self, freq: f32) {
         self.osc.set_wavelength(hex::W_LENGTH);

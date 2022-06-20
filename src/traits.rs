@@ -10,7 +10,6 @@ pub trait Play {
 
 pub trait Control {
     fn set_sample_rate(&mut self, sample_rate: f32);
-    fn set_tempo(&mut self, tempo: f32);
     fn set_freq(&mut self, freq: f32);
     fn set_env(&mut self, env: u8);
     fn set_pan(&mut self, pan: u8);
